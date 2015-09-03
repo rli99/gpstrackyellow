@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   get 'welcome/index'
   get 'welcome/map'
   match '/gps-data' => 'gps_incoming_service#receive_data', via: :post
