@@ -20,9 +20,20 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDxG_OfYr1-ym_9rp5kOCz5BkmYheyb18M&callback=initMap">
 </script>
 
+Initial trip:
 <% t = Trip.find_by(id: 1) %>
 <p>Trip ID: <%= t.trip_id %>
 	<% e = t.events %>
 	<% e.each do |event| %>
 		Transportation mode: <%= e.transportation %>
 	<% end %></p>
+
+</br>
+Trip after being edited:
+<p>Trip ID: <%= t.trip_id %>
+	<% e = t.events %>
+	<% e.each do |event| %>
+		<% e.transportation = "train" %>
+		Transportation mode: <%= e.transportation %>
+	<% end %></p>
+
