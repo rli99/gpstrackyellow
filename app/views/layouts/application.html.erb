@@ -14,6 +14,11 @@
             <li><%= link_to "Home", root_path %></li>
             <%= render 'devise/menu/registration_items' %>
             <%= render 'devise/menu/login_items' %>
+            <% if user_signed_in? %>
+              <li>
+              <%= link_to('Map', view_map) %>
+              </li>
+            <% end %>
         </ul>
     </div>
 </nav>
