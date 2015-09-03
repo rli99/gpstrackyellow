@@ -22,7 +22,7 @@
 
 Initial trip:
 <% t = Trip.find_by(id: 1) %>
-<p>Trip ID: <%= t.trip_id %>
+<p>Trip ID: <%= t.id %>
 	<% e = t.events %>
 	<% e.each do |event| %>
 		Transportation mode: <%= e.transportation %>
@@ -30,7 +30,7 @@ Initial trip:
 
 </br>
 Trip after being edited:
-<p>Trip ID: <%= t.trip_id %>
+<p>Trip ID: <%= t.id %>
 	<% e = t.events %>
 	<% e.each do |event| %>
 		<% e.transportation = "train" %>
