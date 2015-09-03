@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  avgSpeed: MyString
+  duration: MyString
+  distance: MyString
+  verified: false
+
+two:
+  avgSpeed: MyString
+  duration: MyString
+  distance: MyString
+  verified: false
