@@ -16,7 +16,7 @@
             <%= render 'devise/menu/login_items' %>
             <% if user_signed_in? %>
               <li>
-              <%= link_to('Map', view_map) %>
+              <%= link_to('Map', view_map_path) %>
               </li>
             <% end %>
         </ul>
