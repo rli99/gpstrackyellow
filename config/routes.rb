@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   get 'welcome/index'
-  get 'welcome/map'
+  get 'view/map'
   match '/gps-data' => 'gps_incoming_service#receive_data', via: :post
 root 'welcome#index'
 
