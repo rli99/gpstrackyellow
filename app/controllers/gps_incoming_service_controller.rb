@@ -1,4 +1,4 @@
-include 'json'
+require 'json'
 
 class GpsIncomingServiceController < ApplicationController
 	def receive_data
