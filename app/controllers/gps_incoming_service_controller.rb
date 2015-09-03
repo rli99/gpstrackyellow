@@ -1,15 +1,20 @@
+include 'json'
+
 class GpsIncomingServiceController < ApplicationController
 	def receive_data
 
 		puts "______________________"
 
 		render text: "#{params}"
-		
-		GpsDatum.create(
-			latitude: "try1",
-			longitude: "try2",
-			accuracy: "try3",
-			)
 
+		data = JSON.parse(request.body.read)
+		
+		data.each do |gps|
+			GpsDatum.create(
+				latitude: gps["LATITUDE (DEG)"],
+				longitude: gps["LONGITUDE (DEG)"],
+				altitude: gps["ALTITUDE (M)"]
+				)
+		end
 	end
 end
