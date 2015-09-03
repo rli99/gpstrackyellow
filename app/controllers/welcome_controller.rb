@@ -3,5 +3,6 @@ class WelcomeController < ApplicationController
   end
 
   def map
+  	puts "~~~~~~~~~~~~~~~~~~~~~~~~! test puts"
   end
 end
