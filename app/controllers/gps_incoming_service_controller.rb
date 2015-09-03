@@ -1,0 +1,2 @@
+class GpsIncomingServiceController < ApplicationController
+end
