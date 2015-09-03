@@ -3,7 +3,7 @@ class GpsIncomingServiceController < ApplicationController
 
 		puts "______________________"
 
-		puts params
+		render text: "#{params}"
 		
 	end
 end
