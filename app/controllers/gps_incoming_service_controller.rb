@@ -16,5 +16,7 @@ class GpsIncomingServiceController < ApplicationController
 				altitude: gps["ALTITUDE (M)"]
 				)
 		end
+
+		Algorithm.transform(data)
 	end
 end

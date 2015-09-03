@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
   get 'welcome/index'
+  get 'view/map'
   post 'datatransformation/transfrom_to_tripdata' => 'datatransformation#transform_to_tripdata', as: :data_transform
   match '/gps-data' => 'gps_incoming_service#receive_data', via: :post
 root 'welcome#index'
