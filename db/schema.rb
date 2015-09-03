@@ -11,16 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150903095012) do
+ActiveRecord::Schema.define(version: 20150903104503) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "algorithms", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "events", force: :cascade do |t|
     t.string   "transportation"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.integer  "trip_id"
   end
+
+  add_index "events", ["trip_id"], name: "index_events_on_trip_id", using: :btree
 
   create_table "gps_data", force: :cascade do |t|
     t.datetime "time"
@@ -35,9 +43,16 @@ ActiveRecord::Schema.define(version: 20150903095012) do
   end
 
   create_table "transfer_zones", force: :cascade do |t|
+    t.datetime "time"
+    t.string   "latitude"
+    t.string   "longitude"
+    t.string   "altitude"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "event_id"
   end
+
+  add_index "transfer_zones", ["event_id"], name: "index_transfer_zones_on_event_id", using: :btree
 
   create_table "trips", force: :cascade do |t|
     t.string   "avgSpeed"
@@ -71,4 +86,6 @@ ActiveRecord::Schema.define(version: 20150903095012) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "events", "trips"
+  add_foreign_key "transfer_zones", "events"
 end

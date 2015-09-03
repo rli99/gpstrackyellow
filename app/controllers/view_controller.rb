@@ -4,7 +4,7 @@ class ViewController < ApplicationController
 	end
 
 	def tripdata
-		
+		@trips = Trip.all
 	end
 
 	def user

@@ -19,3 +19,10 @@
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDxG_OfYr1-ym_9rp5kOCz5BkmYheyb18M&callback=initMap">
 </script>
+
+<% t = Trip.find_by(id: 1) %>
+<p>Trip ID: <%= t.trip_id %>
+	<% e = t.events %>
+	<% e.each do |event| %>
+		Transportation mode: <%= e.transportation %>
+	<% end %></p>

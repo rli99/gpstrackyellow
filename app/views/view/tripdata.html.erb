@@ -1,0 +1,15 @@
+
+<table>
+	<tr><th>Trip ID</th>
+	<th>Trip Average Speed</th>
+<th>Trip Duration</th>
+<th>Trip Distance</th>
+<th>Trip Verified</th></tr>
+	<% @trips.each do |trip| %>
+		<tr><td><%= trip.trip_id %></td>
+		<td><%= trip.avgSpeed %></td>
+		<td><%= trip.duration %></td>
+		<td><%= trip.distance %></td>
+		<td><%= trip.verified %></td></tr>
+	<% end %>
+</table>
