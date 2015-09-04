@@ -22,6 +22,7 @@ class Algorithm < ActiveRecord::Base
     	e2.save
 
 		tf1 = TransferZone.new
+        tf1.latitude = "latitude"
 		# # tf1.time = nil
   #   	tf1.latitude = "111"
   #   	tf1.longitude = "222"
