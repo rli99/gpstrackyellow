@@ -35,5 +35,6 @@ Trip after being edited:
 	<% e.each do |event| %>
 		<% event.transportation += " edited" %>
 		Transportation mode: <%= event.transportation %>
+		<% event.save %>
 	<% end %></p>
 
