@@ -21,7 +21,7 @@
 </script>
 
 Initial trip:
-<% t = Trip.find_by(id: 1) %>
+<% t = Trip.find(1) %>
 <p>Trip ID: <%= t.id %>
 	<% e = t.events %>
 	<% e.each do |event| %>
