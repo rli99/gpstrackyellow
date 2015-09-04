@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class EventTest < ActiveSupport::TestCase
-  # test "the truth" do
+  # test "the truth on event" do
   #   assert true
   # end
 
@@ -10,6 +10,6 @@ class EventTest < ActiveSupport::TestCase
 	# 	e = Event.find(1)
 
  #  		assert (e.transportation == "bus edited" || e.transportation == "car edited")
- 		assert true
-  	end
+ 		# assert true
+  	# end
 end
