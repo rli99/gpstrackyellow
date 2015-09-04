@@ -21,13 +21,13 @@ class Algorithm < ActiveRecord::Base
     	e2.trip_id = t.id
     	e2.save
 
-		# tf1 = TransferZone.new
+		tf1 = TransferZone.new
 		# # tf1.time = nil
   #   	tf1.latitude = "111"
   #   	tf1.longitude = "222"
   #   	tf1.altitude = "333"
   #   	tf1.event_id = e1.id
-  #   	tf1.save
+     	tf1.save
 
   #   	tf2 = TransferZone.new
 		# # tf2.time = nil
