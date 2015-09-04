@@ -22,7 +22,7 @@ class Algorithm < ActiveRecord::Base
     	e2.save
 
 		tf1 = TransferZone.new
-		tf1.time = nil
+		# tf1.time = nil
     	tf1.latitude = "111"
     	tf1.longitude = "222"
     	tf1.altitude = "333"
@@ -30,7 +30,7 @@ class Algorithm < ActiveRecord::Base
     	tf1.save
 
     	tf2 = TransferZone.new
-		tf2.time = nil
+		# tf2.time = nil
     	tf2.latitude = "1111"
     	tf2.longitude = "2222"
     	tf2.altitude = "3333"
@@ -38,7 +38,7 @@ class Algorithm < ActiveRecord::Base
     	tf2.save
 
     	tf3 = TransferZone.new
-		tf3.time = nil
+		# tf3.time = nil
     	tf3.latitude = "1111"
     	tf3.longitude = "2222"
     	tf3.altitude = "3333"
@@ -46,7 +46,7 @@ class Algorithm < ActiveRecord::Base
     	tf3.save
 
     	tf4 = TransferZone.new
-		tf4.time = nil
+		# tf4.time = nil
     	tf4.latitude = "111"
     	tf4.longitude = "222"
     	tf4.altitude = "333"

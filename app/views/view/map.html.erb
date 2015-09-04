@@ -33,7 +33,7 @@ Trip after being edited:
 <p>Trip ID: <%= t.id %>
 	<% e = t.events %>
 	<% e.each do |event| %>
-		<% e.transportation += "edited" %>
+		<% event.transportation += " edited" %>
 		Transportation mode: <%= event.transportation %>
 	<% end %></p>
 
