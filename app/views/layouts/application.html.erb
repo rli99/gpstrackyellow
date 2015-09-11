@@ -15,8 +15,8 @@
             <%= render 'devise/menu/registration_items' %>
             <%= render 'devise/menu/login_items' %>
             <% if user_signed_in? %>
-              <li>
-              <%= link_to('Map', view_map_path) %></li>
+              <li><%= link_to('Map', view_map_path) %></li>
+              <li><%= link_to('GMap', view_gmap_path) %></li>
               <li><%= link_to('Trips', view_tripdata_path) %>
               </li>
             <% end %>
