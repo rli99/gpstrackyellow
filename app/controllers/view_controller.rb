@@ -13,25 +13,28 @@ class ViewController < ApplicationController
 
 	def gmap
 
-		img_url = "http://images.clipartpanda.com/clipart-star-RTA9RqzTL.png"
+		intermediatepoints = Trip.find_by(id:1).intermediatepoints
+		events = Trip.find_by(id:1).events
 
-		transferzones = Trip.all[0].events[0].transfer_zones
 
-		# @hash = Gmaps4rails.build_markers(transferzones) do |transferzone, marker|
-		#   marker.lat transferzone.latitude
-		#   marker.lng transferzone.longitude
-		#   marker.infowindow transferzone.altitude
-		@hash = []
+		@hash_intPointsData = []
+		@hash_eventsData = []
 
-		transferzones.each do |zone|
-			data = {lat: zone.latitude.to_f, lng: zone.longitude.to_f, alt: zone.altitude.to_f} 
-			@hash.push(data)
+		intermediatepoints.each do |point|
+			data = {id: point.id, lat: point.latitude.to_f, lng: point.longitude.to_f, alt: point.altitude.to_f} 
+			@hash_intPointsData.push(data)
 		end
-		  #marker.picture({
-       		#{}"url" => "images/star.png",
-       		#{}"width" =>  32,
-       		#{}"height" => 32})
-		# end
+
+		events.each do |event|
+			data = {id: event.id, transportation: event.transportation, trip_id: event.trip_id}
+			data[:transferzones] = []
+			transferzones = event.transfer_zones
+			transferzones.each do |zone|
+				temp = {id: zone.id, lat: zone.latitude.to_f, lng: zone.longitude.to_f, alt: zone.altitude.to_f} 
+				data[:transferzones].push(temp)
+			end
+			@hash_eventsData.push(data)
+		end
 
 	end
 	

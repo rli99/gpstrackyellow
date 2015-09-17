@@ -10,47 +10,84 @@
 
 <script type = 'text/javascript'>
 
- data = <%=raw @hash.to_json %>;
+  intPointsData = <%=raw @hash_intPointsData.to_json %>;
+  eventsData = <%=raw @hash_eventsData.to_json %>;
 
-console.log(data)
+  console.log(intPointsData);
+  console.log(eventsData);
 
-// var myLatLng = {lat: -25.363, lng: 131.044};
+  var map;
+  var polylinePath;
 
-  var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 4,
-    center: data[0]
-  });
+  function initMap() {
+    // Create a map object and specify the DOM element for display.
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: -34.397, lng: 150.644},
+      scrollwheel: false,
+      zoom: 8
+    });
+  }
 
-  var marker = new google.maps.Marker({
-    position: data[0],
-    map: map,
-    title: 'Hello World!'
-});
+  function drawTripIntermediatePoints(intPointsData) {
+    for(var i=0;i<intPointsData.length;i++){
 
-     var marker = new google.maps.Marker({
-    position: data[1],
-    map: map,
-    title: 'Hello World!'
-  });
+      var marker = new google.maps.Marker({
+        //animation: google.maps.Animation.DROP,
+        position: intPointsData[i],
+        title: 'Hello World!'
+      });
 
+      marker.addListener('click',function(e){
+          alert(e.latLng);
+      })
 
-// handler = Gmaps.build('Google');
-// handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+      marker.setMap(map);
 
-// 	markers = handler.addMarkers(data, {draggable: true});
-// 	polylines = handler.addPolyline(<%=raw @hash.to_json %>, {draggable: true});
+    }
+  }
 
-//     handler.bounds.extendWith(markers);
-//   	handler.fitMapToBounds();
+  function drawTripPolyline(intPointsData) {
 
-//   	google.maps.event.addListener(handler.getMap(), 'click', function(event) {
-// 	    console.log("mother fucker point!");
-// 	    console.log(polylines);
-// 	    polylines.getPath().push(event,latLng);
-//     });
+    var polylineCoordinates = [];
+    for(var i=0;i<intPointsData.length;i++){
+      polylineCoordinates.push(intPointsData[i]);
+    }
 
-// });
+    polylinePath = new google.maps.Polyline({
+      path: polylineCoordinates,
+      geodesic: true,
+      strokeColor: '#000000',
+      strokeOpacity: 1.0,
+      strokeWeight: 2
+    });
 
+    polylinePath.setMap(map);
+  }
+
+  function showEvents(eventData) {
+    
+    pointsData = eventData["transferzones"];
+    console.log(pointsData.length);
+
+    for(var i=0;i<pointsData.length;i++){
+      var marker = new google.maps.Marker({
+        position: pointsData[i],
+        title: 'Hello World!'
+      });
+      marker.addListener('click',function(e){
+          alert(e.latLng);
+      })
+      marker.setMap(map);
+    }
+    
+  }
+
+  initMap();
+  drawTripIntermediatePoints(intPointsData);
+  drawTripPolyline(intPointsData);
+  for(var i=0;i<eventsData.length;i++){
+    showEvents(eventsData[i]);
+  }
 
 
 </script>
