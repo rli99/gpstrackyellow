@@ -71,10 +71,13 @@
     pointsData = eventData["transferzones"];
     console.log(pointsData.length);
 
+    var image = 'lib/assets/flag.png';
+
     for(var i=0;i<pointsData.length;i++){
       var marker = new google.maps.Marker({
         position: pointsData[i],
-        title: 'Hello World!'
+        title: 'Hello World!',
+        icon: image
       });
       marker.addListener('click',function(e){
           alert(e.latLng);
