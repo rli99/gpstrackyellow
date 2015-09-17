@@ -17,10 +17,10 @@ class ViewController < ApplicationController
 
 		@hash_eventsData = []
 
-		intermediatepoints.each do |point|
-			data = {id: point.id, lat: point.latitude.to_f, lng: point.longitude.to_f, alt: point.altitude.to_f} 
-			@hash_intPointsData.push(data)
-		end
+		# intermediatepoints.each do |point|
+		# 	data = {id: point.id, lat: point.latitude.to_f, lng: point.longitude.to_f, alt: point.altitude.to_f} 
+		# 	@hash_intPointsData.push(data)
+		# end
 
 		events.each do |event|
 			data = {id: event.id, transportation: event.transportation, trip_id: event.trip_id}
