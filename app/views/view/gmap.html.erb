@@ -43,7 +43,7 @@
   function drawTripIntermediatePoints(eventsData) {
     for(var i=0;i<eventsData.length;i++){
       drawTripPolyline(eventsData[i]["intermediatepoints"]);
-      for(var j=0;j<eventsData[i]["intermediatepoints"].length;j++){
+      for(var j=1;j<eventsData[i]["intermediatepoints"].length - 1;j++){
         makeMarker(eventsData[i]["intermediatepoints"][j]);        
       }
     }
@@ -71,7 +71,7 @@
     pointsData = eventData["transferzones"];
     console.log(pointsData.length);
 
-    var image = 'http://findicons.com/files/icons/2360/spirit20/20/flag.png';
+    var image = 'http://vignette3.wikia.nocookie.net/farmville/images/9/9b/Purple_Flag-icon.png/revision/latest/scale-to-width-down/50?cb=20100110191552';
 
     for(var i=0;i<pointsData.length;i++){
       var marker = new google.maps.Marker({
