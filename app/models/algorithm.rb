@@ -29,7 +29,6 @@ class Algorithm < ActiveRecord::Base
     i = Intermediatepoint.new
     i.latitude = point.latitude
     i.longitude = point.longitude
-    i.speed = point.speed
     i.time = point.time
     i.trip_id = t.id
     i.save
