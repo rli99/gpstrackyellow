@@ -8,8 +8,7 @@ class Algorithm < ActiveRecord::Base
   e = Event.new
   p1 = gpsData[0]
   p2 = gpsData[-1]
-
-  puts p1
+  t.save
 
   t1.latitude = p1.latitude
   t1.longitude = p1.longitude
