@@ -26,7 +26,7 @@ class Algorithm < ActiveRecord::Base
   e.save
 
   gpsData.each do |point|
-    i = IntermediatePoint.new
+    i = Intermediatepoint.new
     i.latitude = point.latitude
     i.longitude = point.longitude
     i.speed = point.speed
