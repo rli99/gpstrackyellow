@@ -10,10 +10,8 @@
 
 <script type = 'text/javascript'>
 
-  intPointsData = <%=raw @hash_intPointsData.to_json %>;
   eventsData = <%=raw @hash_eventsData.to_json %>;
 
-  console.log(intPointsData);
   console.log(eventsData);
 
   var map;
@@ -28,12 +26,10 @@
     });
   }
 
-  function drawTripIntermediatePoints(intPointsData) {
-    for(var i=0;i<intPointsData.length;i++){
-
-      var marker = new google.maps.Marker({
+  function makeMarker(intPointData){
+    var marker = new google.maps.Marker({
         //animation: google.maps.Animation.DROP,
-        position: intPointsData[i],
+        position: intPointData,
         title: 'Hello World!'
       });
 
@@ -42,12 +38,18 @@
       })
 
       marker.setMap(map);
+  }
 
+  function drawTripIntermediatePoints(eventsData) {
+    for(var i=0;i<eventsData.length;i++){
+      drawTripPolyline(eventsData[i]["intermediatepoints"]);
+      for(var j=0;j<eventsData[i]["intermediatepoints"].length;j++){
+        makeMarker(eventsData[i]["intermediatepoints"][j]);        
+      }
     }
   }
 
   function drawTripPolyline(intPointsData) {
-
     var polylineCoordinates = [];
     for(var i=0;i<intPointsData.length;i++){
       polylineCoordinates.push(intPointsData[i]);
@@ -84,7 +86,7 @@
 
   initMap();
   drawTripIntermediatePoints(intPointsData);
-  drawTripPolyline(intPointsData);
+  //drawTripPolyline(intPointsData);
   for(var i=0;i<eventsData.length;i++){
     showEvents(eventsData[i]);
   }
