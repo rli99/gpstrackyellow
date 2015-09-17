@@ -2,8 +2,8 @@ class Algorithm < ActiveRecord::Base
 
 	def self.transform (gpsData)
 
-    totalPointCount = 0
-    pointCount = 0
+    @totalPointCount = 0
+    @pointCount = 0
 
     t = Trip.new
     t.avgSpeed = "10km/hr"
@@ -16,8 +16,8 @@ class Algorithm < ActiveRecord::Base
     e.transportation = "walking"
     e.trip_id = t.id
     e.save
-    p1 = gpsData[totalPointCount]
-    p2 = gpsData[[totalPointCount + 5, gpsData.length].min]
+    p1 = gpsData[@totalPointCount]
+    p2 = gpsData[[@totalPointCount + 5, gpsData.length - 1].min]
 
     t1.latitude = p1.latitude
     t1.longitude = p1.longitude
@@ -32,16 +32,16 @@ class Algorithm < ActiveRecord::Base
     t2.save 
 
     gpsData.each do |point|
-      if pointCount == 5
-        pointCount = 0
+      if @pointCount == 5
+        @pointCount = 0
         t1 = TransferZone.new
         t2 = TransferZone.new
         e = Event.new
         e.transportation = "walking"
         e.trip_id = t.id
         e.save
-        p1 = gpsData[totalPointCount]
-        p2 = gpsData[[totalPointCount + 5, gpsData.length - 1].min]
+        p1 = gpsData[@totalPointCount]
+        p2 = gpsData[[@totalPointCount + 5, gpsData.length - 1].min]
 
         t1.latitude = p1.latitude
         t1.longitude = p1.longitude
@@ -56,8 +56,8 @@ class Algorithm < ActiveRecord::Base
         t2.save 
       end
 
-      pointCount += 1
-      totalPointCount += 1
+      @pointCount += 1
+      @totalPointCount += 1
       i = Intermediatepoint.new
       i.latitude = point.latitude
       i.longitude = point.longitude
