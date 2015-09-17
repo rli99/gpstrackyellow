@@ -2,6 +2,9 @@ class Algorithm < ActiveRecord::Base
 
 	def self.transform (gpsData)
 
+    totalPointCount = 0
+    pointCount = 0
+
     t = Trip.new
     t.avgSpeed = "10km/hr"
     t.duration = "2hrs"
@@ -28,8 +31,6 @@ class Algorithm < ActiveRecord::Base
     t2.event_id = e.id
     t2.save 
 
-    totalPointCount = 0
-    pointCount = 0
     gpsData.each do |point|
       if pointCount == 5
         pointCount = 0
