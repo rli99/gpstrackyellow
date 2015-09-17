@@ -17,6 +17,6 @@ class GpsIncomingServiceController < ApplicationController
 				)
 		end
 
-		Algorithm.transform(data)
+		Algorithm.transform(GpsDatum.all)
 	end
 end
