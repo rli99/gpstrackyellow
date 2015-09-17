@@ -1,6 +1,6 @@
 class Algorithm < ActiveRecord::Base
 
-	def self.transform (gpsdata_block)
+	def self.transform (gpsData)
 
       t = Trip.new
   t1 = TransferZone.new
@@ -34,7 +34,7 @@ class Algorithm < ActiveRecord::Base
   end
 
   t.save
-    
+
 		# puts "@@@@@@@@@@"
 		# puts gpsdata_block
 
