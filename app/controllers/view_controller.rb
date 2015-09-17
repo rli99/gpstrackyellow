@@ -13,8 +13,8 @@ class ViewController < ApplicationController
 
 	def gmap
 
-		intermediatepoints = Trip.find_by(id:1).intermediatepoints
-		events = Trip.find_by(id:1).events
+		intermediatepoints = Trip.find_by(id:2).intermediatepoints
+		events = Trip.find_by(id:2).events
 
 
 		@hash_intPointsData = []
