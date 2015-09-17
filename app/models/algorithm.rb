@@ -32,7 +32,7 @@ class Algorithm < ActiveRecord::Base
       i.latitude = point.latitude
       i.longitude = point.longitude
       i.time = point.time
-      i.trip_id = t.id
+      i.event_id = t.id
       i.save
     end
     	
