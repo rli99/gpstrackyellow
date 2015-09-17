@@ -9,6 +9,8 @@ class Algorithm < ActiveRecord::Base
   p1 = gpsData[0]
   p2 = gpsData[-1]
 
+  puts p1
+
   t1.latitude = p1.latitude
   t1.longitude = p1.longitude
   t1.time = p1.time
