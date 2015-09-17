@@ -3,6 +3,7 @@ class Algorithm < ActiveRecord::Base
 	def self.transform (gpsData)
 
     t = nil
+    pointCount = 0
     totalPointCount = 0
     gpsData.each do |point|
       if pointCount == 5
@@ -33,6 +34,7 @@ class Algorithm < ActiveRecord::Base
         t2.save 
       end
 
+      pointCount += 1
       totalPointCount += 1
       i = Intermediatepoint.new
       i.latitude = point.latitude
