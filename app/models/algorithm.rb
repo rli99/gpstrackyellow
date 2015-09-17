@@ -41,7 +41,7 @@ class Algorithm < ActiveRecord::Base
         e.trip_id = t.id
         e.save
         p1 = gpsData[totalPointCount]
-        p2 = gpsData[[totalPointCount + 5, gpsData.length].min]
+        p2 = gpsData[[totalPointCount + 5, gpsData.length - 1].min]
 
         t1.latitude = p1.latitude
         t1.longitude = p1.longitude
