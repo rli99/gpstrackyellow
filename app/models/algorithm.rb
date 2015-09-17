@@ -10,6 +10,7 @@ class Algorithm < ActiveRecord::Base
     t2 = TransferZone.new
     e = Event.new
     e.transportation = "walking"
+    e.trip_id = t.id
     e.save
     p1 = gpsData[0]
     p2 = gpsData[-1]
@@ -34,59 +35,6 @@ class Algorithm < ActiveRecord::Base
       i.trip_id = t.id
       i.save
     end
-
-
-		# puts "@@@@@@@@@@"
-		# puts gpsdata_block
-
-		#   t = Trip.new
-  #   	t.avgSpeed = "8km/hr"
-  #   	t.duration = "1hr"
-  #   	t.distance = "111km"
-  #   	t.verified = false
-  #   	t.save
-
-  #   	e1 = Event.new
-  #   	e1.transportation = "bus"
-  #   	e1.trip_id = t.id
-  #   	e1.save
-
-  #   	#e2 = Event.new
-  #   	#e2.transportation = "car"
-  #   	#e2.trip_id = t.id
-  #   	#e2.save
-
-	 #   	tf1 = TransferZone.new
-		#   tf1.time = Time.new
-  #    	tf1.latitude = "-34.397"
-  #    	tf1.longitude = "150.644"
-  #    	tf1.altitude = "333"
-  #    	tf1.event_id = e1.id
-  #   	tf1.save
-
-  #     tf2 = TransferZone.new
-	 #    tf2.time = Time.new
-  #    	tf2.latitude = "-33.865"
-  #    	tf2.longitude = "151.2094"
-  #    	tf2.altitude = "333"
-  #    	tf2.event_id = e1.id
-  #    	tf2.save
-
-  # #   	tf3 = TransferZone.new
-		# # # tf3.time = nil
-  # #   	tf3.latitude = "1111"
-  # #   	tf3.longitude = "2222"
-  # #   	tf3.altitude = "3333"
-  # #   	tf3.event_id = e2.id
-  # #   	tf3.save
-
-  # #   	tf4 = TransferZone.new
-		# # # tf4.time = nil
-  # #   	tf4.latitude = "111"
-  # #   	tf4.longitude = "222"
-  # #   	tf4.altitude = "333"
-  # #   	tf4.event_id = e2.id
-  # #   	tf4.save
     	
 	end
 
