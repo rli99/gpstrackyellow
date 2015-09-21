@@ -60,7 +60,7 @@ class Algorithm < ActiveRecord::Base
                 newTransportation = "car"
             end
 
-            if newTransportation != currentTransportation && currentTranportation != ""
+            if newTransportation != currentTransportation && currentTransportation != ""
                 if totalPointsChecked == pointsChecked
                     createEvent(t, points[totalPointsChecked - pointsChecked, totalPointsChecked], currentTransportation)
                     pointsChecked = 0
