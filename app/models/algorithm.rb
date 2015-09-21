@@ -66,13 +66,13 @@ class Algorithm < ActiveRecord::Base
 
             if ((newTransportation <=> currentTransportation) != 0) && currentTransportation != ""
                 if totalPointsChecked == pointsChecked
-                    createEvent(t, gpsData[totalPointsChecked - pointsChecked, totalPointsChecked], currentTransportation)
+                    createEvent(t, gpsData[(totalPointsChecked - pointsChecked)..(totalPointsChecked - 1)], currentTransportation)
                     pointsChecked = 0
                 else
                     puts totalPointsChecked - pointsChecked - 1
                     puts totalPointsChecked
-                    puts gpsData[totalPointsChecked - pointsChecked - 1, totalPointsChecked].length
-                    createEvent(t, gpsData[totalPointsChecked - pointsChecked - 1, totalPointsChecked], currentTransportation)
+                    puts gpsData[(totalPointsChecked - pointsChecked - 1)..(totalPointsChecked - 1)].length
+                    createEvent(t, gpsData[(totalPointsChecked - pointsChecked - 1)..(totalPointsChecked - 1)], currentTransportation)
                     pointsChecked = 0
                 end
 
