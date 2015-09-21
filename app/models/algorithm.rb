@@ -24,15 +24,16 @@ class Algorithm < ActiveRecord::Base
         t2.event_id = e.id
         t2.save
 
-        gpsPoints[1, -2].each do |point|
-            i = Intermediatepoint.new
-            i.latitude = point.latitude
-            i.longitude = point.longitude
-            i.time = point.time
-            i.event_id = e.id
-            i.save
+        if gpsPoints[1, -2] != nil
+            gpsPoints[1, -2].each do |point|
+                i = Intermediatepoint.new
+                i.latitude = point.latitude
+                i.longitude = point.longitude
+                i.time = point.time
+                i.event_id = e.id
+                i.save
+            end
         end
-
     end
 
 	def self.transform(gpsData)
