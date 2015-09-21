@@ -1,6 +1,7 @@
 class Algorithm < ActiveRecord::Base
 
     def self.createEvent(trip, gpsPoints, transportation)
+        
         e = Event.new
         t1 = TransferZone.new
         t2 = TransferZone.new
@@ -68,7 +69,7 @@ class Algorithm < ActiveRecord::Base
                 newTransportation = "tram"
             elsif point.speed.to_f >= 10.0
                 newTransportation = "car"
-            end
+            end 
 
             if ((newTransportation <=> currentTransportation) != 0) && currentTransportation != ""
                 if totalPointsChecked == pointsChecked
