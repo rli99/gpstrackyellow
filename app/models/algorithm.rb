@@ -52,11 +52,11 @@ class Algorithm < ActiveRecord::Base
             pointsChecked += 1
             totalPointsChecked += 1
             newTransportation = ""
-            if point.speed < 1.6
+            if point.speed.to_f < 1.6
                 newTransportation = "walking"
-            elsif point.speed >= 1.6 && point.speed <= 10
+            elsif point.speed.to_f >= 1.6 && point.speed <= 10.0
                 newTransportation = "tram"
-            elsif point.speed >= 10
+            elsif point.speed.to_f >= 10.0
                 newTransportation = "car"
             end
 
