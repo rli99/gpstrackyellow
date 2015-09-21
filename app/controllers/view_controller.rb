@@ -13,8 +13,8 @@ class ViewController < ApplicationController
 
 	def gmap
 		
-		if Trip.find_by(id:10)
-			events = Trip.find_by(id:10).events
+		if Trip.find_by(id:11)
+			events = Trip.find_by(id:11).events
 
 			@hash_eventsData = []
 
