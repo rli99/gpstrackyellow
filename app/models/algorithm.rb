@@ -24,7 +24,7 @@ class Algorithm < ActiveRecord::Base
         t2.event_id = e.id
         t2.save
 
-        gpsData[1, -2].each do |point|
+        gpsPoints[1, -2].each do |point|
             i = Intermediatepoint.new
             i.latitude = point.latitude
             i.longitude = point.longitude
