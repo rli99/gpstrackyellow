@@ -24,12 +24,14 @@ class Algorithm < ActiveRecord::Base
         t2.event_id = e.id
         t2.save
 
-        puts gpsPoints
+        puts "before"
+        puts gpsPoints.length
 
         gpsPoints.shift
         gpsPoints.pop
 
-        puts gpsPoints
+        puts "after"
+        puts gpsPoints.length
 
         if !gpsPoints.empty?
             gpsPoints.each do |point|
