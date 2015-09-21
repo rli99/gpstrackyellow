@@ -13,15 +13,10 @@ class ViewController < ApplicationController
 
 	def gmap
 		
-		if Trip.find_by(id:10)
-			events = Trip.find_by(id:10).events
+		if Trip.find_by(id:1)
+			events = Trip.find_by(id:1).events
 
 			@hash_eventsData = []
-
-			# intermediatepoints.each do |point|
-			# 	data = {id: point.id, lat: point.latitude.to_f, lng: point.longitude.to_f, alt: point.altitude.to_f} 
-			# 	@hash_intPointsData.push(data)
-			# end
 
 			events.each do |event|
 				data = {id: event.id, transportation: event.transportation, trip_id: event.trip_id}
@@ -35,12 +30,29 @@ class ViewController < ApplicationController
 				data[:intermediatepoints] = []
 				intpoints = event.intermediatepoints
 				intpoints.each do |point|
-					data[:intermediatepoints].push({event_id: point.event_id, id: point.id, lat: point.latitude.to_f, lng: point.longitude.to_f, alt: point.altitude.to_f})
+					data[:intermediatepoints].push({transportation: event.transportation, event_id: point.event_id, id: point.id, lat: point.latitude.to_f, lng: point.longitude.to_f, alt: point.altitude.to_f})
 				end
 				@hash_eventsData.push(data)
 			end
 		end		
 
+	end
+
+	def change_event_transportation
+		puts "------------------"
+		puts params
+
+		e = Event.find_by(id: params[:event_id])
+		e.transportation = params[:transportation]
+		e.save
+
+		respond_to do |format|
+	      format.html {
+	        redirect_to(:back)
+	      }
+	      format.js
+	      format.json
+    	end
 	end
 	
 end

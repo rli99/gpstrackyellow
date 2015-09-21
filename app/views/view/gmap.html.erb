@@ -15,7 +15,6 @@
   console.log(eventsData);
 
   var map;
-  var polylinePath;
 
   function initMap() {
     // Create a map object and specify the DOM element for display.
@@ -24,44 +23,56 @@
       scrollwheel: false,
       zoom: 6
     });
-
-    map.addListener('click',function(e){
-          alert(e.latLng);
-      })
   }
 
   function makeIntPoint(intPointData){
     var marker = new google.maps.Marker({
-        //animation: google.maps.Animation.DROP,
-        position: intPointData,
-        title: 'Hello World!'
-      });
+      position: intPointData 
+    });
 
-      marker.addListener('click',function(e){
-          alert(e.latLng);
-      })
+    var form = "<form action='/view/change_event_transportation/" + intPointData["event_id"] + "' method='post'>"
+            + '<select name="transportation">'
+            + '<option value="walking">walking</option>'
+            + '<option value="car">car</option>'
+            + '<option value="tram">tram</option>'
+            + '</select>'
+            + "<button type = 'submit'> Change the transportation </button>"
+            + "</form>";
 
-      marker.setMap(map);
+    var infowindow = new google.maps.InfoWindow({      
+      content: "Transportation: " + intPointData["transportation"] + "<br/><br/>" + form
+    });
+
+    marker.addListener('click', function(e) {
+      infowindow.open(map,marker);
+    });
+
+    marker.setMap(map);
   }
 
   function makeTransferZone(transferZoneData){    
     var image = 'http://vignette3.wikia.nocookie.net/farmville/images/9/9b/Purple_Flag-icon.png/revision/latest/scale-to-width-down/50?cb=20100110191552';
+
     var marker = new google.maps.Marker({
-        position: transferZoneData, //makeTransferZone(pointsData[i])
-        title: 'Hello World!',
+        position: transferZoneData,
         draggable:true,
         icon: image
       });
-      marker.addListener('click',function(e){
-          alert(e.latLng);
-      })
+
+      var infowindow = new google.maps.InfoWindow({      
+        content: "TransferZone:"
+      });
+
+      marker.addListener('click', function(e) {
+        infowindow.open(map,marker);
+      });
+
       marker.setMap(map);
   }
 
   function drawTripIntermediatePoints(eventsData) {
     for(var i=0;i<eventsData.length;i++){
-      //drawTripPolyline(eventsData[i]["intermediatepoints"]);
-      for(var j=1;j<eventsData[i]["intermediatepoints"].length-1;j++){
+      for(var j=0;j<eventsData[i]["intermediatepoints"].length;j++){
         makeIntPoint(eventsData[i]["intermediatepoints"][j]);        
       }
     }
@@ -81,6 +92,8 @@
   function drawEventPolyline(intPointsData, color){
     console.log(intPointsData);
 
+    var polylinePath;
+
     var polylineCoordinates = [];
     for(var i=0;i<intPointsData.length;i++){
       polylineCoordinates.push(intPointsData[i]);
@@ -89,13 +102,20 @@
     polylinePath = new google.maps.Polyline({
       path: polylineCoordinates,
       geodesic: true,
-      strokeColor: color, //'#000000',
+      strokeColor: color,
       strokeOpacity: 1.0,
       strokeWeight: 2
     });
-    polylinePath.addListener('click', function() {
-      alert(intPointsData["event_id"]);
+
+    var infowindow = new google.maps.InfoWindow({
+      content: "Transportation: "+intPointsData[0]["transportation"]
     });
+
+    polylinePath.addListener('click', function(e) {  
+      infowindow.open(map);
+      infowindow.setPosition(e.latLng);
+    });
+
     polylinePath.setMap(map);
   }
 
@@ -107,7 +127,6 @@
 
   function drawEventTransferZone(eventData){
     pointsData = eventData["transferzones"];
-    //console.log(pointsData.length);
     for(var i=0;i<pointsData.length;i++){
       makeTransferZone(pointsData[i]);
     } 
