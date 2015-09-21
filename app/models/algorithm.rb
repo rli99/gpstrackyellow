@@ -68,10 +68,10 @@ class Algorithm < ActiveRecord::Base
                 puts "new #{newTransportation}"
                 puts "current #{currentTransportation}"
                 if totalPointsChecked == pointsChecked
-                    createEvent(t, points[totalPointsChecked - pointsChecked, totalPointsChecked], currentTransportation)
+                    createEvent(t, gpsData[totalPointsChecked - pointsChecked, totalPointsChecked], currentTransportation)
                     pointsChecked = 0
                 else
-                    createEvent(t, points[totalPointsChecked - pointsChecked - 1, totalPointsChecked], currentTransportation)
+                    createEvent(t, gpsData[totalPointsChecked - pointsChecked - 1, totalPointsChecked], currentTransportation)
                     pointsChecked = 0
                 end
 
