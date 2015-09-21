@@ -1,41 +1,81 @@
 class Algorithm < ActiveRecord::Base
 
-	def self.transform (gpsData)
+    def self.createEvent(trip, gpsPoints, transportation)
+        e = Event.new
+        t1 = TransferZone.new
+        t2 = TransferZone.new
 
-    t = Trip.new
-    t.avgSpeed = "10km/hr"
-    t.duration = "2hrs"
-    t.save
-    t1 = TransferZone.new
-    t2 = TransferZone.new
-    e = Event.new
-    e.transportation = "walking"
-    e.trip_id = t.id
-    e.save
-    p1 = gpsData[0]
-    p2 = gpsData[-1]
+        e.transportation = transportation
+        e.trip_id = trip.id
+        e.save
 
-    t1.latitude = p1.latitude
-    t1.longitude = p1.longitude
-    t1.time = p1.time
-    t1.event_id = e.id
-    t1.save
+        startPoint = gpsPoints[0]
+        endPoint = gpsPoints[-1]
 
-    t2.latitude = p2.latitude
-    t2.longitude = p2.longitude
-    t2.time = p2.time
-    t2.event_id = e.id
-    t2.save 
+        t1.latitude = startPoint.latitude
+        t1.longitude = startPoint.longitude
+        t1.time = startPoint.time
+        t1.event_id = e.id
+        t1.save
 
-    gpsData.each do |point|
-      i = Intermediatepoint.new
-      i.latitude = point.latitude
-      i.longitude = point.longitude
-      i.time = point.time
-      i.event_id = e.id
-      i.save
+        t2.latitude = endPoint.latitude
+        t2.longitude = endPoint.longitude
+        t2.time = endPoint.time
+        t2.event_id = e.id
+        t2.save
+
+        if gpsPoints[1, -2] != nil
+            gpsPoints[1, -2].each do |point|
+                i = Intermediatepoint.new
+                i.latitude = point.latitude
+                i.longitude = point.longitude
+                i.time = point.time
+                i.event_id = e.id
+                i.save
+            end
+        end
     end
-    	
+
+	def self.transform(gpsData)
+
+        points = gpsData
+
+        t = Trip.new
+        t.avgSpeed = "10km/hr"
+        t.duration = "2hrs"
+        t.save
+
+        currentTransportation = ""
+        pointsChecked = 0
+        totalPointsChecked = 0
+
+        points.each do |point|
+            pointsChecked += 1
+            totalPointsChecked += 1
+            newTransportation = ""
+            if point.speed.to_f < 1.6
+                newTransportation = "walking"
+            elsif point.speed.to_f >= 1.6 && point.speed.to_f <= 10.0
+                newTransportation = "tram"
+            elsif point.speed.to_f >= 10.0
+                newTransportation = "car"
+            end
+
+            if newTransportation != currentTransportation && currentTransportation != ""
+                if totalPointsChecked == pointsChecked
+                    createEvent(t, points[totalPointsChecked - pointsChecked, totalPointsChecked], currentTransportation)
+                    pointsChecked = 0
+                else
+                    createEvent(t, points[totalPointsChecked - pointsChecked - 1, totalPointsChecked], currentTransportation)
+                    pointsChecked = 0
+                end
+
+            end
+
+            currentTransportation = newTransportation
+
+        end
+
 	end
 
 end
