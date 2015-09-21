@@ -70,7 +70,7 @@ class Algorithm < ActiveRecord::Base
                     pointsChecked = 0
                 else
                     puts totalPointsChecked - pointsChecked - 1
-                    puts totalPointsChecked
+                    puts totalPointsChecked - 1
                     puts gpsData[(totalPointsChecked - pointsChecked - 1)..(totalPointsChecked - 1)].length
                     createEvent(t, gpsData[(totalPointsChecked - pointsChecked - 1)..(totalPointsChecked - 1)], currentTransportation)
                     pointsChecked = 0
