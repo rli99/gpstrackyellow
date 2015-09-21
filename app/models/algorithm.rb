@@ -1,6 +1,7 @@
 class Algorithm < ActiveRecord::Base
 
     def self.createEvent(trip, gpsPoints, transportation)
+        
         e = Event.new
         t1 = TransferZone.new
         t2 = TransferZone.new
@@ -11,6 +12,7 @@ class Algorithm < ActiveRecord::Base
 
         startPoint = gpsPoints[0]
         endPoint = gpsPoints[-1]
+
 
         t1.latitude = startPoint.latitude
         t1.longitude = startPoint.longitude
@@ -24,8 +26,11 @@ class Algorithm < ActiveRecord::Base
         t2.event_id = e.id
         t2.save
 
-        if gpsPoints[1, -2] != nil
-            gpsPoints[1, -2].each do |point|
+        gpsPoints.shift
+        gpsPoints.pop
+
+        if !gpsPoints.empty?
+            gpsPoints.each do |point|
                 i = Intermediatepoint.new
                 i.latitude = point.latitude
                 i.longitude = point.longitude
@@ -38,8 +43,6 @@ class Algorithm < ActiveRecord::Base
 
 	def self.transform(gpsData)
 
-        points = gpsData
-
         t = Trip.new
         t.avgSpeed = "10km/hr"
         t.duration = "2hrs"
@@ -49,7 +52,7 @@ class Algorithm < ActiveRecord::Base
         pointsChecked = 0
         totalPointsChecked = 0
 
-        points.each do |point|
+        gpsData.each do |point|
             pointsChecked += 1
             totalPointsChecked += 1
             newTransportation = ""
@@ -57,16 +60,19 @@ class Algorithm < ActiveRecord::Base
                 newTransportation = "walking"
             elsif point.speed.to_f >= 1.6 && point.speed.to_f <= 10.0
                 newTransportation = "tram"
-            elsif point.speed.to_f >= 10.0
+            elsif point.speed.to_f > 10.0
                 newTransportation = "car"
-            end
+            end 
 
-            if newTransportation != currentTransportation && currentTransportation != ""
+            if ((newTransportation <=> currentTransportation) != 0) && currentTransportation != ""
                 if totalPointsChecked == pointsChecked
-                    createEvent(t, points[totalPointsChecked - pointsChecked, totalPointsChecked], currentTransportation)
+                    createEvent(t, gpsData[(totalPointsChecked - pointsChecked)..(totalPointsChecked - 1)], currentTransportation)
                     pointsChecked = 0
                 else
-                    createEvent(t, points[totalPointsChecked - pointsChecked - 1, totalPointsChecked], currentTransportation)
+                    puts totalPointsChecked - pointsChecked - 1
+                    puts totalPointsChecked - 1
+                    puts gpsData[(totalPointsChecked - pointsChecked - 1)..(totalPointsChecked - 1)].length
+                    createEvent(t, gpsData[(totalPointsChecked - pointsChecked - 1)..(totalPointsChecked - 1)], currentTransportation)
                     pointsChecked = 0
                 end
 
