@@ -24,11 +24,8 @@ class Algorithm < ActiveRecord::Base
         t2.event_id = e.id
         t2.save
 
-        gpsPoints.shift
-        gpsPoints.pop
-
-        if !gpsPoints.empty?
-            gpsPoints.each do |point|
+        if gpsPoints[1..-2].empty?
+            gpsPoints[1..-2] do |point|
                 i = Intermediatepoint.new
                 i.latitude = point.latitude
                 i.longitude = point.longitude
