@@ -30,7 +30,7 @@
       })
   }
 
-  function makeMarker(intPointData){
+  function makeIntPoint(intPointData){
     var marker = new google.maps.Marker({
         //animation: google.maps.Animation.DROP,
         position: intPointData,
@@ -44,11 +44,25 @@
       marker.setMap(map);
   }
 
+  function makeTransferZone(transferZoneData){    
+    var image = 'http://vignette3.wikia.nocookie.net/farmville/images/9/9b/Purple_Flag-icon.png/revision/latest/scale-to-width-down/50?cb=20100110191552';
+    var marker = new google.maps.Marker({
+        position: transferZoneData, //makeTransferZone(pointsData[i])
+        title: 'Hello World!',
+        draggable:true,
+        icon: image
+      });
+      marker.addListener('click',function(e){
+          alert(e.latLng);
+      })
+      marker.setMap(map);
+  }
+
   function drawTripIntermediatePoints(eventsData) {
     for(var i=0;i<eventsData.length;i++){
       //drawTripPolyline(eventsData[i]["intermediatepoints"]);
       for(var j=1;j<eventsData[i]["intermediatepoints"].length-1;j++){
-        makeMarker(eventsData[i]["intermediatepoints"][j]);        
+        makeIntPoint(eventsData[i]["intermediatepoints"][j]);        
       }
     }
   }
@@ -59,49 +73,50 @@
       for(var j=0;j<eventsData[i]["intermediatepoints"].length;j++){
         intPointsData.push(eventsData[i]["intermediatepoints"][j]);
       }
-      drawEventPolyline(intPointsData);
+      random_color = '#'+Math.floor(Math.random()*16777215).toString(16);
+      drawEventPolyline(intPointsData, random_color);
     }
   }
 
-  function drawEventPolyline(intPointsData){
+  function drawEventPolyline(intPointsData, color){
+    console.log(intPointsData);
+
     var polylineCoordinates = [];
     for(var i=0;i<intPointsData.length;i++){
       polylineCoordinates.push(intPointsData[i]);
     }
+
     polylinePath = new google.maps.Polyline({
       path: polylineCoordinates,
       geodesic: true,
-      strokeColor: '#000000',
+      strokeColor: color, //'#000000',
       strokeOpacity: 1.0,
       strokeWeight: 2
     });
-
+    polylinePath.addListener('click', function() {
+      alert(intPointsData["event_id"]);
+    });
     polylinePath.setMap(map);
   }
 
+  function drawTripTransferZone(eventsData){
+    for(var i=0;i<eventsData.length;i++){
+      drawEventTransferZone(eventsData[i]);
+    }
+  }
 
-
-  function showEvents(eventData) {    
+  function drawEventTransferZone(eventData){
     pointsData = eventData["transferzones"];
-    console.log(pointsData.length);
-    var image = 'http://vignette3.wikia.nocookie.net/farmville/images/9/9b/Purple_Flag-icon.png/revision/latest/scale-to-width-down/50?cb=20100110191552';
+    //console.log(pointsData.length);
     for(var i=0;i<pointsData.length;i++){
-      var marker = new google.maps.Marker({
-        position: pointsData[i],
-        title: 'Hello World!',
-        icon: image
-      });
-      marker.addListener('click',function(e){
-          alert(e.latLng);
-      })
-      marker.setMap(map);
-    }    
+      makeTransferZone(pointsData[i]);
+    } 
   }
 
   initMap();
   drawTripIntermediatePoints(eventsData);
   drawTripPolyline(eventsData);
-  drawTripTransferZone
+  drawTripTransferZone(eventsData);
 
 
 </script>

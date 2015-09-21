@@ -13,8 +13,8 @@ class ViewController < ApplicationController
 
 	def gmap
 		
-		if Trip.find_by(id:1)
-			events = Trip.find_by(id:1).events
+		if Trip.find_by(id:10)
+			events = Trip.find_by(id:10).events
 
 			@hash_eventsData = []
 
@@ -29,13 +29,13 @@ class ViewController < ApplicationController
 				data[:transferzones] = []
 				transferzones = event.transfer_zones
 				transferzones.each do |zone|
-					data[:transferzones].push({id: zone.id, lat: zone.latitude.to_f, lng: zone.longitude.to_f, alt: zone.altitude.to_f})
+					data[:transferzones].push({event_id: zone.event_id, id: zone.id, lat: zone.latitude.to_f, lng: zone.longitude.to_f, alt: zone.altitude.to_f})
 				end
 
 				data[:intermediatepoints] = []
 				intpoints = event.intermediatepoints
 				intpoints.each do |point|
-					data[:intermediatepoints].push({id: point.id, lat: point.latitude.to_f, lng: point.longitude.to_f, alt: point.altitude.to_f})
+					data[:intermediatepoints].push({event_id: point.event_id, id: point.id, lat: point.latitude.to_f, lng: point.longitude.to_f, alt: point.altitude.to_f})
 				end
 				@hash_eventsData.push(data)
 			end
