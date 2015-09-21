@@ -107,9 +107,24 @@
       strokeWeight: 2
     });
 
+    var form = "<form action='/view/change_event_transportation/" + intPointsData[0]["event_id"] + "' method='post'>"
+            + '<select name="transportation">'
+            + '<option value="walking">walking</option>'
+            + '<option value="car">car</option>'
+            + '<option value="tram">tram</option>'
+            + '</select>'
+            + "<button type = 'submit'> Change the transportation </button>"
+            + "</form>";
+
+    var infowindow = new google.maps.InfoWindow({      
+      content: "Transportation: " + intPointsData[0]["transportation"] + "<br/><br/>" + form
+    });
+
+    /*
     var infowindow = new google.maps.InfoWindow({
       content: "Transportation: "+intPointsData[0]["transportation"]
     });
+*/
 
     polylinePath.addListener('click', function(e) {  
       infowindow.open(map);
