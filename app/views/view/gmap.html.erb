@@ -22,8 +22,12 @@
     map = new google.maps.Map(document.getElementById('map'), {
       center: {lat: -34.397, lng: 150.644},
       scrollwheel: false,
-      zoom: 8
+      zoom: 6
     });
+
+    map.addListener('click',function(e){
+          alert(e.latLng);
+      })
   }
 
   function makeMarker(intPointData){
@@ -42,19 +46,28 @@
 
   function drawTripIntermediatePoints(eventsData) {
     for(var i=0;i<eventsData.length;i++){
-      drawTripPolyline(eventsData[i]["intermediatepoints"]);
-      for(var j=1;j<eventsData[i]["intermediatepoints"].length - 1;j++){
+      //drawTripPolyline(eventsData[i]["intermediatepoints"]);
+      for(var j=1;j<eventsData[i]["intermediatepoints"].length-1;j++){
         makeMarker(eventsData[i]["intermediatepoints"][j]);        
       }
     }
   }
 
-  function drawTripPolyline(intPointsData) {
+  function drawTripPolyline(eventsData) {
+    for(var i=0;i<eventsData.length;i++){
+      var intPointsData = [];
+      for(var j=0;j<eventsData[i]["intermediatepoints"].length;j++){
+        intPointsData.push(eventsData[i]["intermediatepoints"][j]);
+      }
+      drawEventPolyline(intPointsData);
+    }
+  }
+
+  function drawEventPolyline(intPointsData){
     var polylineCoordinates = [];
     for(var i=0;i<intPointsData.length;i++){
       polylineCoordinates.push(intPointsData[i]);
     }
-
     polylinePath = new google.maps.Polyline({
       path: polylineCoordinates,
       geodesic: true,
@@ -66,13 +79,12 @@
     polylinePath.setMap(map);
   }
 
-  function showEvents(eventData) {
-    
+
+
+  function showEvents(eventData) {    
     pointsData = eventData["transferzones"];
     console.log(pointsData.length);
-
     var image = 'http://vignette3.wikia.nocookie.net/farmville/images/9/9b/Purple_Flag-icon.png/revision/latest/scale-to-width-down/50?cb=20100110191552';
-
     for(var i=0;i<pointsData.length;i++){
       var marker = new google.maps.Marker({
         position: pointsData[i],
@@ -83,16 +95,13 @@
           alert(e.latLng);
       })
       marker.setMap(map);
-    }
-    
+    }    
   }
 
   initMap();
   drawTripIntermediatePoints(eventsData);
-  //drawTripPolyline(intPointsData);
-  for(var i=0;i<eventsData.length;i++){
-    showEvents(eventsData[i]);
-  }
+  drawTripPolyline(eventsData);
+  drawTripTransferZone
 
 
 </script>
