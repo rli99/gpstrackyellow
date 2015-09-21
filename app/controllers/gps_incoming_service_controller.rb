@@ -17,6 +17,6 @@ class GpsIncomingServiceController < ApplicationController
 				)
 		end
 
-		Algorithm.transform(GpsDatum.last(1))
+		Algorithm.transform(GpsDatum.last(32))
 	end
 end
