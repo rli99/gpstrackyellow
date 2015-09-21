@@ -12,7 +12,8 @@ class GpsIncomingServiceController < ApplicationController
 		data.each do |gps|
 			GpsDatum.create(
 				latitude: gps["LATITUDE (DEG)"],
-				longitude: gps["LONGITUDE (DEG)"]
+				longitude: gps["LONGITUDE (DEG)"],
+				speed: gps["SPEED (M/S)"]
 				)
 		end
 
