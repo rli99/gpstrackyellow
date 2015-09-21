@@ -26,8 +26,8 @@ class Algorithm < ActiveRecord::Base
         t2.event_id = e.id
         t2.save
 
-        gpsPoints.shift
-        gpsPoints.pop
+        # gpsPoints.shift
+        # gpsPoints.pop
 
         if !gpsPoints.empty?
             gpsPoints.each do |point|
