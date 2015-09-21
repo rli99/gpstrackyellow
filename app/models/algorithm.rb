@@ -13,6 +13,7 @@ class Algorithm < ActiveRecord::Base
         startPoint = gpsPoints[0]
         endPoint = gpsPoints[-1]
 
+
         t1.latitude = startPoint.latitude
         t1.longitude = startPoint.longitude
         t1.time = startPoint.time
@@ -25,14 +26,8 @@ class Algorithm < ActiveRecord::Base
         t2.event_id = e.id
         t2.save
 
-        puts "before"
-        puts gpsPoints.length
-
         gpsPoints.shift
         gpsPoints.pop
-
-        puts "after"
-        puts gpsPoints.length
 
         if !gpsPoints.empty?
             gpsPoints.each do |point|
@@ -48,8 +43,6 @@ class Algorithm < ActiveRecord::Base
 
 	def self.transform(gpsData)
 
-        points = gpsData
-
         t = Trip.new
         t.avgSpeed = "10km/hr"
         t.duration = "2hrs"
@@ -59,7 +52,7 @@ class Algorithm < ActiveRecord::Base
         pointsChecked = 0
         totalPointsChecked = 0
 
-        points.each do |point|
+        gpsData.each do |point|
             pointsChecked += 1
             totalPointsChecked += 1
             newTransportation = ""
@@ -67,11 +60,13 @@ class Algorithm < ActiveRecord::Base
                 newTransportation = "walking"
             elsif point.speed.to_f >= 1.6 && point.speed.to_f <= 10.0
                 newTransportation = "tram"
-            elsif point.speed.to_f >= 10.0
+            elsif point.speed.to_f > 10.0
                 newTransportation = "car"
             end 
 
             if ((newTransportation <=> currentTransportation) != 0) && currentTransportation != ""
+                puts "new #{newTransportation}"
+                puts "current #{currentTransportation}"
                 if totalPointsChecked == pointsChecked
                     createEvent(t, points[totalPointsChecked - pointsChecked, totalPointsChecked], currentTransportation)
                     pointsChecked = 0
