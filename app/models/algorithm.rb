@@ -54,7 +54,7 @@ class Algorithm < ActiveRecord::Base
             newTransportation = ""
             if point.speed.to_f < 1.6
                 newTransportation = "walking"
-            elsif point.speed.to_f >= 1.6 && point.speed <= 10.0
+            elsif point.speed.to_f >= 1.6 && point.speed.to_f <= 10.0
                 newTransportation = "tram"
             elsif point.speed.to_f >= 10.0
                 newTransportation = "car"
