@@ -25,7 +25,7 @@ class Algorithm < ActiveRecord::Base
         t2.save
 
         if gpsPoints[1..-2].empty?
-            gpsPoints[1..-2] do |point|
+            gpsPoints[1..-2].each do |point|
                 i = Intermediatepoint.new
                 i.latitude = point.latitude
                 i.longitude = point.longitude
