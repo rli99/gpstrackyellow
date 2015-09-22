@@ -15,14 +15,13 @@
   console.log(eventsData);
 
   var map;
-  var bounds = new google.maps.LatLngBounds();
 
   function initMap() {
     // Create a map object and specify the DOM element for display.
     map = new google.maps.Map(document.getElementById('map'), {
       // center: {lat: -37.7850713, lng: 145.12622},
-      scrollwheel: false
-      // zoom: 6
+      scrollwheel: false,
+      zoom: 15
     });
   }
 
@@ -66,7 +65,7 @@
         icon: image
       });
 
-    bounds.extend(marker.getPosition());
+    map.setCenter(market.getPosition());
 
     var infowindow = new google.maps.InfoWindow({      
       content: "TransferZone:"
@@ -149,7 +148,6 @@
       makeTransferZone(pointsData[index]);
   }
 
-  centreMap();
   initMap();
   drawTripIntermediatePoints(eventsData);
   drawTripPolyline(eventsData);
