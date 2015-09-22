@@ -15,11 +15,11 @@
   console.log(eventsData);
 
   var map;
+  var bounds = new google.maps.LatLngBounds();
 
   function initMap() {
     // Create a map object and specify the DOM element for display.
     map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 16,
       center: {lat: -37.7850713, lng: 145.12622},
       scrollwheel: false,
       zoom: 6
@@ -59,6 +59,8 @@
         draggable:true,
         icon: image
       });
+
+    bounds.extend(transferZoneData);
 
       var infowindow = new google.maps.InfoWindow({      
         content: "TransferZone:"
@@ -141,6 +143,7 @@
       makeTransferZone(pointsData[index]);
   }
 
+  map.fitBounds(bounds);
   initMap();
   drawTripIntermediatePoints(eventsData);
   drawTripPolyline(eventsData);
