@@ -104,7 +104,7 @@
       geodesic: true,
       strokeColor: color,
       strokeOpacity: 1.0,
-      strokeWeight: 2
+      strokeWeight: 5
     });
 
     var form = "<form action='/view/change_event_transportation/" + intPointsData[0]["event_id"] + "' method='post'>"
@@ -120,12 +120,6 @@
       content: "Transportation: " + intPointsData[0]["transportation"] + "<br/><br/>" + form
     });
 
-    /*
-    var infowindow = new google.maps.InfoWindow({
-      content: "Transportation: "+intPointsData[0]["transportation"]
-    });
-*/
-
     polylinePath.addListener('click', function(e) {  
       infowindow.open(map);
       infowindow.setPosition(e.latLng);
@@ -136,15 +130,14 @@
 
   function drawTripTransferZone(eventsData){
     for(var i=0;i<eventsData.length;i++){
-      drawEventTransferZone(eventsData[i]);
+      drawEventTransferZone(eventsData[i],0);
     }
+    drawEventTransferZone(eventsData[eventsData.length-1],1);
   }
 
-  function drawEventTransferZone(eventData){
-    pointsData = eventData["transferzones"];
-    for(var i=0;i<pointsData.length;i++){
-      makeTransferZone(pointsData[i]);
-    } 
+  function drawEventTransferZone(eventData, index){
+      pointsData = eventData["transferzones"];
+      makeTransferZone(pointsData[index]);
   }
 
   initMap();

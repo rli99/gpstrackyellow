@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150917081104) do
+ActiveRecord::Schema.define(version: 20150922044948) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,11 @@ ActiveRecord::Schema.define(version: 20150917081104) do
   end
 
   add_index "events", ["trip_id"], name: "index_events_on_trip_id", using: :btree
+
+  create_table "events_transfer_zones", force: :cascade do |t|
+    t.integer "event_id"
+    t.integer "transfer_zone_id"
+  end
 
   create_table "gps_data", force: :cascade do |t|
     t.datetime "time"
@@ -49,12 +54,10 @@ ActiveRecord::Schema.define(version: 20150917081104) do
     t.string   "altitude"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer  "trip_id"
     t.integer  "event_id"
   end
 
   add_index "intermediatepoints", ["event_id"], name: "index_intermediatepoints_on_event_id", using: :btree
-  add_index "intermediatepoints", ["trip_id"], name: "index_intermediatepoints_on_trip_id", using: :btree
 
   create_table "transfer_zones", force: :cascade do |t|
     t.datetime "time"
@@ -105,7 +108,6 @@ ActiveRecord::Schema.define(version: 20150917081104) do
 
   add_foreign_key "events", "trips"
   add_foreign_key "intermediatepoints", "events"
-  add_foreign_key "intermediatepoints", "trips"
   add_foreign_key "transfer_zones", "events"
   add_foreign_key "trips", "users"
 end
