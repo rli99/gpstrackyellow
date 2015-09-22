@@ -72,9 +72,9 @@
 
     marker.setMap(map);
 
-    console.log(bounds)
-    console.log(marker.getPosition());
-    bounds.extend(marker.getPosition());
+    if (marker.getPosition() !== undefined) {
+      bounds.extend(marker.getPosition());
+    }
 
   }
 
