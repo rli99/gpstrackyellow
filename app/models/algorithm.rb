@@ -75,7 +75,7 @@ class Algorithm < ActiveRecord::Base
                 end
             end
 
-            if totalPointsChecked == gpsData.length - 1
+            if totalPointsChecked == gpsData.length
                 puts '--------------------'
                 createEvent(t, gpsData[(totalPointsChecked - pointsChecked - 1)..(totalPointsChecked - 1)], currentTransportation, @transferZoneId)
             end
