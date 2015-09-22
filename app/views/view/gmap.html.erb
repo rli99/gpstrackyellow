@@ -25,11 +25,6 @@
     });
   }
 
-  function centreMap() {
-    map.setCenter(bounds.getCenter());
-    map.fitBounds(bounds);    
-  }
-
   function makeIntPoint(intPointData){
     var marker = new google.maps.Marker({
       position: intPointData 
