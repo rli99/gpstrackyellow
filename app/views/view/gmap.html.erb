@@ -87,7 +87,7 @@
   }
 
   function drawTripPolyline(eventsData) {
-    for(var i=0;i<eventsData.length;i++){
+    for(var i=0;i<eventsData.length - 1;i++){
       var intPointsData = [];
       for(var j=0;j<eventsData[i]["intermediatepoints"].length;j++){
         intPointsData.push(eventsData[i]["intermediatepoints"][j]);
@@ -103,7 +103,7 @@
     var polylinePath;
 
     var polylineCoordinates = [];
-    for(var i=0;i<intPointsData.length - 1;i++){
+    for(var i=0;i<intPointsData.length;i++){
       polylineCoordinates.push(intPointsData[i]);
     }
 
