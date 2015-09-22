@@ -26,6 +26,11 @@
     });
   }
 
+  function centreMap() {
+    map.setCenter(bounds.getCenter());
+    map.fitBounds(bounds);    
+  }
+
   function makeIntPoint(intPointData){
     var marker = new google.maps.Marker({
       position: intPointData 
@@ -143,12 +148,11 @@
       makeTransferZone(pointsData[index]);
   }
 
-  map.setCenter(bounds.getCenter());
-  map.fitBounds(bounds);
   initMap();
   drawTripIntermediatePoints(eventsData);
   drawTripPolyline(eventsData);
   drawTripTransferZone(eventsData);
+  centreMap();
 
 
 </script>
