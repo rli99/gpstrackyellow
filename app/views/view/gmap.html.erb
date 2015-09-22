@@ -15,13 +15,14 @@
   console.log(eventsData);
 
   var map;
+  var bounds = new google.maps.LatLngBounds();
 
   function initMap() {
     // Create a map object and specify the DOM element for display.
     map = new google.maps.Map(document.getElementById('map'), {
-      center: {lat: -34.397, lng: 150.644},
-      scrollwheel: false,
-      zoom: 6
+      //center: {lat: -34.397, lng: 150.644},
+      scrollwheel: false//,
+      //zoom: 6
     });
   }
 
@@ -68,6 +69,8 @@
       });
 
       marker.setMap(map);
+
+      bounds.extend(marker.getPosition());
   }
 
   function drawTripIntermediatePoints(eventsData) {
@@ -144,6 +147,7 @@
   drawTripIntermediatePoints(eventsData);
   drawTripPolyline(eventsData);
   drawTripTransferZone(eventsData);
+  map.fitBounds(bounds);
 
 
 </script>
