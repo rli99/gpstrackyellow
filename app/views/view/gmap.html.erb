@@ -70,11 +70,10 @@
       infowindow.open(map,marker);
     });
 
-      marker.setMap(map);
+    marker.setMap(map);
 
-      if (marker != null) {
-        bounds.extend(marker.getPosition());
-      }
+    bounds.extend(marker.getPosition());
+    console.log(marker.getPosition());
   }
 
   function drawTripIntermediatePoints(eventsData) {
