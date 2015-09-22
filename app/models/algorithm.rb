@@ -70,15 +70,13 @@ class Algorithm < ActiveRecord::Base
                     createEvent(t, gpsData[(totalPointsChecked - pointsChecked)..(totalPointsChecked - 1)], currentTransportation, @transferZoneId)
                     pointsChecked = 0
                 else
-                    puts totalPointsChecked - pointsChecked - 1
-                    puts totalPointsChecked - 1
-                    puts gpsData[(totalPointsChecked - pointsChecked - 1)..(totalPointsChecked - 1)].length
                     createEvent(t, gpsData[(totalPointsChecked - pointsChecked - 1)..(totalPointsChecked - 1)], currentTransportation, @transferZoneId)
                     pointsChecked = 0
                 end
             end
 
-            if totalPointsChecked == gpsData.length
+            if totalPointsChecked == gpsData.length - 1
+                puts '--------------------'
                 createEvent(t, gpsData[(totalPointsChecked - pointsChecked - 1)..(totalPointsChecked - 1)], currentTransportation, @transferZoneId)
             end
 
