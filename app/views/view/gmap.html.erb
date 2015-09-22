@@ -57,7 +57,6 @@
   }
 
   function makeTransferZone(transferZoneData){    
-    bounds.extend(transferZoneData);
 
     var image = 'http://vignette3.wikia.nocookie.net/farmville/images/9/9b/Purple_Flag-icon.png/revision/latest/scale-to-width-down/50?cb=20100110191552';
 
@@ -66,6 +65,8 @@
         draggable:true,
         icon: image
       });
+
+    bounds.extend(marker.getPosition());
 
       var infowindow = new google.maps.InfoWindow({      
         content: "TransferZone:"
@@ -153,6 +154,5 @@
   drawTripPolyline(eventsData);
   drawTripTransferZone(eventsData);
   centreMap();
-
 
 </script>
