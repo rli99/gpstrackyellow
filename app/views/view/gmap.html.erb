@@ -72,8 +72,10 @@
 
     marker.setMap(map);
 
+    console.log(bounds)
+    console.log(marker.getPosition());
     bounds.extend(marker.getPosition());
-    // console.log(marker.getPosition());
+
   }
 
   function drawTripIntermediatePoints(eventsData) {
