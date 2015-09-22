@@ -31,7 +31,6 @@ class Algorithm < ActiveRecord::Base
                 i.save
             end
         end
-
     end
 
 	def self.transform(gpsData)
