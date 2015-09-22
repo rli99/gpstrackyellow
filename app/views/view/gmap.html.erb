@@ -15,7 +15,7 @@
   console.log(eventsData);
 
   var map;
-  var bounds = new google.maps.LatLngBounds();
+  // var bounds = new google.maps.LatLngBounds();
 
   function initMap() {
     // Create a map object and specify the DOM element for display.
@@ -72,8 +72,8 @@
 
     marker.setMap(map);
 
-    bounds.extend(marker.getPosition());
-    console.log(marker.getPosition());
+    // bounds.extend(marker.getPosition());
+    // console.log(marker.getPosition());
   }
 
   function drawTripIntermediatePoints(eventsData) {
