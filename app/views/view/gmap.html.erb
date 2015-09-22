@@ -52,6 +52,7 @@
   }
 
   function makeTransferZone(transferZoneData){    
+
     var image = 'http://vignette3.wikia.nocookie.net/farmville/images/9/9b/Purple_Flag-icon.png/revision/latest/scale-to-width-down/50?cb=20100110191552';
 
     var marker = new google.maps.Marker({
@@ -60,17 +61,18 @@
         icon: image
       });
 
-      var infowindow = new google.maps.InfoWindow({      
-        content: "TransferZone:"
-      });
+    var infowindow = new google.maps.InfoWindow({      
+      content: "TransferZone:"
+    });
 
-      marker.addListener('click', function(e) {
-        infowindow.open(map,marker);
-      });
+    marker.addListener('click', function(e) {
+      infowindow.open(map,marker);
+    });
 
       marker.setMap(map);
 
       bounds.extend(marker.getPosition());
+
   }
 
   function drawTripIntermediatePoints(eventsData) {
@@ -148,6 +150,5 @@
   drawTripPolyline(eventsData);
   drawTripTransferZone(eventsData);
   map.fitBounds(bounds);
-
 
 </script>
