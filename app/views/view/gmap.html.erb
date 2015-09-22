@@ -23,6 +23,9 @@
       center: {lat: -34.397, lng: 150.644},
       scrollwheel: false,
       zoom: 6
+      // center: {lat: -37.7850713, lng: 145.12622},
+      // scrollwheel: false,
+      // zoom: 15
     });
   }
 
@@ -45,6 +48,7 @@
     });
 
     marker.addListener('click', function(e) {
+
       infowindow.open(map,marker);
     });
 
@@ -69,9 +73,11 @@
       infowindow.open(map,marker);
     });
 
-      marker.setMap(map);
+    marker.setMap(map);
 
+    if (marker.getPosition() !== undefined) {
       bounds.extend(marker.getPosition());
+    }
 
   }
 
@@ -84,7 +90,8 @@
   }
 
   function drawTripPolyline(eventsData) {
-    for(var i=0;i<eventsData.length;i++){
+    //to be checked, we added -1 but is not correct
+    for(var i=0;i<eventsData.length - 1;i++){
       var intPointsData = [];
       for(var j=0;j<eventsData[i]["intermediatepoints"].length;j++){
         intPointsData.push(eventsData[i]["intermediatepoints"][j]);
@@ -95,7 +102,7 @@
   }
 
   function drawEventPolyline(intPointsData, color){
-    console.log(intPointsData);
+    // console.log(intPointsData);
 
     var polylinePath;
 

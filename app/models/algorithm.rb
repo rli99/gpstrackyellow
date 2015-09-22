@@ -7,17 +7,17 @@ class Algorithm < ActiveRecord::Base
         e = Event.new
         t2 = TransferZone.new
 
-        e.transportation = transportation
-        e.trip_id = trip.id
-        e.transfer_zone_ids = [startTransferZoneId, t2.id]
-        e.save
-
         endPoint = gpsPoints[-1]
 
         t2.latitude = endPoint.latitude
         t2.longitude = endPoint.longitude
         t2.time = endPoint.time
         t2.save
+
+        e.transportation = transportation
+        e.trip_id = trip.id
+        e.transfer_zone_ids = [startTransferZoneId, t2.id]
+        e.save
 
         @transferZoneId = t2.id
 
@@ -31,7 +31,6 @@ class Algorithm < ActiveRecord::Base
                 i.save
             end
         end
-
     end
 
 	def self.transform(gpsData)
@@ -70,13 +69,14 @@ class Algorithm < ActiveRecord::Base
                     createEvent(t, gpsData[(totalPointsChecked - pointsChecked)..(totalPointsChecked - 1)], currentTransportation, @transferZoneId)
                     pointsChecked = 0
                 else
-                    puts totalPointsChecked - pointsChecked - 1
-                    puts totalPointsChecked - 1
-                    puts gpsData[(totalPointsChecked - pointsChecked - 1)..(totalPointsChecked - 1)].length
                     createEvent(t, gpsData[(totalPointsChecked - pointsChecked - 1)..(totalPointsChecked - 1)], currentTransportation, @transferZoneId)
                     pointsChecked = 0
                 end
-
+            else
+                if totalPointsChecked == gpsData.length
+                    puts '--------------------'
+                    createEvent(t, gpsData[(totalPointsChecked - pointsChecked - 1)..(totalPointsChecked - 1)], currentTransportation, @transferZoneId)
+                end
             end
 
             currentTransportation = newTransportation
