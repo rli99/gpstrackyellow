@@ -20,9 +20,9 @@
   function initMap() {
     // Create a map object and specify the DOM element for display.
     map = new google.maps.Map(document.getElementById('map'), {
-      center: {lat: -37.7850713, lng: 145.12622},
+      // center: {lat: -37.7850713, lng: 145.12622},
       scrollwheel: false,
-      zoom: 6
+      // zoom: 6
     });
   }
 
@@ -68,15 +68,15 @@
 
     bounds.extend(marker.getPosition());
 
-      var infowindow = new google.maps.InfoWindow({      
-        content: "TransferZone:"
-      });
+    var infowindow = new google.maps.InfoWindow({      
+      content: "TransferZone:"
+    });
 
-      marker.addListener('click', function(e) {
-        infowindow.open(map,marker);
-      });
+    marker.addListener('click', function(e) {
+      infowindow.open(map,marker);
+    });
 
-      marker.setMap(map);
+    marker.setMap(map);
   }
 
   function drawTripIntermediatePoints(eventsData) {
