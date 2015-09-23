@@ -19,7 +19,7 @@ class GpsIncomingServiceController < ApplicationController
 				latitude: gps["LATITUDE (DEG)"],
 				longitude: gps["LONGITUDE (DEG)"],
 				speed: gps["SPEED (M/S)"],
-				user_id: userId
+				# user_id: userId
 				)
 		end
 
