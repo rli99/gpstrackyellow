@@ -46,7 +46,7 @@ class Algorithm < ActiveRecord::Base
         t = Trip.new
         t.avgSpeed = "10km/hr"
         t.duration = "2hrs"
-        t.user_id = gpsData[0].user_id
+        # t.user_id = gpsData[0].user_id
         t.save
 
         currentTransportation = ""
