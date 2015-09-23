@@ -91,7 +91,7 @@
 
   function drawTripPolyline(eventsData) {
     //to be checked, we added -1 but is not correct
-    for(var i=0;i<eventsData.length - 1;i++){
+    for(var i=0;i<eventsData.length ;i++){
       var intPointsData = [];
       for(var j=0;j<eventsData[i]["intermediatepoints"].length;j++){
         intPointsData.push(eventsData[i]["intermediatepoints"][j]);
