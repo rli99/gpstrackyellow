@@ -17,7 +17,7 @@ class GpsIncomingServiceController < ApplicationController
 			GpsDatum.create(
 				latitude: gps["LATITUDE (DEG)"],
 				longitude: gps["LONGITUDE (DEG)"],
-				speed: gps["SPEED (M/S)"]
+				speed: gps["SPEED (M/S)"],
 				user_id: userId
 				)
 		end
