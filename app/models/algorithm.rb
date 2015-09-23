@@ -35,11 +35,6 @@ class Algorithm < ActiveRecord::Base
 
 	def self.transform(gpsData)
 
-        t = Trip.new
-        t.avgSpeed = "10km/hr"
-        t.duration = "2hrs"
-        t.save
-
         t0 = TransferZone.new
         t0.latitude = gpsData[0].latitude
         t0.longitude = gpsData[0].longitude
@@ -47,6 +42,12 @@ class Algorithm < ActiveRecord::Base
         t0.save
 
         @transferZoneId = t0.id
+
+        t = Trip.new
+        t.avgSpeed = "10km/hr"
+        t.duration = "2hrs"
+        t.user_id = gpsData[0].user_id
+        t.save
 
         currentTransportation = ""
         pointsChecked = 0
