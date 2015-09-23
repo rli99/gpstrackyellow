@@ -2,7 +2,7 @@ class Algorithm < ActiveRecord::Base
 
     @transferZoneId = nil
 
-    def self.createEvent(trip, gpsPoints, transportation, startTransferZoneId)
+    def self.createEvent(trip, gpsPoints, transportation)
         
         e = Event.new
         t2 = TransferZone.new
@@ -16,7 +16,8 @@ class Algorithm < ActiveRecord::Base
 
         e.transportation = transportation
         e.trip_id = trip.id
-        e.transfer_zone_ids = [startTransferZoneId, t2.id]
+        # e.transfer_zone_ids = [@transferZoneId, t2.id]
+        e.transfer_zone_ids = [t2.id, @transferZoneId]
         e.save
 
         @transferZoneId = t2.id
@@ -66,23 +67,20 @@ class Algorithm < ActiveRecord::Base
 
             if ((newTransportation <=> currentTransportation) != 0) && currentTransportation != ""
                 if totalPointsChecked == pointsChecked
-                    createEvent(t, gpsData[(totalPointsChecked - pointsChecked)..(totalPointsChecked - 1)], currentTransportation, @transferZoneId)
+                    createEvent(t, gpsData[(totalPointsChecked - pointsChecked)..(totalPointsChecked - 1)], currentTransportation)
                     pointsChecked = 0
                 else
-                    createEvent(t, gpsData[(totalPointsChecked - pointsChecked - 1)..(totalPointsChecked - 1)], currentTransportation, @transferZoneId)
+                    createEvent(t, gpsData[(totalPointsChecked - pointsChecked - 1)..(totalPointsChecked - 1)], currentTransportation)
                     pointsChecked = 0
                 end
             else
                 if totalPointsChecked == gpsData.length
-                    createEvent(t, gpsData[(totalPointsChecked - pointsChecked - 1)..(totalPointsChecked - 1)], currentTransportation, @transferZoneId)
+                    createEvent(t, gpsData[(totalPointsChecked - pointsChecked - 1)..(totalPointsChecked - 1)], currentTransportation)
                 end
             end
 
             currentTransportation = newTransportation
 
         end
-	
-    puts gpsData[0].latitude
-
     end
 end
