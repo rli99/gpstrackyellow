@@ -9,7 +9,10 @@ class GpsIncomingServiceController < ApplicationController
 
 		data = JSON.parse(request.body.read)
 		
+		dataLength = 0
+
 		data.each do |gps|
+			dataLength += 1
 			GpsDatum.create(
 				latitude: gps["LATITUDE (DEG)"],
 				longitude: gps["LONGITUDE (DEG)"],
@@ -17,6 +20,6 @@ class GpsIncomingServiceController < ApplicationController
 				)
 		end
 
-		Algorithm.transform(GpsDatum.last(32))
+		Algorithm.transform(GpsDatum.last(dataLength).reverse_order)
 	end
 end
