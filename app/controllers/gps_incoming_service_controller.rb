@@ -20,6 +20,6 @@ class GpsIncomingServiceController < ApplicationController
 				)
 		end
 
-		Algorithm.transform(GpsDatum.last(dataLength).reverse_order)
+		Algorithm.transform(GpsDatum.last(dataLength).reverse)
 	end
 end
