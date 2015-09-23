@@ -10,7 +10,8 @@ class GpsIncomingServiceController < ApplicationController
 
 		dataLength = 0
 
-		userId = data.shift["USER"]
+		user = data.shift
+		userId = user["USER"]
 
 		data.each do |gps|
 			dataLength += 1
