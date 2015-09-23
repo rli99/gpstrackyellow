@@ -21,5 +21,9 @@ class GpsIncomingServiceController < ApplicationController
 		end
 
 		Algorithm.transform(GpsDatum.last(dataLength).reverse)
+
+		request.each_header do |header_name, header_value|
+			puts "#{header_name}, #{header_value}"
+		end
 	end
 end
