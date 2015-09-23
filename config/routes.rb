@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get 'view/gmap'
   get 'view/tripdata'
   post 'view/change_event_transportation/:event_id' => 'view#change_event_transportation', as: :view_change_event_transportation
+  post 'view/delete_transfer_zone/:transfer_zone_id' => 'view#delete_transfer_zone', as: :view_delete_transfer_zone
   post 'datatransformation/transfrom_to_tripdata' => 'datatransformation#transform_to_tripdata', as: :data_transform
   match '/gps-data' => 'gps_incoming_service#receive_data', via: :post
 root 'welcome#index'

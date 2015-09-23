@@ -55,7 +55,7 @@ class Trip < ActiveRecord::Base
         t.save
 
         e1 = Event.new
-        e1.transportation = "walk"
+        e1.transportation = "walking"
         e1.trip_id = t.id
         e1.transfer_zone_ids = [tf1.id,tf3.id]
         e1.save
