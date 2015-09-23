@@ -16,7 +16,6 @@ class Algorithm < ActiveRecord::Base
 
         e.transportation = transportation
         e.trip_id = trip.id
-        # e.transfer_zone_ids = [@transferZoneId, t2.id]
         e.transfer_zone_ids = [t2.id, @transferZoneId]
         e.save
 
