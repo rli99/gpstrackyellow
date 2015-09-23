@@ -46,8 +46,6 @@ class Algorithm < ActiveRecord::Base
         t0.time = gpsData[0].time
         t0.save
 
-        puts gpsData[0].latitude
-
         @transferZoneId = t0.id
 
         currentTransportation = ""
@@ -83,5 +81,8 @@ class Algorithm < ActiveRecord::Base
             currentTransportation = newTransportation
 
         end
-	end
+	
+    puts gpsData[0].latitude
+
+    end
 end
