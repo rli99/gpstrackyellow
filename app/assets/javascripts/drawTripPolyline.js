@@ -1,12 +1,12 @@
 function drawTripPolyline(eventsData) {
     //to be checked, we added -1 but is not correct
     for(var i=0;i<eventsData.length ;i++){
+      color = transportationColour(eventsData[i].transportation);
       var intPointsData = [];
       for(var j=0;j<eventsData[i]["intermediatepoints"].length;j++){
         intPointsData.push(eventsData[i]["intermediatepoints"][j]);
       }
-      random_color = '#'+Math.floor(Math.random()*16777215).toString(16);
-      drawEventPolyline(intPointsData, random_color);
+      drawEventPolyline(intPointsData, color);
     }
 }
 
