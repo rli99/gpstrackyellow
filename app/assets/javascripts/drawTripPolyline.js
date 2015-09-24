@@ -16,7 +16,7 @@ function drawEventPolyline(intPointsData, color){
     var polylinePath;
 
     var polylineCoordinates = [];
-    var sortedIntPointsData = intPointsData.sort(compareTime);
+    // var sortedIntPointsData = intPointsData.sort(compareTime);
     for(var i=0;i<sortedIntPointsData.length;i++){
       polylineCoordinates.push(sortedIntPointsData[i]);
     }
