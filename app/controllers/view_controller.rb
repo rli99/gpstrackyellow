@@ -116,6 +116,9 @@ class ViewController < ApplicationController
         tf1 = TransferZone.find_by(id: arr_transfer_zone_id[0])
         tf2 = TransferZone.find_by(id: arr_transfer_zone_id[1])
 
+        tf1.event_ids.shift
+        tf2.event_ids.delete_at(1)
+
       	if tf1.event_ids.length == 1
       		tf1.event_ids = [e_new.id]
       	elsif tf1.event_ids.length == 2
