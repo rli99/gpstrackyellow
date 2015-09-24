@@ -44,7 +44,7 @@ class Algorithm < ActiveRecord::Base
         @transferZoneId = t0.id
 
         t = Trip.new
-        t.duration = gpsData[-1].date - gpsData[0].date
+        t.duration = gpsData[-1].time - gpsData[0].time
         t.user_id = gpsData[0].user_id
         t.save
 
