@@ -85,6 +85,7 @@ class ViewController < ApplicationController
         	end 
     	end
 
+    	puts '!!!!!!!!!!!!!------------'
     	check_arr = []
     	uniq_transfer_zones = []
     	arr_transfer_zone_id.each do |point|
@@ -96,6 +97,9 @@ class ViewController < ApplicationController
     			t.destroy
     		end
     	end
+    	puts arr_transfer_zone_id
+    	puts uniq_transfer_zones
+    	puts '!!!!!!!!!!!!---------------'
 
     	arr_transfer_zone_id = uniq_transfer_zones
 
