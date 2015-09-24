@@ -14,6 +14,6 @@
 		<td><%= trip.duration %></td>
 		<td><%= trip.distance %></td>
 		<td><%= trip.verified %></td>
-		<td><%= link_to('GMap', view_gmap_path) %></td></tr>
+		<td><%= link_to('View Map', view_gmap_path(trip_id: trip.id)) %></td></tr>
 	<% end %>
 </table>
