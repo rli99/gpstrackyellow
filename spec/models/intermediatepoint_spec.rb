@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Intermediatepoint, :type => :model do 
 	
-	it "belongs to trip" do
-		$intermediatepoint = Intermediatepoint.reflect_on_association(:trip)
+	it "belongs to event" do
+		$intermediatepoint = Intermediatepoint.reflect_on_association(:event)
 		$intermediatepoint.macro.should == :belongs_to
 	end
 

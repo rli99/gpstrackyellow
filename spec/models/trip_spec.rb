@@ -12,11 +12,6 @@ RSpec.describe Trip, :type => :model do
 		$trip.macro.should == :has_many
 	end
 
-	it "has many intermediatepoints" do
-		$trip = Trip.reflect_on_association(:intermediatepoints)
-		$trip.macro.should == :has_many
-	end
-
 	it {should respond_to(:avgSpeed)}
 	it {should respond_to(:duration)}
 	it {should respond_to(:distance)}
