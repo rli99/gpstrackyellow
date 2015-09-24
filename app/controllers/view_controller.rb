@@ -85,7 +85,9 @@ class ViewController < ApplicationController
         	end 
     	end
 
+    	puts arr_transfer_zone_id
     	arr_transfer_zone_id = arr_transfer_zone_id.uniq
+    	puts arr_transfer_zone_id
 
     	#p arr_transfer_zone_id
         
