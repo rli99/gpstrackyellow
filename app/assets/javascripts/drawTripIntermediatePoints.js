@@ -13,7 +13,7 @@ function drawTripIntermediatePoints(eventsData) {
 function makeIntPoint(intPointData){
     var marker = new google.maps.Marker({
       position: intPointData,
-      draggable:true
+      draggable:false
     });
 
     var form_change_transportation = "<form action='/view/change_event_transportation/" + intPointData["event_id"] + "' method='post'>"
