@@ -85,10 +85,6 @@ class ViewController < ApplicationController
         	end 
     	end
 
-    	puts arr_transfer_zone_id
-    	arr_transfer_zone_id = arr_transfer_zone_id.uniq
-    	puts arr_transfer_zone_id
-
     	#p arr_transfer_zone_id
         
         e_new.transportation = params[:transportation]
@@ -145,6 +141,8 @@ class ViewController < ApplicationController
         	arr_intpoint_id.push(intpoint_id)
     	end
     	#p arr_intpoint_id
+
+    	arr_intpoint_id = arr_intpoint_id.uniq
 
     	arr_intpoint_id.each do |intpoint_id|
     		i = Intermediatepoint.find_by(id: intpoint_id)
