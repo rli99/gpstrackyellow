@@ -85,6 +85,20 @@ class ViewController < ApplicationController
         	end 
     	end
 
+    	check_arr = []
+    	uniq_transfer_zones = []
+    	arr_transfer_zone_id.each do |point|
+    		t = TransferZone.find_by(id: point)
+    		if !check_arr.include? i["time"]
+    			uniq_transfer_zones.push(point)
+    			check_arr.push(i["time"])
+    		else
+    			t.destroy
+    		end
+    	end
+
+    	arr_transfer_zone_id = uniq_transfer_zones
+
     	#p arr_transfer_zone_id
         
         e_new.transportation = params[:transportation]
@@ -144,23 +158,19 @@ class ViewController < ApplicationController
     	end
     	#p arr_intpoint_id
 
-    	puts '!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-    	puts arr_intpoint_id
     	check_arr = []
-    	new_intpoints = []
+    	uniq_intpoints = []
     	arr_intpoint_id.each do |point|
     		i = Intermediatepoint.find_by(id: point)
     		if !check_arr.include? i["time"]
-    			new_intpoints.push(point)
+    			uniq_intpoints.push(point)
     			check_arr.push(i["time"])
     		else
     			i.destroy
     		end
     	end
-    	puts new_intpoints
-    	puts '!!!!!!!!!!!!!!!!!!!!!'
 
-    	new_intpoints.each do |intpoint_id|
+    	uniq_intpoints.each do |intpoint_id|
     		i = Intermediatepoint.find_by(id: intpoint_id)
     		i.event_id = e_new.id
     		i.save
