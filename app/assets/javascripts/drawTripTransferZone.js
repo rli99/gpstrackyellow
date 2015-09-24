@@ -8,6 +8,7 @@ function drawTripTransferZone(eventsData){
 
 function drawEventTransferZone(eventData, index){
       pointsData = eventData["transferzones"];
+      pointsData.sort(compareTime);
       makeTransferZone(pointsData[index]);
 }
 
