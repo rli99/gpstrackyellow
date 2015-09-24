@@ -119,6 +119,9 @@ class ViewController < ApplicationController
         tf1.event_ids.shift
         tf2.event_ids.delete_at(1)
 
+        tf1.save
+        tf2.save
+
       	if tf1.event_ids.length == 1
       		tf1.event_ids = [e_new.id]
       	elsif tf1.event_ids.length == 2
