@@ -56,14 +56,14 @@ class ViewController < ApplicationController
 	end
 
 	def delete_transfer_zone
-		puts "------------------"
-		puts params
+		# puts "------------------"
+		# puts params
 
 		tf = TransferZone.find_by(id: params[:transfer_zone_id])
 
-		puts params[:transportation]
-		puts tf.event_ids[0]
-		puts tf.event_ids[1]
+		# puts params[:transportation]
+		# puts tf.event_ids[0]
+		# puts tf.event_ids[1]
 
 		# ==================
 
@@ -85,6 +85,24 @@ class ViewController < ApplicationController
         	end 
     	end
 
+    	# puts '!!!!!!!!!!!!!------------'
+    	check_arr = []
+    	uniq_transfer_zones = []
+    	arr_transfer_zone_id.each do |point|
+    		t = TransferZone.find_by(id: point)
+    		if !check_arr.include? t["time"]
+    			uniq_transfer_zones.push(point)
+    			check_arr.push(t["time"])
+    		else
+    			t.destroy
+    		end
+    	end
+    	# puts arr_transfer_zone_id
+    	# puts uniq_transfer_zones
+    	# puts '!!!!!!!!!!!!---------------'
+
+    	arr_transfer_zone_id = uniq_transfer_zones
+
     	#p arr_transfer_zone_id
         
         e_new.transportation = params[:transportation]
@@ -98,6 +116,23 @@ class ViewController < ApplicationController
         tf1 = TransferZone.find_by(id: arr_transfer_zone_id[0])
         tf2 = TransferZone.find_by(id: arr_transfer_zone_id[1])
 
+        tf1temp = tf1.event_ids
+        tf1temp.delete_at(1)
+
+        tf2temp = tf2.event_ids
+        tf2temp.shift
+
+        tf1.event_ids = tf1temp
+        tf2.event_ids = tf2temp
+
+        tf1.save
+        tf2.save
+
+        puts '++++++++++++++++++'
+        puts tf1.event_ids
+        puts tf2.event_ids
+        puts '++++++++++++++++++'
+
       	if tf1.event_ids.length == 1
       		tf1.event_ids = [e_new.id]
       	elsif tf1.event_ids.length == 2
@@ -110,7 +145,6 @@ class ViewController < ApplicationController
       		arr_event_ids.push(e_new.id) # (1,x)
       		tf1.event_ids = arr_event_ids
       	else
-      		puts tf1.event_ids
       		puts "Error: tf1 transferzone is related to more than 2 events or no event"
       	end
 
@@ -126,9 +160,13 @@ class ViewController < ApplicationController
       		end      		
       		tf2.event_ids = arr_event_ids
       	else
-      		puts tf2.event_ids
       		puts "Error: tf2 transferzone is related to more than 2 events or no event"
       	end
+
+      	puts '-----------------------'
+      	puts tf1.event_ids
+      	puts tf2.event_ids
+      	puts '-----------------------'
 
       	tf1.save
 		tf2.save
@@ -144,23 +182,19 @@ class ViewController < ApplicationController
     	end
     	#p arr_intpoint_id
 
-    	puts '!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-    	puts arr_intpoint_id
     	check_arr = []
-    	new_intpoints = []
+    	uniq_intpoints = []
     	arr_intpoint_id.each do |point|
     		i = Intermediatepoint.find_by(id: point)
     		if !check_arr.include? i["time"]
-    			new_intpoints.push(point)
+    			uniq_intpoints.push(point)
     			check_arr.push(i["time"])
     		else
     			i.destroy
     		end
     	end
-    	puts new_intpoints
-    	puts '!!!!!!!!!!!!!!!!!!!!!'
 
-    	new_intpoints.each do |intpoint_id|
+    	uniq_intpoints.each do |intpoint_id|
     		i = Intermediatepoint.find_by(id: intpoint_id)
     		i.event_id = e_new.id
     		i.save
