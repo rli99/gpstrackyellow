@@ -8,7 +8,7 @@
   <div id="map" style='width: 800px; height: 400px;'></div>
 </div>
 
-<button onclick="verify(this)">Verify Trip</button> 
+<button onclick="verify()">Verify Trip</button> 
 
 <script type = 'text/javascript'>
 
@@ -29,7 +29,6 @@
     <%= t = Trip.find(@hash_eventsData[0][:trip_id]) %>
     t.verified = true
     t.save %>
-    button.value = "Trip Verified!"
   }
 
 </script>
