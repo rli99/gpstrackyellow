@@ -84,6 +84,9 @@ class ViewController < ApplicationController
         		arr_transfer_zone_id.push(transfer_zone_id)
         	end 
     	end
+
+    	arr_transfer_zone_id = arr_transfer_zone_id.uniq
+
     	#p arr_transfer_zone_id
         
         e_new.transportation = params[:transportation]
