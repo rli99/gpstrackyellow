@@ -15,7 +15,7 @@ function drawEventTransferZone(eventData, index){
 
 function makeTransferZone(transferZoneData){    
 
-    var image = 'http://vignette3.wikia.nocookie.net/farmville/images/9/9b/Purple_Flag-icon.png/revision/latest/scale-to-width-down/50?cb=20100110191552';
+    var image = 'http://commons.utopia.gr/images/icons/map_marker.png';
 
     var marker = new google.maps.Marker({
         position: transferZoneData,
