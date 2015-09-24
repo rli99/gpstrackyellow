@@ -116,19 +116,11 @@ class ViewController < ApplicationController
         tf1 = TransferZone.find_by(id: arr_transfer_zone_id[0])
         tf2 = TransferZone.find_by(id: arr_transfer_zone_id[1])
 
-        puts '================'
-        puts tf1.event_ids
-        puts tf2.event_ids
-
         tf1temp = tf1.event_ids
-        tf1temp.shift
+        tf1temp.delete_at(1)
 
         tf2temp = tf2.event_ids
-        tf2temp.delete_at(1)
-
-        puts '================'
-        puts tf1temp
-        puts tf2temp
+        tf2temp.shift
 
         tf1.event_ids = tf1temp
         tf2.event_ids = tf2temp
@@ -148,7 +140,7 @@ class ViewController < ApplicationController
       		arr_event_ids.push(e_new.id) # (1,x)
       		tf1.event_ids = arr_event_ids
       	else
-      		# puts tf1.event_ids
+      		puts tf1.event_ids
       		puts "Error: tf1 transferzone is related to more than 2 events or no event"
       	end
 
@@ -164,7 +156,7 @@ class ViewController < ApplicationController
       		end      		
       		tf2.event_ids = arr_event_ids
       	else
-      		# puts tf2.event_ids
+      		puts tf2.event_ids
       		puts "Error: tf2 transferzone is related to more than 2 events or no event"
       	end
 
