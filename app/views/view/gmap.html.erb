@@ -25,11 +25,10 @@
   drawTripTransferZone(eventsData);
   map.fitBounds(bounds);
 
-  // function verify() {
-  //   <%= puts @hash_eventsData %>
-  //   <%= t = Trip.find(@hash_eventsData[0][:trip_id]) %>
-  //   <%= t.verified = true %>
-  //   <%= t.save %>
-  // }
+  function verify() {
+    <%= t = Trip.find(47) %>
+    <%= t.verified = true %>
+    <%= t.save %>
+  }
 
 </script>
