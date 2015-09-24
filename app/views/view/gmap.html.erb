@@ -26,8 +26,7 @@
   <button onclick="verify()">Verify Trip</button> 
 
   function verify() {
-    var tripId = eventsData[0]["trip_id"];
-    <%= t = Trip.find(tripId) %>
+    <%= t = Trip.find(eventsData[0]["trip_id"]) %>
     <%= t.verified = true %>
     <%= t.save %>
   }
