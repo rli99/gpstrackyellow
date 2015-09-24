@@ -142,9 +142,17 @@ class ViewController < ApplicationController
     	end
     	#p arr_intpoint_id
 
-    	arr_intpoint_id.pop
+    	check_arr = []
+    	new_intpoints = []
+    	arr_intpoint_id.each do |point|
+    		i = Intermediatepoint.find_by(id: point)
+    		if !check_arr.include? i["time"]
+    			new_intpoints.push(point)
+    			check_arr.push(i["time"])
+    		end
+    	end
 
-    	arr_intpoint_id.each do |intpoint_id|
+    	new_intpoints.each do |intpoint_id|
     		i = Intermediatepoint.find_by(id: intpoint_id)
     		i.event_id = e_new.id
     		i.save
