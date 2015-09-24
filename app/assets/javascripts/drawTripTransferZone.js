@@ -2,7 +2,7 @@ function drawTripTransferZone(eventsData){
     for(var i=0;i<eventsData.length;i++){
       drawEventTransferZone(eventsData[i],0);
     }
-    drawEventTransferZone(eventsData[eventsData.length-1],0);
+    drawEventTransferZone(eventsData[eventsData.length],1);
 }
 
 
@@ -21,7 +21,7 @@ function makeTransferZone(transferZoneData){
         position: transferZoneData,
         draggable:false,
         icon: image,
-        scale: 0.85
+        scale: 0.75
       });
 
     var event_ids_str = "";
