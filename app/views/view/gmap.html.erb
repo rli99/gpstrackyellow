@@ -8,7 +8,7 @@
   <div id="map" style='width: 800px; height: 400px;'></div>
 </div>
 
-<button onclick="verify()">Verify Trip</button> 
+<button onclick="verify(this)">Verify Trip</button> 
 
 <script type = 'text/javascript'>
 
@@ -25,10 +25,11 @@
   drawTripTransferZone(eventsData);
   map.fitBounds(bounds);
 
-  function verify() {
-    <%= t = Trip.find(47) 
-    t.verified = true 
+  function verify(button) {
+    <%= t = Trip.find(@hash_eventsData[0][:trip_id]) %>
+    t.verified = true
     t.save %>
+    button.value = "Trip Verified!"
   }
 
 </script>
