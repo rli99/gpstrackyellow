@@ -54,7 +54,7 @@ class Algorithm < ActiveRecord::Base
         totalAvgSpeed = 0
 
         gpsData.each do |point|
-            totalAvgSpeed += point.speed
+            totalAvgSpeed += point.speed.to_f
             pointsChecked += 1
             totalPointsChecked += 1
             newTransportation = ""
