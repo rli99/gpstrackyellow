@@ -26,7 +26,7 @@
   <button onclick="verify()">Verify Trip</button> 
 
   function verify() {
-    <%= t = Trip.find(eventsData[0]["trip_id"]) %>
+    <%= t = Trip.find(raw @hash_eventsData.to_json[0]["trip_id"]) %>
     <%= t.verified = true %>
     <%= t.save %>
   }
