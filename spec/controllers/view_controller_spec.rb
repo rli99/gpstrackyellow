@@ -28,7 +28,7 @@ RSpec.describe ViewController, :type => :controller do
 
     end
 
-    describe "DELETE #delete_transfer_zone" do
+    describe "POST#delete_transfer_zone" do
 
 	before do
 		 @request.env['HTTP_REFERER'] = 'http://localhost:3000/sessions/new'
