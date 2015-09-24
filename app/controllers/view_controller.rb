@@ -142,7 +142,11 @@ class ViewController < ApplicationController
     	end
     	#p arr_intpoint_id
 
+		puts '!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+    	puts arr_intpoint_id
     	arr_intpoint_id = arr_intpoint_id.uniq
+    	puts arr_intpoint_id
+    	puts '!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
 
     	arr_intpoint_id.each do |intpoint_id|
     		i = Intermediatepoint.find_by(id: intpoint_id)
