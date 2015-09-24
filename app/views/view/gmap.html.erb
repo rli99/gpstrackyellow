@@ -26,9 +26,9 @@
   map.fitBounds(bounds);
 
   function verify() {
-    <%= t = Trip.find(47) %>
-    <%= t.verified = true %>
-    <%= t.save %>
+    <%= t = Trip.find(47) 
+    t.verified = true 
+    t.save %>
   }
 
 </script>
