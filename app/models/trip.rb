@@ -97,7 +97,7 @@ class Trip < ActiveRecord::Base
 
         # canberra (-35.31960740586162, 149.1943359375)
         i3 = Intermediatepoint.new
-        i3.time = Time.new
+        i3.time = i2.time
         i3.latitude = "-35.3196"
         i3.longitude = "149.1943"
         i3.altitude = "333"
