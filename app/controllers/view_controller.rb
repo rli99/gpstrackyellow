@@ -24,13 +24,15 @@ class ViewController < ApplicationController
 				transferzones = event.transfer_zones
 				transferzones.each do |zone|
 					# some kind of bug maybe
-					data[:transferzones].push({event_ids: zone.event_ids, id: zone.id, lat: zone.latitude.to_f, lng: zone.longitude.to_f, alt: zone.altitude.to_f})
+					data[:transferzones].push({event_ids: zone.event_ids, id: zone.id, lat: zone.latitude.to_f, lng: zone.longitude.to_f, alt: zone.altitude.to_f, 
+						time: zone.time})
 				end
 
 				data[:intermediatepoints] = []
 				intpoints = event.intermediatepoints
 				intpoints.each do |point|
-					data[:intermediatepoints].push({transportation: event.transportation, event_id: point.event_id, id: point.id, lat: point.latitude.to_f, lng: point.longitude.to_f, alt: point.altitude.to_f})
+					data[:intermediatepoints].push({transportation: event.transportation, event_id: point.event_id, id: point.id, lat: point.latitude.to_f, lng: point.longitude.to_f, alt: point.altitude.to_f, 
+						time: point.time})
 				end
 				@hash_eventsData.push(data)
 			end
