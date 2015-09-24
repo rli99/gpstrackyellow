@@ -110,7 +110,7 @@ class ViewController < ApplicationController
       		arr_event_ids.push(e_new.id) # (1,x)
       		tf1.event_ids = arr_event_ids
       	else
-      		puts "Error: one transferzone is related to more than 2 events or no event"
+      		puts "Error: tf1 transferzone is related to more than 2 events or no event"
       	end
 
       	if tf2.event_ids.length == 1
@@ -125,7 +125,7 @@ class ViewController < ApplicationController
       		end      		
       		tf2.event_ids = arr_event_ids
       	else
-      		puts "Error: one transferzone is related to more than 2 events or no event"
+      		puts "Error: tf2 transferzone is related to more than 2 events or no event"
       	end
 
       	tf1.save
