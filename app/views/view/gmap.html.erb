@@ -26,7 +26,7 @@
   map.fitBounds(bounds);
 
   function verify(button) {
-    <%= t = Trip.find(@hash_eventsData[0][:trip_id]) %>
+    <%= t = Trip.find(@tripId) %>
     t.verified = true
     t.save %>
   }
