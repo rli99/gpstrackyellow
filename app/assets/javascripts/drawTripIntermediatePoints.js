@@ -1,7 +1,9 @@
 function drawTripIntermediatePoints(eventsData) {
     for(var i=0;i<eventsData.length;i++){
-      for(var j=1;j<eventsData[i]["intermediatepoints"].length-1;j++){
-        makeIntPoint(eventsData[i]["intermediatepoints"][j]);        
+      var intPoints = (eventsData[i]["intermediatepoints"]).slice(1, eventsData[i]["intermediatepoints"].length - 1);
+      intPoints.sort(compareTime);
+      for(var j=0;j<intPoints.length;j++){
+        makeIntPoint(intPoints[j]);        
       }
     }
 }

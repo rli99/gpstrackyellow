@@ -84,6 +84,7 @@ class ViewController < ApplicationController
         		arr_transfer_zone_id.push(transfer_zone_id)
         	end 
     	end
+
     	#p arr_transfer_zone_id
         
         e_new.transportation = params[:transportation]
@@ -109,7 +110,8 @@ class ViewController < ApplicationController
       		arr_event_ids.push(e_new.id) # (1,x)
       		tf1.event_ids = arr_event_ids
       	else
-      		puts "Error: one transferzone is related to more than 2 events or no event"
+      		puts tf1.event_ids
+      		puts "Error: tf1 transferzone is related to more than 2 events or no event"
       	end
 
       	if tf2.event_ids.length == 1
@@ -124,7 +126,8 @@ class ViewController < ApplicationController
       		end      		
       		tf2.event_ids = arr_event_ids
       	else
-      		puts "Error: one transferzone is related to more than 2 events or no event"
+      		puts tf2.event_ids
+      		puts "Error: tf2 transferzone is related to more than 2 events or no event"
       	end
 
       	tf1.save
@@ -141,7 +144,23 @@ class ViewController < ApplicationController
     	end
     	#p arr_intpoint_id
 
-    	arr_intpoint_id.each do |intpoint_id|
+    	puts '!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+    	puts arr_intpoint_id
+    	check_arr = []
+    	new_intpoints = []
+    	arr_intpoint_id.each do |point|
+    		i = Intermediatepoint.find_by(id: point)
+    		if !check_arr.include? i["time"]
+    			new_intpoints.push(point)
+    			check_arr.push(i["time"])
+    		else
+    			i.destroy
+    		end
+    	end
+    	puts new_intpoints
+    	puts '!!!!!!!!!!!!!!!!!!!!!'
+
+    	new_intpoints.each do |intpoint_id|
     		i = Intermediatepoint.find_by(id: intpoint_id)
     		i.event_id = e_new.id
     		i.save
