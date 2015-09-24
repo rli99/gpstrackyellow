@@ -151,6 +151,8 @@ class ViewController < ApplicationController
     		if !check_arr.include? i["time"]
     			new_intpoints.push(point)
     			check_arr.push(i["time"])
+    		else
+    			i.destroy
     		end
     	end
     	puts new_intpoints
