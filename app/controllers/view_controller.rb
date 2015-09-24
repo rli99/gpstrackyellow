@@ -130,6 +130,9 @@ class ViewController < ApplicationController
         puts tf1temp
         puts tf2temp
 
+        tf1.event_ids = tf1temp
+        tf2.event_ids = tf2temp
+
         tf1.save
         tf2.save
 
