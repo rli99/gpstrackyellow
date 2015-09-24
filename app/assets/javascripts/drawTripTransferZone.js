@@ -2,7 +2,7 @@ function drawTripTransferZone(eventsData){
     for(var i=0;i<eventsData.length;i++){
       drawEventTransferZone(eventsData[i],0);
     }
-    drawEventTransferZone(eventsData[eventsData.length-1],1);
+    drawEventTransferZone(eventsData[eventsData.length-1],0);
 }
 
 
