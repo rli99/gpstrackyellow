@@ -83,7 +83,7 @@ class Algorithm < ActiveRecord::Base
             currentTransportation = newTransportation
 
         end
+        t.avgSpeed = (totalAvgSpeed / gpsData.length)
+        t.save
     end
-    t.avgSpeed = (totalAvgSpeed / gpsData.length)
-    t.save
 end
