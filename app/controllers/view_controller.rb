@@ -142,6 +142,8 @@ class ViewController < ApplicationController
     	end
     	#p arr_intpoint_id
 
+    	puts '!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+    	puts arr_intpoint_id
     	check_arr = []
     	new_intpoints = []
     	arr_intpoint_id.each do |point|
@@ -151,6 +153,8 @@ class ViewController < ApplicationController
     			check_arr.push(i["time"])
     		end
     	end
+    	puts new_intpoints
+    	puts '!!!!!!!!!!!!!!!!!!!!!'
 
     	new_intpoints.each do |intpoint_id|
     		i = Intermediatepoint.find_by(id: intpoint_id)
