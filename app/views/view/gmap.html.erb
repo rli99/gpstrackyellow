@@ -27,7 +27,7 @@
 
   function verify() {
     <%= puts @hash_eventsData %>
-    <%= t = Trip.find(@hash_eventsData["trip_id"]) %>
+    <%= t = Trip.find(@hash_eventsData["trip_id"].to_i) %>
     <%= t.verified = true %>
     <%= t.save %>
   }
