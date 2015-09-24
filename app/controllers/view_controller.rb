@@ -11,9 +11,9 @@ class ViewController < ApplicationController
 	end
 
 	def gmap
-		
+		@tripId = params[:trip_id]
 		if Trip.find(params[:trip_id])
-      @tripId = params[:trip_id]
+
 			events = Trip.find(params[:trip_id]).events
 
 			@hash_eventsData = []
