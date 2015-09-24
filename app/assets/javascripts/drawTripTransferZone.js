@@ -20,7 +20,8 @@ function makeTransferZone(transferZoneData){
     var marker = new google.maps.Marker({
         position: transferZoneData,
         draggable:true,
-        icon: image
+        icon: image,
+        scale: 0.85
       });
 
     var event_ids_str = "";
