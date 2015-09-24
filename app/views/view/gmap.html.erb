@@ -2,7 +2,7 @@
 <script src='//google-maps-utility-library-v3.googlecode.com/svn/tags/markerclustererplus/2.0.14/src/markerclusterer_packed.js' type='text/javascript'></script>
 
 
-<h1>This is Gmap page</h1>
+<h1>This is a Google maps page</h1>
 
 <div style='width: 800px;'>
   <div id="map" style='width: 800px; height: 400px;'></div>
@@ -23,4 +23,14 @@
   drawTripTransferZone(eventsData);
   map.fitBounds(bounds);
 
+  <button onclick="verify()">Verify Trip</button> 
+
+  function verify() {
+    var tripId = eventsData[0]["trip_id"];
+    <%= t = Trip.find(tripId) %>
+    <%= t.verified = true %>
+    <%= t.save %>
+  }
+
 </script>
+
