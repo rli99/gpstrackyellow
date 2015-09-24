@@ -8,6 +8,8 @@
   <div id="map" style='width: 800px; height: 400px;'></div>
 </div>
 
+<button onclick="verify()">Verify Trip</button> 
+
 <script type = 'text/javascript'>
 
   eventsData = <%=raw @hash_eventsData.to_json %>;
@@ -31,6 +33,3 @@
   }
 
 </script>
-
-<button onclick="verify()">Verify Trip</button> 
-
