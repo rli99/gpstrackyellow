@@ -1,3 +1,3 @@
 function compareTime(a, b) {
-	return new Date(a.date) - new Date(b.date);
+	return new Date(a["time"]) - new Date(b["time"]);
 }
