@@ -216,7 +216,7 @@ class ViewController < ApplicationController
 	      format.json
     	end
 	end
-
+	
   def change_to_transfer_zone
     puts "------------------"
     puts params
@@ -336,5 +336,5 @@ class ViewController < ApplicationController
         format.json
       end
   end
-	
+
 end
