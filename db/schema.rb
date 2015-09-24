@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150922044948) do
+ActiveRecord::Schema.define(version: 20150924342353) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,7 +45,10 @@ ActiveRecord::Schema.define(version: 20150922044948) do
     t.string   "bearing"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "user_id"
   end
+
+  add_index "gps_data", ["user_id"], name: "index_gps_data_on_user_id", using: :btree
 
   create_table "intermediatepoints", force: :cascade do |t|
     t.datetime "time"
@@ -107,6 +110,7 @@ ActiveRecord::Schema.define(version: 20150922044948) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   add_foreign_key "events", "trips"
+  add_foreign_key "gps_data", "users"
   add_foreign_key "intermediatepoints", "events"
   add_foreign_key "transfer_zones", "events"
   add_foreign_key "trips", "users"

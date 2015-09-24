@@ -216,5 +216,125 @@ class ViewController < ApplicationController
 	      format.json
     	end
 	end
+
+    def change_to_transfer_zone
+    puts "------------------"
+    puts params
+
+    # --- get the intpoint and make a copy of it
+    i = Intermediatepoint.find_by(id: params[:intpoint_id])
+    i_clone = Intermediatepoint.new
+    i_clone.time = i.time
+    i_clone.latitude = i.latitude
+    i_clone.longitude = i.longitude
+    i_clone.altitude = i.altitude
+    #i_clone.event_id = nil
+    #i_clone.save
+
+    # --- generate 2 events before generate the transferzone
+    e_old = Event.find_by(id: i.event_id)
+    e1 = Event.new
+    e2 = Event.new
+
+    e1.transportation = e_old.transportation
+    e1.trip_id = e_old.trip_id
+    e2.transportation = e_old.transportation
+    e2.trip_id = e_old.trip_id
+
+    # --- generate a transferzone here
+    tf_new = TransferZone.new
+    tf_new.time = i.time
+    tf_new.latitude = i.latitude
+    tf_new.longitude = i.longitude
+    tf_new.altitude = i.altitude
+
+    # --- add events to the new transferzone
+    tf_new.event_ids = [e1.id,e2.id]
+
+    # --- save the tf_new before use its id
+    tf_new.save
+
+    # --- add transferzones to the events
+    e1.transfer_zone_ids = [e_old.transfer_zone_ids[0],tf_new.id]
+    e2.transfer_zone_ids = [tf_new.id,e_old.transfer_zone_ids[1]]
+
+    # --- get the two transfer zones of the old event
+    tf1 = TransferZone.find_by(id: e_old.transfer_zone_ids[0])
+    tf2 = TransferZone.find_by(id: e_old.transfer_zone_ids[1])
+
+    # --- change their event_ids
+    if tf1.event_ids.length == 1
+      tf1.event_ids = [e1.id]
+    elsif tf1.event_ids.length == 2
+      another_event_id = nil
+      tf1.event_ids.each do |event_id|
+        if event_id != e_old.id
+            another_event_id = event_id
+        end 
+      end
+      if another_event_id != nil
+        tf1.event_ids = [another_event_id, e1.id]
+      else
+        put "ERROR 1"
+      end
+    else
+      puts "ERROR 2"
+    end
+
+    if tf2.event_ids.length == 1
+      tf2.event_ids = [e2.id]
+    elsif tf2.event_ids.length == 2
+      another_event_id = nil
+      tf2.event_ids.each do |event_id|
+        if event_id != e_old.id
+            another_event_id = event_id
+        end 
+      end
+      if another_event_id != nil
+        tf2.event_ids = [e2.id,another_event_id]
+      else
+        put "ERROR 1"
+      end
+    else
+      puts "ERROR 2"
+    end
+
+    # --- save these two new events before change intermediatepoints
+    e1.save
+    e2.save
+
+    # --- change the intermediatepoints of old event to the two new ones
+    e_old.intermediatepoints.each do |intpoint|
+      if intpoint.time < i.time
+        intpoint.event_id = e1.id
+      elsif intpoint.time > i.time
+        intpoint.event_id = e2.id
+      else intpoint.time == i.time
+        intpoint.event_id = e1.id
+      end
+      intpoint.save 
+      i_clone.event_id = e2.id
+      i_clone.save 
+    end
+
+    # --- do all the save and destroy
+    #i.destroy
+    e_old.destroy
+    #e1.save
+    #e2.save
+    tf_new.save
+    tf1.save
+    tf2.save
+
+
+
+    respond_to do |format|
+        format.html {
+          redirect_to(:back)
+        }
+        format.js
+        format.json
+      end
+  end
 	
 end
