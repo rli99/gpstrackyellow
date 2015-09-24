@@ -56,14 +56,14 @@ class ViewController < ApplicationController
 	end
 
 	def delete_transfer_zone
-		puts "------------------"
-		puts params
+		# puts "------------------"
+		# puts params
 
 		tf = TransferZone.find_by(id: params[:transfer_zone_id])
 
-		puts params[:transportation]
-		puts tf.event_ids[0]
-		puts tf.event_ids[1]
+		# puts params[:transportation]
+		# puts tf.event_ids[0]
+		# puts tf.event_ids[1]
 
 		# ==================
 
@@ -128,7 +128,7 @@ class ViewController < ApplicationController
       		arr_event_ids.push(e_new.id) # (1,x)
       		tf1.event_ids = arr_event_ids
       	else
-      		puts tf1.event_ids
+      		# puts tf1.event_ids
       		puts "Error: tf1 transferzone is related to more than 2 events or no event"
       	end
 
@@ -144,7 +144,7 @@ class ViewController < ApplicationController
       		end      		
       		tf2.event_ids = arr_event_ids
       	else
-      		puts tf2.event_ids
+      		# puts tf2.event_ids
       		puts "Error: tf2 transferzone is related to more than 2 events or no event"
       	end
 
