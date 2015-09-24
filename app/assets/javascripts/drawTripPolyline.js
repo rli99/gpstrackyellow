@@ -17,8 +17,8 @@ function drawEventPolyline(intPointsData, color){
 
     var polylineCoordinates = [];
     // var sortedIntPointsData = intPointsData.sort(compareTime);
-    for(var i=0;i<sortedIntPointsData.length;i++){
-      polylineCoordinates.push(sortedIntPointsData[i]);
+    for(var i=0;i<intPointsData.length;i++){
+      polylineCoordinates.push(intPointsData[i]);
     }
 
     polylinePath = new google.maps.Polyline({
