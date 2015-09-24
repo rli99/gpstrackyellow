@@ -4,12 +4,14 @@
 	<th>Trip Average Speed</th>
 <th>Trip Duration</th>
 <th>Trip Distance</th>
-<th>Trip Verified</th></tr>
+<th>Trip Verified</th>
+<th>Map</th></tr>
 	<% @trips.each do |trip| %>
 		<tr><td><%= trip.id %></td>
 		<td><%= trip.avgSpeed %></td>
 		<td><%= trip.duration %></td>
 		<td><%= trip.distance %></td>
-		<td><%= trip.verified %></td></tr>
+		<td><%= trip.verified %></td>
+		<td><%= link_to('GMap', view_gmap_path) %></td></tr>
 	<% end %>
 </table>

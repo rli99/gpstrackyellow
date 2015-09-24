@@ -84,7 +84,7 @@ class Algorithm < ActiveRecord::Base
 
         end
         t.avgSpeed = ((3.6 * totalAvgSpeed) / gpsData.length).round(2).to_s + "km/h"
-        t.distance = (((3.6 * totalAvgSpeed) / gpsData.length) * t.duration).round(2).to_s + "km"
+        # t.distance = (((3.6 * totalAvgSpeed) / gpsData.length) * t.duration.to_f).round(2).to_s + "km"
         t.verified = "false"
         t.save
     end
