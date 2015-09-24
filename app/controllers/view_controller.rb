@@ -89,9 +89,9 @@ class ViewController < ApplicationController
     	uniq_transfer_zones = []
     	arr_transfer_zone_id.each do |point|
     		t = TransferZone.find_by(id: point)
-    		if !check_arr.include? i["time"]
+    		if !check_arr.include? t["time"]
     			uniq_transfer_zones.push(point)
-    			check_arr.push(i["time"])
+    			check_arr.push(t["time"])
     		else
     			t.destroy
     		end
