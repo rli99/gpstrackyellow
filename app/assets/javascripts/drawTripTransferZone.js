@@ -19,7 +19,7 @@ function makeTransferZone(transferZoneData){
 
     var marker = new google.maps.Marker({
         position: transferZoneData,
-        draggable:true,
+        draggable:false,
         icon: image,
         scale: 0.85
       });

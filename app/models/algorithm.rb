@@ -44,16 +44,17 @@ class Algorithm < ActiveRecord::Base
         @transferZoneId = t0.id
 
         t = Trip.new
-        t.avgSpeed = "10km/hr"
-        t.duration = "2hrs"
+        t.duration = gpsData[-1].date - gpsData[0].date
         t.user_id = gpsData[0].user_id
         t.save
 
         currentTransportation = ""
         pointsChecked = 0
         totalPointsChecked = 0
+        totalAvgSpeed = 0
 
         gpsData.each do |point|
+            totalAvgSpeed += point.speed
             pointsChecked += 1
             totalPointsChecked += 1
             newTransportation = ""
@@ -83,4 +84,6 @@ class Algorithm < ActiveRecord::Base
 
         end
     end
+    t.avgSpeed = (totalAvgSpeed / gpsData.length)
+    t.save
 end
