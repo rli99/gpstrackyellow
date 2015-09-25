@@ -30,7 +30,7 @@ function makeTransferZone(transferZoneData){
     }
 
     var event_ids_str = "";
-    if (transferZoneData !== undefined) { //fix this bug, why transferZoneData["event_ids"] in undefined?
+    if (transferZoneData !== undefined) { //fix this bug, why when you remove some transferzones transferZoneData["event_ids"] in undefined?
       for(var i = 0; i < transferZoneData["event_ids"].length; i++){
         if (i == transferZoneData["event_ids"].length - 1) {
           event_ids_str += transferZoneData["event_ids"][i];
