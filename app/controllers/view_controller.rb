@@ -124,11 +124,13 @@ class ViewController < ApplicationController
           tf1temp.delete_at(1)
         end
         
+
+        
         tf2temp = tf2.event_ids
         if tf2temp.length == 3
           tf2temp.shift
         end
-        
+
         tf1.event_ids = tf1temp
         tf2.event_ids = tf2temp
 
