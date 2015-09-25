@@ -25,6 +25,10 @@ function makeTransferZone(transferZoneData){
         scale: 0.75
       });
 
+    if (marker.getPosition() !== undefined) {
+      bounds.extend(marker.getPosition());
+    }
+
     var event_ids_str = "";
     if (transferZoneData !== undefined) {
       for(var i = 0; i < transferZoneData["event_ids"].length; i++){
@@ -66,8 +70,5 @@ function makeTransferZone(transferZoneData){
 
     marker.setMap(map);
 
-    if (marker.getPosition() !== undefined) {
-      bounds.extend(marker.getPosition());
-    }
 }
 
