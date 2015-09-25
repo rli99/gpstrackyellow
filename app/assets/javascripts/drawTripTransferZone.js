@@ -26,13 +26,15 @@ function makeTransferZone(transferZoneData){
       });
 
     var event_ids_str = "";
-    for(var i = 0; i < transferZoneData["event_ids"].length; i++){
-      if (i == transferZoneData["event_ids"].length - 1) {
-        event_ids_str += transferZoneData["event_ids"][i];
-      }else{
-        event_ids_str += transferZoneData["event_ids"][i] + ", ";
-      }      
-    } 
+    if (transferZoneData !== undefined) {
+      for(var i = 0; i < transferZoneData["event_ids"].length; i++){
+        if (i == transferZoneData["event_ids"].length - 1) {
+          event_ids_str += transferZoneData["event_ids"][i];
+        }else{
+          event_ids_str += transferZoneData["event_ids"][i] + ", ";
+        }      
+      } 
+    }
 
     var form = ""
 
