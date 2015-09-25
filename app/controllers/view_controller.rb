@@ -3,7 +3,7 @@ class ViewController < ApplicationController
 	end
 
 	def tripdata
-		@trips = Trip.all
+		@trips = Trip.all.order("id ASC")
 	end
 
 	def user
@@ -125,7 +125,7 @@ class ViewController < ApplicationController
         end
         
 
-        
+
         tf2temp = tf2.event_ids
         if tf2temp.length == 3
           tf2temp.shift
