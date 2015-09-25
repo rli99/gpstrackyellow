@@ -51,8 +51,10 @@ function makeTransferZone(transferZoneData){
               + '</select>'
               + "<button type = 'submit'> delete this transfer zone </button>"
               + "</form>";
-      }else{
+      }else if (transferZoneData["event_ids"].length == 1){
         form = "This is the first/last transferzone, so it is not allowed to delete it."
+      } else {
+        form = "error"
       }
 
 
