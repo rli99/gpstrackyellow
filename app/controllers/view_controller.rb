@@ -59,8 +59,10 @@ class ViewController < ApplicationController
 	end
 
 	def delete_transfer_zone
-		# puts "------------------"
-		# puts params
+	 puts "--------delete transferzone----------"
+	 puts params
+
+   TransferZone.all.each{|v| p v}
 
 		tf = TransferZone.find_by(id: params[:transfer_zone_id])
 
