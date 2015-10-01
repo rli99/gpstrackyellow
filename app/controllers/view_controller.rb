@@ -3,7 +3,7 @@ class ViewController < ApplicationController
 	end
 
 	def tripdata
-		@trips = Trip.all
+		@trips = Trip.all.order("id ASC")
 	end
 
 	def user
@@ -122,10 +122,16 @@ class ViewController < ApplicationController
         tf2 = TransferZone.find_by(id: arr_transfer_zone_id[1])
 
         tf1temp = tf1.event_ids
-        tf1temp.delete_at(1)
+        if tf1temp.length == 3
+          tf1temp.delete_at(1)
+        end
+        
+
 
         tf2temp = tf2.event_ids
-        tf2temp.shift
+        if tf2temp.length == 3
+          tf2temp.shift
+        end
 
         tf1.event_ids = tf1temp
         tf2.event_ids = tf2temp
