@@ -32,22 +32,32 @@ RSpec.describe ViewController, :type => :controller do
 
 	before do
 		 @request.env['HTTP_REFERER'] = 'http://localhost:3000/sessions/new'
+=begin
 		@event1=Event.create(transportation: "Train")
 		@event2=Event.create(transportation: "car")
+		@event3=Event.create(transportation: "car")
+		@event4=Event.create(transportation: "car")
 		@event=[@event1, @event2]
 
-		@transferZone=TransferZone.create(latitude: "100",
+		@transferZone1=TransferZone.create(latitude: "100",
 			                                longitude: "100",
 			                                altitude: "100",
 			                               )
-		TransferZone.create(latitude: "200",
+		@transferZone2=TransferZone.create(latitude: "200",
 			                                longitude: "200",
 			                                altitude: "200",
-			                                )
+			                               )
+		@transferZone3=TransferZone.create(latitude: "300",
+			                                longitude: "300",
+			                                altitude: "300",
+			                               )
+		@transferZone.event_ids=[@event1.id, @event2.id]
+=end
+		@transferZone = Trip.gdata
 	end
 
 	it "assigns the requested event as tf" do
-		post :delete_transfer_zone, use_route: :view_delete_transfer_zone, transfer_zone_id: @transferZone
+		post :delete_transfer_zone, use_route: :view_delete_transfer_zone, transfer_zone_id: @transferZone.id
 		expect(assigns(:tf)).to eq(@transferZone)
 	end
     	it "delete the transferZone" do
@@ -57,6 +67,12 @@ RSpec.describe ViewController, :type => :controller do
     	it "combine two events" do
     		@tf=TransferZone.last()
     		expect{post :delete_transfer_zone, transfer_zone_id: @transferZone, use_route: :view_delete_transfer_zone}.to change(Event, :count).by(-1)
+    	end
+    end
+
+    describe "GET#gmap" do
+    	it "involves events" do
+
     	end
     end
 

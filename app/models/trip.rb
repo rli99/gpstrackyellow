@@ -122,6 +122,8 @@ class Trip < ActiveRecord::Base
         i4.event_id = e2.id
         i4.save
 
+        return tf3
+
 	end
 
 end
