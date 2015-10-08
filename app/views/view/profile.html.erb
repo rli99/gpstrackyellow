@@ -1,0 +1,23 @@
+<center><h1>User Profile</h1></center>
+</br>
+<div class="row">
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-3 col-sm-offset-3 col-lg-offset-3 col-md-offset-3">
+    <%= form_for :user, url: '/profile' do |f| %>
+
+        <%= f.label :name, 'First Name' %>
+        <%= f.text_field :name, class: 'form-control', autocomplete: "off" %>
+        </br>
+        <%= f.label :surname, 'Last Name' %>
+        <%= f.text_field :surname, class: 'form-control', autocomplete: "off" %>
+        </br>
+        <%= f.label :bithday, 'Birthday' %>
+        <%= f.text_field :bithday, class: 'form-control', autocomplete: "off" %>
+        </br>
+        <%= f.label :address, 'Address' %>
+        <%= f.text_field :address, class: 'form-control', autocomplete: "off" %>
+        </br>
+        <%= f.submit "Submit", class: "btn btn-primary pull-right" %>
+        
+    <% end %>
+  </div>
+</div>

@@ -8,30 +8,12 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<nav role="navigation">
-    <div class="inner">
-        <a href="#nav" class="nav-collapse" id="nav-collapse">Menu</a>
-        <ul class="nav" id="nav">
-            <li><%= link_to "Home", root_path %></li>
-            <%= render 'devise/menu/registration_items' %>
-            <%= render 'devise/menu/login_items' %>
-            <% if user_signed_in? %>
-              <!-- <li><%= link_to('Map', view_map_path) %></li> -->
-              <!-- <li><%= link_to('GMap', view_gmap_path) %></li> -->
-              <li><%= link_to('Trips', view_tripdata_path) %>
-              </li>
-            <% end %>
-        </ul>
-    </div>
-</nav>
-<% if notice %>
-	<p class="alert alert-success"><%= notice %></p>
-<% end %>
-<% if alert %>
-	<p class="alert alert-danger"><%= alert %></p>
-<% end %>
-
-<%= yield %>
+<%= render 'layouts/nav' %>
+<%= render 'layouts/message' %>
+</br>
+</br>
+<center><%= yield %></center>
+<%= render 'layouts/footer' %>
 
 </body>
 </html>
