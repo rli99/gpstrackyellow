@@ -2,14 +2,18 @@
 </br>
 <div class="container">
 <table class="table table-striped table-hover" style="text-align:center">
-	<thead><tr><th>Trip ID</th>
-	<th>Trip Average Speed</th>
-<th>Trip Duration</th>
-<th>Trip Distance</th>
-<th>Trip Verified</th>
+	<thead><tr><th>No.</th>
+	<th>Date</th>
+	<th>Average Speed</th>
+<th>Duration</th>
+<th>Distance</th>
+<th>Verified</th>
 <th>Map</th></tr></thead>
+	<% count = 0 %>
 	<% @trips.each do |trip| %>
-		<tr><td><%= trip.id %></td>
+		<% count += 1 %>
+		<tr><td><%= count %></td>
+		<td><%= trip.events[0].intermediatepoints[0].time.strftime("%d/%m/%Y") %></td>
 		<td><%= trip.avgSpeed %></td>
 		<td><%= trip.duration %></td>
 		<td><%= trip.distance %></td>
@@ -18,3 +22,4 @@
 	<% end %>
 </table>
 </div>
+

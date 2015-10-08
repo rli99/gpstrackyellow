@@ -9,9 +9,6 @@ class GpsIncomingServiceController < ApplicationController
 
 		dataLength = 0
 
-		user = data.shift
-		userId = user["USER"]
-
 		data.each do |gps|
 			dataLength += 1
 			GpsDatum.create(
@@ -19,7 +16,7 @@ class GpsIncomingServiceController < ApplicationController
 				longitude: gps["LONGITUDE (DEG)"],
 				speed: gps["SPEED (M/S)"],
 				time: gps["TIME"],
-				user_id: userId
+				user_id: gps["USER"]
 				)
 		end
 
