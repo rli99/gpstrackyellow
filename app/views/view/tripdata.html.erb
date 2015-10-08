@@ -6,7 +6,7 @@
 	<% end %>
 <% end %>
 </br>
-<div class="container">
+<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xs-offset-2 col-sm-offset-2 col-lg-offset-2 col-md-offset-2">
 <table class="table table-striped table-hover" style="text-align:center">
 	<thead><tr><th>No.</th>
 	<th>Date</th>
@@ -14,7 +14,8 @@
 <th>Duration</th>
 <th>Distance</th>
 <th>Verified</th>
-<th>Map</th></tr></thead>
+<th>Map</th>
+<th>Delete</th></tr></thead>
 	<% count = 0 %>
 	<% if @trips.length > 0 %>
 		<% @trips.each do |trip| %>
@@ -25,14 +26,15 @@
 			<td><%= trip.duration %></td>
 			<td><%= trip.distance %></td>
 			<td><%= trip.verified %></td>
-			<td><%= link_to('View Map', view_gmap_path(trip_id: trip.id)) %></td></tr>
+			<td><%= link_to("View Map", view_gmap_path(trip_id: trip.id)) %></td>
+			<td><%= button_to("Delete", view_tripdata_path(trip_id: trip.id), method: :delete) %></td></tr>
 		<% end %>
 	<% else %>
 		<h1>No Trips to Show</h1></br>
 	<% end %>
 </table>
 </div>
-
+<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xs-offset-2 col-sm-offset-2 col-lg-offset-2 col-md-offset-2">
 <center><h2>Filter by Date and Time</h2></center>
 </br>
 <div class="form-group">
@@ -45,5 +47,5 @@
 	  </br></br>
 	  <%= submit_tag "Search", :class => "btn btn-primary" %>
 	<% end %>
-
+</div>
 </div>

@@ -13,8 +13,7 @@ class ViewController < ApplicationController
                   params[:date]["enddate(3i)"].to_i,
                   params[:date]["enddate(4i)"].to_i,
                   params[:date]["enddate(5i)"].to_i)
-	    trips = Trip.all
-	    trips.each do |t|
+	    Trip.all.each do |t|
 	      triptime = t.events[0].intermediatepoints[0].time
 	      if triptime < @enddate && triptime > @startdate
 	        @trips.push(t)

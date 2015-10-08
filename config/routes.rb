@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   post '/profile' => 'view#update'
   post '/users/edit' => 'user#update'
   post '/view/tripdata/filter' => 'view#tripdata'
+  delete '/view/tripdata' => 'trip#destroy'
 
 
   # The priority is based upon order of creation: first created -> highest priority.
