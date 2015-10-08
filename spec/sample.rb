@@ -121,9 +121,8 @@ class Trip < ActiveRecord::Base
         i4.altitude = "333"
         i4.event_id = e2.id
         i4.save
-        
-        tripdata=[tf1,tf3,tf4,t,e1,e2,i1,i2,i3,i4,i6]
-        return tripdata
+
+        return tf3
 
 	end
 
