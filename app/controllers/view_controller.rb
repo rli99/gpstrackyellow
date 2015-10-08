@@ -1,15 +1,23 @@
 class ViewController < ApplicationController
-	def map
-	end
 
 	def tripdata
 		@trips = Trip.all.order("id ASC")
 	end
-
-	def user
-		
+	
+	def profile
+	  @user = User.find(current_user.id)
 	end
-
+  
+  def update
+    user = User.find(current_user.id)
+    user.update(user_params)
+    if user.save
+      redirect_to '/profile', notice: 'Your profile has been successfully updated.'
+    else
+      redirect_to '/profile', alert: 'Your profile could not be updated.'
+    end
+  end
+  
 	def gmap
 		@tripId = params[:trip_id]
 		if Trip.find(params[:trip_id])
@@ -334,6 +342,10 @@ class ViewController < ApplicationController
         format.json
       end
   end
-	
+
+  private
+  def user_params
+    params.require(:user).permit(:email, :password, :name, :surname, :bithday, :address)
+  end
 
 end

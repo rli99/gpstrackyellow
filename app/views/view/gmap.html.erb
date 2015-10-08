@@ -3,14 +3,14 @@
 
 
 <h1>This is a Google maps page</h1>
-
+</br>
 <div style='width: 800px;'>
   <div id="map" style='width: 800px; height: 400px;'></div>
 </div>
 
 </br>
 
-<button onclick="verify()"><%= link_to('Verify Trip', view_tripdata_path) %></button> 
+<%= link_to 'Verify Trip', view_tripdata_path(tripId: @tripId), method: :post %>
 
 <script type = 'text/javascript'>
 
@@ -26,11 +26,5 @@
   drawTripPolyline(eventsData);
   drawTripTransferZone(eventsData);
   map.fitBounds(bounds);
-
-  function verify(button) {
-    <%= t = Trip.find(@tripId)
-    t.verified = true
-    t.save %>
-  }
 
 </script>
