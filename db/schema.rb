@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150924342353) do
+ActiveRecord::Schema.define(version: 20151001055737) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,10 +69,7 @@ ActiveRecord::Schema.define(version: 20150924342353) do
     t.string   "altitude"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer  "event_id"
   end
-
-  add_index "transfer_zones", ["event_id"], name: "index_transfer_zones_on_event_id", using: :btree
 
   create_table "trips", force: :cascade do |t|
     t.string   "avgSpeed"
@@ -112,6 +109,5 @@ ActiveRecord::Schema.define(version: 20150924342353) do
   add_foreign_key "events", "trips"
   add_foreign_key "gps_data", "users"
   add_foreign_key "intermediatepoints", "events"
-  add_foreign_key "transfer_zones", "events"
   add_foreign_key "trips", "users"
 end

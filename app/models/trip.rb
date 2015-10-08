@@ -51,7 +51,7 @@ class Trip < ActiveRecord::Base
         t.duration = "2h"
         t.distance = "16km"
         t.verified = false
-        #t.user_id = 1
+        t.user_id = 1
         t.save
 
         e1 = Event.new

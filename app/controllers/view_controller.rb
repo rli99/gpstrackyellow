@@ -59,37 +59,38 @@ class ViewController < ApplicationController
 	end
 
 	def delete_transfer_zone
-	 puts "--------delete transferzone----------"
-	 puts params
+  	  puts "--------delete transferzone----------"
+  	  puts params
 
-   TransferZone.all.each{|v| p v}
+      # --- get the transfer zone
+  		tf = TransferZone.find_by(id: params[:transfer_zone_id])
+  
+      # --- we only allow user to delete the transferzone that is not the start and the end,
+      #     for this step, a transfer zone must have 2 events,
+      #     get these 2 events
+  		e1 = Event.find_by(id: tf.event_ids[0])
+  		e2 = Event.find_by(id: tf.event_ids[1])
+  
 
-		tf = TransferZone.find_by(id: params[:transfer_zone_id])
+      # --- get the transferzone ids of the 2 events and ignore the one we want to delete
+      arr_transfer_zone_id = []
+      e1.transfer_zone_ids.each do |transfer_zone_id|
+        if transfer_zone_id != tf.id
+          arr_transfer_zone_id.push(transfer_zone_id)
+        end 
+      end
+      e2.transfer_zone_ids.each do |transfer_zone_id|
+        if transfer_zone_id != tf.id
+          arr_transfer_zone_id.push(transfer_zone_id)
+        end 
+      end
+      
+      #puts '+++++++++qkqkkqkqkqk+++++++++'
+      #p arr_transfer_zone_id
+      #puts '+++++++++qkqkkqkqkqk+++++++++'
 
-		# puts params[:transportation]
-		# puts tf.event_ids[0]
-		# puts tf.event_ids[1]
 
-		# ==================
-
-
-		e1 = Event.find_by(id: tf.event_ids[0])
-		e2 = Event.find_by(id: tf.event_ids[1])
-		e_new = Event.new		
-
-        arr_transfer_zone_id = []
-
-        e1.transfer_zone_ids.each do |transfer_zone_id|
-        	if transfer_zone_id != tf.id
-        		arr_transfer_zone_id.push(transfer_zone_id)
-        	end 
-    	end
-    	e2.transfer_zone_ids.each do |transfer_zone_id|
-        	if transfer_zone_id != tf.id
-        		arr_transfer_zone_id.push(transfer_zone_id)
-        	end 
-    	end
-
+=begin
     	# puts '!!!!!!!!!!!!!------------'
     	check_arr = []
     	uniq_transfer_zones = []
@@ -107,42 +108,28 @@ class ViewController < ApplicationController
     	# puts '!!!!!!!!!!!!---------------'
 
     	arr_transfer_zone_id = uniq_transfer_zones
+=end
 
-    	#p arr_transfer_zone_id
-        
+        # --- generate a new events 
+  		  e_new = Event.new	
         e_new.transportation = params[:transportation]
         e_new.trip_id = e1.trip_id
-        e_new.transfer_zone_ids = arr_transfer_zone_id 
-
+        #e_new.transfer_zone_ids = arr_transfer_zone_id
         e_new.save
-        # ====finish the event side
+        
+        #puts '+++++++++qkqkkqkqkqk+++++++++'
+        #p e_new
+        #puts '+++++++++qkqkkqkqkqk+++++++++'
 
-
+        # --- get the other two transfer zones of the new event
         tf1 = TransferZone.find_by(id: arr_transfer_zone_id[0])
         tf2 = TransferZone.find_by(id: arr_transfer_zone_id[1])
 
-        tf1temp = tf1.event_ids
-        if tf1temp.length == 3
-          tf1temp.delete_at(1)
-        end
-        
-
-
-        tf2temp = tf2.event_ids
-        if tf2temp.length == 3
-          tf2temp.shift
-        end
-
-        tf1.event_ids = tf1temp
-        tf2.event_ids = tf2temp
-
-        tf1.save
-        tf2.save
-
-        puts '++++++++++++++++++'
-        puts tf1.event_ids
-        puts tf2.event_ids
-        puts '++++++++++++++++++'
+        #puts '++++++++++++++++++'
+        #p tf1.event_ids
+        #p tf2.event_ids
+        #p e_new.transfer_zone_ids
+        #puts '++++++++++++++++++'
 
       	if tf1.event_ids.length == 1
       		tf1.event_ids = [e_new.id]
@@ -174,47 +161,49 @@ class ViewController < ApplicationController
       		puts "Error: tf2 transferzone is related to more than 2 events or no event"
       	end
 
-      	puts '-----------------------'
-      	puts tf1.event_ids
-      	puts tf2.event_ids
-      	puts '-----------------------'
+      	#puts '-----------------------'
+      	#p tf1.event_ids
+      	#p tf2.event_ids
+      	#p e_new.transfer_zone_ids
+        #puts '-----------------------'
 
       	tf1.save
-		tf2.save
-      	# ====finish the transfer zone side
+		    tf2.save
+      	# === finish the transfer zone part
 
+        # --- add intermediate points to the new event
       	arr_intpoint_id = []
 
         e1.intermediatepoint_ids.each do |intpoint_id|
-        	arr_intpoint_id.push(intpoint_id)
-    	end
-    	e2.intermediatepoint_ids.each do |intpoint_id|
-        	arr_intpoint_id.push(intpoint_id)
-    	end
-    	#p arr_intpoint_id
-
-    	check_arr = []
-    	uniq_intpoints = []
-    	arr_intpoint_id.each do |point|
-    		i = Intermediatepoint.find_by(id: point)
-    		if !check_arr.include? i["time"]
-    			uniq_intpoints.push(point)
-    			check_arr.push(i["time"])
-    		else
-    			i.destroy
-    		end
-    	end
-
-    	uniq_intpoints.each do |intpoint_id|
-    		i = Intermediatepoint.find_by(id: intpoint_id)
-    		i.event_id = e_new.id
-    		i.save
-    	end
-    	# ====finish the intermediate point side
-
-		tf.destroy
-		e1.destroy
-		e2.destroy
+          	arr_intpoint_id.push(intpoint_id)
+      	end
+      	e2.intermediatepoint_ids.each do |intpoint_id|
+          	arr_intpoint_id.push(intpoint_id)
+      	end
+      	#p arr_intpoint_id
+  
+      	check_arr = []
+      	uniq_intpoints = []
+      	arr_intpoint_id.each do |point|
+      		i = Intermediatepoint.find_by(id: point)
+      		if !check_arr.include? i["time"]
+      			uniq_intpoints.push(point)
+      			check_arr.push(i["time"])
+      		else
+      			i.destroy
+      		end
+      	end
+  
+      	uniq_intpoints.each do |intpoint_id|
+      		i = Intermediatepoint.find_by(id: intpoint_id)
+      		i.event_id = e_new.id
+      		i.save
+      	end
+      	# === finish the intermediate point part
+  
+    		tf.destroy
+    		e1.destroy
+    		e2.destroy
 
 		respond_to do |format|
 	      format.html {
@@ -222,11 +211,12 @@ class ViewController < ApplicationController
 	      }
 	      format.js
 	      format.json
-    	end
+    end
+    
 	end
 
-    def change_to_transfer_zone
-    puts "------------------"
+  def change_to_transfer_zone
+    puts "--------change to transferzone----------"
     puts params
 
     # --- get the intpoint and make a copy of it
@@ -299,7 +289,7 @@ class ViewController < ApplicationController
         end 
       end
       if another_event_id != nil
-        tf2.event_ids = [e2.id,another_event_id]
+        tf2.event_ids = [another_event_id, e2.id] #tf2.event_ids = [e2.id,another_event_id]
       else
         put "ERROR 1"
       end
@@ -317,7 +307,7 @@ class ViewController < ApplicationController
         intpoint.event_id = e1.id
       elsif intpoint.time > i.time
         intpoint.event_id = e2.id
-      else intpoint.time == i.time
+      elsif intpoint.time == i.time
         intpoint.event_id = e1.id
       end
       intpoint.save 
@@ -345,124 +335,5 @@ class ViewController < ApplicationController
       end
   end
 	
-  def change_to_transfer_zone
-    puts "------------------"
-    puts params
-
-    # --- get the intpoint and make a copy of it
-    i = Intermediatepoint.find_by(id: params[:intpoint_id])
-    i_clone = Intermediatepoint.new
-    i_clone.time = i.time
-    i_clone.latitude = i.latitude
-    i_clone.longitude = i.longitude
-    i_clone.altitude = i.altitude
-    #i_clone.event_id = nil
-    #i_clone.save
-
-    # --- generate 2 events before generate the transferzone
-    e_old = Event.find_by(id: i.event_id)
-    e1 = Event.new
-    e2 = Event.new
-
-    e1.transportation = e_old.transportation
-    e1.trip_id = e_old.trip_id
-    e2.transportation = e_old.transportation
-    e2.trip_id = e_old.trip_id
-
-    # --- generate a transferzone here
-    tf_new = TransferZone.new
-    tf_new.time = i.time
-    tf_new.latitude = i.latitude
-    tf_new.longitude = i.longitude
-    tf_new.altitude = i.altitude
-
-    # --- add events to the new transferzone
-    tf_new.event_ids = [e1.id,e2.id]
-
-    # --- save the tf_new before use its id
-    tf_new.save
-
-    # --- add transferzones to the events
-    e1.transfer_zone_ids = [e_old.transfer_zone_ids[0],tf_new.id]
-    e2.transfer_zone_ids = [tf_new.id,e_old.transfer_zone_ids[1]]
-
-    # --- get the two transfer zones of the old event
-    tf1 = TransferZone.find_by(id: e_old.transfer_zone_ids[0])
-    tf2 = TransferZone.find_by(id: e_old.transfer_zone_ids[1])
-
-    # --- change their event_ids
-    if tf1.event_ids.length == 1
-      tf1.event_ids = [e1.id]
-    elsif tf1.event_ids.length == 2
-      another_event_id = nil
-      tf1.event_ids.each do |event_id|
-        if event_id != e_old.id
-            another_event_id = event_id
-        end 
-      end
-      if another_event_id != nil
-        tf1.event_ids = [another_event_id, e1.id]
-      else
-        put "ERROR 1"
-      end
-    else
-      puts "ERROR 2"
-    end
-
-    if tf2.event_ids.length == 1
-      tf2.event_ids = [e2.id]
-    elsif tf2.event_ids.length == 2
-      another_event_id = nil
-      tf2.event_ids.each do |event_id|
-        if event_id != e_old.id
-            another_event_id = event_id
-        end 
-      end
-      if another_event_id != nil
-        tf2.event_ids = [e2.id,another_event_id]
-      else
-        put "ERROR 1"
-      end
-    else
-      puts "ERROR 2"
-    end
-
-    # --- save these two new events before change intermediatepoints
-    e1.save
-    e2.save
-
-    # --- change the intermediatepoints of old event to the two new ones
-    e_old.intermediatepoints.each do |intpoint|
-      if intpoint.time < i.time
-        intpoint.event_id = e1.id
-      elsif intpoint.time > i.time
-        intpoint.event_id = e2.id
-      else intpoint.time == i.time
-        intpoint.event_id = e1.id
-      end
-      intpoint.save 
-      i_clone.event_id = e2.id
-      i_clone.save 
-    end
-
-    # --- do all the save and destroy
-    #i.destroy
-    e_old.destroy
-    #e1.save
-    #e2.save
-    tf_new.save
-    tf1.save
-    tf2.save
-
-
-
-    respond_to do |format|
-        format.html {
-          redirect_to(:back)
-        }
-        format.js
-        format.json
-      end
-  end
 
 end

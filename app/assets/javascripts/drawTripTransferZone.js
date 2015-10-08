@@ -1,17 +1,49 @@
+// function drawTripTransferZone(eventsData){
+//     for(var i=0;i<eventsData.length;i++){
+//       drawEventTransferZone(eventsData[i],0);
+//       drawEventTransferZone(eventsData[i],1);
+//     }
+//     //drawEventTransferZone(eventsData[eventsData.length-1],1);
+// }
+
 function drawTripTransferZone(eventsData){
-    for(var i=0;i<eventsData.length;i++){
-      drawEventTransferZone(eventsData[i],0);
-      drawEventTransferZone(eventsData[i],1);
+    var allTransferZones = [];
+    
+    for(var i = 0; i < eventsData.length; i++){
+      if(i == 0){
+        allTransferZones.push(eventsData[i]["transferzones"][0]);
+        allTransferZones.push(eventsData[i]["transferzones"][1]);
+      }else{
+        if(!existInArr(allTransferZones, eventsData[i]["transferzones"][0])){
+          allTransferZones.push(eventsData[i]["transferzones"][0]);
+        }
+        if(!existInArr(allTransferZones, eventsData[i]["transferzones"][1])){
+          allTransferZones.push(eventsData[i]["transferzones"][1]);
+        }
+      }
     }
-    // drawEventTransferZone(eventsData[eventsData.length-1],1);
+    
+    for(var i = 0; i < allTransferZones.length; i++){
+      makeTransferZone(allTransferZones[i]);
+    }
+}
+
+function existInArr(arr, element){
+    for(var i = 0; i < arr.length; i++){
+      //console.log(arr[i]["id"]);
+      if(arr[i]["id"] == element["id"]){
+        return true;
+      }
+    }
+    return false;
 }
 
 
-function drawEventTransferZone(eventData, index){
-      var pointsData = eventData["transferzones"];
-      pointsData.sort(compareTime);
-      makeTransferZone(pointsData[index]);
-}
+// function drawEventTransferZone(eventData, index){
+//       var pointsData = eventData["transferzones"];
+//       pointsData.sort(compareTime);
+//       makeTransferZone(pointsData[index]);
+// }
 
 
 function makeTransferZone(transferZoneData){    
@@ -20,7 +52,7 @@ function makeTransferZone(transferZoneData){
 
     var marker = new google.maps.Marker({
         position: transferZoneData,
-        draggable:false,
+        draggable:true,
         icon: image,
         scale: 0.75
       });
