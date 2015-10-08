@@ -1,4 +1,10 @@
-<h1>All Trips</h1>
+<% if @trips.length > 0 %>
+	<% if @startdate && @enddate %>
+		<h1>Showing Trips between <%= @startdate.strftime("%d/%m/%Y %H:%M") %> and <%= @enddate.strftime("%d/%m/%Y %H:%M") %></h1>
+	<% else %>
+		<h1>All Trips</h1>
+	<% end %>
+<% end %>
 </br>
 <div class="container">
 <table class="table table-striped table-hover" style="text-align:center">
@@ -10,16 +16,34 @@
 <th>Verified</th>
 <th>Map</th></tr></thead>
 	<% count = 0 %>
-	<% @trips.each do |trip| %>
-		<% count += 1 %>
-		<tr><td><%= count %></td>
-		<td><%= trip.events[0].intermediatepoints[0].time.strftime("%d/%m/%Y") %></td>
-		<td><%= trip.avgSpeed %></td>
-		<td><%= trip.duration %></td>
-		<td><%= trip.distance %></td>
-		<td><%= trip.verified %></td>
-		<td><%= link_to('View Map', view_gmap_path(trip_id: trip.id)) %></td></tr>
+	<% if @trips.length > 0 %>
+		<% @trips.each do |trip| %>
+			<% count += 1 %>
+			<tr><td><%= count %></td>
+			<td><%= trip.events[0].intermediatepoints[0].time.strftime("%d/%m/%Y") %></td>
+			<td><%= trip.avgSpeed %></td>
+			<td><%= trip.duration %></td>
+			<td><%= trip.distance %></td>
+			<td><%= trip.verified %></td>
+			<td><%= link_to('View Map', view_gmap_path(trip_id: trip.id)) %></td></tr>
+		<% end %>
+	<% else %>
+		<h1>No Trips to Show</h1></br>
 	<% end %>
 </table>
 </div>
 
+<center><h2>Filter by Date and Time</h2></center>
+</br>
+<div class="form-group">
+	<%= form_tag("/view/tripdata/filter", method: "post") do %>
+	  <%= label_tag(:q, "Starting Date:") %>
+	  <%= datetime_select :date, :startdate, :class => 'datepicker', :order => [:day, :month, :year] %>
+	  </br>
+	  <%= label_tag(:q, "Ending Date:") %>
+	  <%= datetime_select :date, :enddate, :class => 'datepicker', :order => [:day, :month, :year] %>
+	  </br></br>
+	  <%= submit_tag "Search", :class => "btn btn-primary" %>
+	<% end %>
+
+</div>
