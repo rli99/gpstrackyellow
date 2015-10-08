@@ -1,7 +1,8 @@
 class ViewController < ApplicationController
 
 	def tripdata
-		@trips = Trip.all.order("id ASC")
+		# @trips = Trip.all.order("id ASC")
+		@trips = current_user.trips.order("id ASC")
 	end
 	
 	def profile
