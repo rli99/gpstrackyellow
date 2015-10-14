@@ -17,11 +17,16 @@ Rails.application.routes.draw do
   get '/profile' => 'view#profile'
   post '/profile' => 'view#update'
   post '/users/edit' => 'user#update'
+
   
   
   resources :users
   
   get 'report' => 'report#index'
+
+  post '/view/tripdata/filter' => 'view#tripdata'
+  delete '/view/tripdata' => 'trip#destroy'
+
 
   
   

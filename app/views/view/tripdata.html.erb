@@ -1,20 +1,51 @@
-<h1>All Trips</h1>
+<% if @trips.length > 0 %>
+	<% if @startdate && @enddate %>
+		<h1>Showing Trips between <%= @startdate.strftime("%d/%m/%Y %H:%M") %> and <%= @enddate.strftime("%d/%m/%Y %H:%M") %></h1>
+	<% else %>
+		<h1>All Trips</h1>
+	<% end %>
+<% end %>
 </br>
-<div class="container">
+<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xs-offset-2 col-sm-offset-2 col-lg-offset-2 col-md-offset-2">
 <table class="table table-striped table-hover" style="text-align:center">
-	<thead><tr><th>Trip ID</th>
-	<th>Trip Average Speed</th>
-<th>Trip Duration</th>
-<th>Trip Distance</th>
-<th>Trip Verified</th>
-<th>Map</th></tr></thead>
-	<% @trips.each do |trip| %>
-		<tr><td><%= trip.id %></td>
-		<td><%= trip.avgSpeed %></td>
-		<td><%= trip.duration %></td>
-		<td><%= trip.distance %></td>
-		<td><%= trip.verified %></td>
-		<td><%= link_to('View Map', view_gmap_path(trip_id: trip.id)) %></td></tr>
+	<thead><tr><th>No.</th>
+	<th>Date</th>
+	<th>Average Speed</th>
+<th>Duration</th>
+<th>Distance</th>
+<th>Verified</th>
+<th>Map</th>
+<th>Delete</th></tr></thead>
+	<% count = 0 %>
+	<% if @trips.length > 0 %>
+		<% @trips.each do |trip| %>
+			<% count += 1 %>
+			<tr><td><%= count %></td>
+			<td><%= trip.events[0].intermediatepoints[0].time.strftime("%d/%m/%Y") %></td>
+			<td><%= trip.avgSpeed %></td>
+			<td><%= trip.duration %></td>
+			<td><%= trip.distance %></td>
+			<td><%= trip.verified %></td>
+			<td><%= link_to("View Map", view_gmap_path(trip_id: trip.id)) %></td>
+			<td><%= button_to("Delete", view_tripdata_path(trip_id: trip.id), method: :delete) %></td></tr>
+		<% end %>
+	<% else %>
+		<h1>No Trips to Show</h1></br>
 	<% end %>
 </table>
+</div>
+<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xs-offset-2 col-sm-offset-2 col-lg-offset-2 col-md-offset-2">
+<center><h2>Filter by Date and Time</h2></center>
+</br>
+<div class="form-group">
+	<%= form_tag("/view/tripdata/filter", method: "post") do %>
+	  <%= label_tag(:q, "Starting Date:") %>
+	  <%= datetime_select :date, :startdate, :class => 'datepicker', :order => [:day, :month, :year] %>
+	  </br>
+	  <%= label_tag(:q, "Ending Date:") %>
+	  <%= datetime_select :date, :enddate, :class => 'datepicker', :order => [:day, :month, :year] %>
+	  </br></br>
+	  <%= submit_tag "Search", :class => "btn btn-primary" %>
+	<% end %>
+</div>
 </div>
