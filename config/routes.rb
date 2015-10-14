@@ -17,7 +17,17 @@ Rails.application.routes.draw do
   get '/profile' => 'view#profile'
   post '/profile' => 'view#update'
   post '/users/edit' => 'user#update'
+  
+  
+  resources :users
+  
+  get 'report' => 'report#index'
 
+  
+  
+  post '/report/show' => 'report#show'
+  
+ 
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
