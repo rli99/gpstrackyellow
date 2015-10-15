@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   post 'view/change_to_transfer_zone/:intpoint_id' => 'view#change_to_transfer_zone', as: :view_change_to_transfer_zone
   post 'datatransformation/transfrom_to_tripdata' => 'datatransformation#transform_to_tripdata', as: :data_transform
   match '/gps-data' => 'gps_incoming_service#receive_data', via: :post
+  match '/ios-login' => 'ios_login#receive_login_data', via: :post
   
   get '/profile' => 'view#profile'
   post '/profile' => 'view#update'

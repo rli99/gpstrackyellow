@@ -12,7 +12,9 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
         
         <ul class="nav navbar-nav">
+            <% if current_user %>
             <li><%= link_to 'Trips', view_tripdata_path %></li>    
+            <% end %>
         </ul>
         
 		  <ul class="nav navbar-nav navbar-right">
