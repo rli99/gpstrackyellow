@@ -1,45 +1,43 @@
 <h1>Report</h1>
 <h3>Report about trips:</h3>
-<h4><b>Total data:</b></h4>
-<p>Number of trips: <%= @tripresultcount %></p>
-<p>Total distance of trips: <%= @tripresultsumdistance %> km</p>
-<p>Total duration of trips: <%= @tripresultsumduration %> h</p>
-<p>Total average speed of trips: <%= @tripresultsumavgSpeed %> km/h</p>
-<h4><b>Average data:</b></h4>
-<p>Average distance of trips: <%= @avetripresultdistance %> km</p>
-<p>Average duration of trips: <%= @avetripresultduration %> h</p>
-<p>Average speed of trips: <%= @avetripresultavgSpeed %> km/h</p>
 
-<h3>Report about transportations:</h3>
+<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xs-offset-2 col-sm-offset-2 col-lg-offset-2 col-md-offset-2">
+<table class="table table-striped table-hover" style="text-align:center">
+<tr><td>Number of trips: </td><td><%= @tripresultcount %></td></tr>
+<tr><td>Total distance of trips: </td><td><%= @tripresultsumdistance.round(2) %> km</td></tr>
+<tr><td>Total duration of trips: </td><td><%= @tripresultsumduration %> mins</td></tr>
+<tr><td>Average distance of trips: </td><td><%= @avetripresultdistance %> km</td></tr>
+<tr><td>Average duration of trips: </td><td><%= @avetripresultduration %> mins</td></tr>
+<tr><td>Average speed of trips: </td><td><%= @avetripresultavgSpeed %> km/h</td></tr>
+</table></div>
+<div class="col-xs-12"><h3>Report about transportations:</h3>
 <h3>Walking</h3>
-<h4><b>Total data:</b></h4>
-<p>Number of walking segments: <%= @walking %></p>
-<p>Total distance of walking: <%= @walkingtotaldistance %> km</p>
-<p>Total duration of walking: <%= @walkingtotalduration %> h</p>
-<p>Total average speed of walking: <%= @walkingtotalespeed %> km/h</p>
-<h4><b>Average data:</b></h4>
-<p>Average distance of walking: <%= @walkingavgdistance %> km</p>
-<p>Average duration of walking: <%= @walkingavgduration %> h</p>
-<p>Average speed of walking: <%= @walkingavgspeed %> km/h</p>
-
-<h3>Tram</h3>
-<h4><b>Total data:</b></h4>
-<p>Number of tram segments: <%= @tram %></p>
-<p>Total distance of tram: <%= @tramtotaldistance %> km</p>
-<p>Total duration of tram: <%= @tramtotalduration %> h</p>
-<p>Total average speed of tram: <%= @tramtotalespeed %> km/h</p>
-<h4><b>Average data:</b></h4>
-<p>Average distance of tram: <%= @tramavgdistance %> km</p>
-<p>Average duration of tram: <%= @tramavgduration %> h</p>
-<p>Average speed of tram: <%= @tramavgspeed %> km/h</p>
-
-<h3>Car</h3>
-<h4><b>Total data:</b></h4>
-<p>Number of car segments: <%= @car %></p>
-<p>Total distance of car: <%= @cartotaldistance %> km</p>
-<p>Total duration of car: <%= @cartotalduration %> h</p>
-<p>Total average speed of car: <%= @cartotalespeed %> km/h</p>
-<h4><b>Average data:</b></h4>
-<p>Average distance of car: <%= @caravgdistance %> km</p>
-<p>Average duration of car: <%= @caravgduration %> h</p>
-<p>Average speed of car: <%= @caravgspeed %> km/h</p>
+<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xs-offset-2 col-sm-offset-2 col-lg-offset-2 col-md-offset-2">
+<table class="table table-striped table-hover" style="text-align:center">
+<tr><td>Number of walking segments: </td><td><%= @walking_events %></td></tr>
+<tr><td>Total distance of walking: </td><td><%= @walkingtotaldistance %> km</td></tr>
+<tr><td>Total duration of walking: </td><td><%= @walkingtotalduration %> mins</td></tr>
+<tr><td>Average distance of walking: </td><td><%= @walkingavgdistance %> km</td></tr>
+<tr><td>Average duration of walking: </td><td><%= @walkingavgduration %> mins</td></tr>
+<tr><td>Average speed of walking: </td><td><%= @walkingavgspeed %> km/h</td></tr>
+</table></div>
+<div class="col-xs-12"><h3>Tram</h3>
+<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xs-offset-2 col-sm-offset-2 col-lg-offset-2 col-md-offset-2">
+<table class="table table-striped table-hover" style="text-align:center">
+<tr><td>Number of tram segments: </td><td><%= @tram_events %></td></tr>
+<tr><td>Total distance of tram: </td><td><%= @tramtotaldistance %> km</td></tr>
+<tr><td>Total duration of tram: </td><td><%= @tramtotalduration %> mins</td></tr>
+<tr><td>Average distance of tram: </td><td><%= @tramavgdistance %> km</td></tr>
+<tr><td>Average duration of tram: </td><td><%= @tramavgduration %> mins</td></tr>
+<tr><td>Average speed of tram: </td><td><%= @tramavgspeed %> km/h</td></tr>
+</table></div>
+<div class="col-xs-12"><h3>Car</h3>
+<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xs-offset-2 col-sm-offset-2 col-lg-offset-2 col-md-offset-2">
+<table class="table table-striped table-hover" style="text-align:center">
+<tr><td>Number of car segments: </td><td><%= @car_events %></td></tr>
+<tr><td>Total distance of car: </td><td><%= @cartotaldistance %> km</td></tr>
+<tr><td>Total duration of car: </td><td><%= @cartotalduration %> mins</td></tr>
+<tr><td>Average distance of car: </td><td><%= @caravgdistance %> km</td></tr>
+<tr><td>Average duration of car: </td><td><%= @caravgduration %> mins</td></tr>
+<tr><td>Average speed of car: </td><td><%= @caravgspeed %> km/h</td></tr></tr>
+</table></div>

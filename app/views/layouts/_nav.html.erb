@@ -14,6 +14,11 @@
             <% if current_user %>
             <li><%= link_to 'Trips', view_tripdata_path %></li>    
             <% end %>
+            <% if current_user %>
+              <% if current_user.role == 'admin' || current_user.role == 'researcher' %>
+                <li><%= link_to 'Report', report_path %></li>
+              <% end %>
+            <% end %>
         </ul>
         
 		  <ul class="nav navbar-nav navbar-right">
