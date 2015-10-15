@@ -10,9 +10,12 @@ function drawTripIntermediatePoints(eventsData) {
     }
 }
 
+var image = '/assets/int_marker.png';
+
 function makeIntPoint(intPointData){
     var marker = new google.maps.Marker({
       position: intPointData,
+      icon: image,
       draggable:true
     });
 
