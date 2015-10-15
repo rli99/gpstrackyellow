@@ -16,13 +16,12 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
-
-html,body{
+html, body {
     height: 100%;
     width: 100%;
     font-size: 16px;
     padding-top: 25px;
-};
+}
 
 .navbar { 
     margin-bottom: 0;
@@ -30,10 +29,6 @@ html,body{
 
 .alert {
     margin-bottom: 0;
-}
-
-.home-pic {
-    padding-top: 50px;
 }
 
 footer {
@@ -52,4 +47,12 @@ table {
 
 .title-black.hover {
     color: black;
+}
+
+a.delete:link, a.delete:hover, a.delete:active, a.delete:visited {
+    color: red;
+}
+
+.btn-left-align {
+    margin-right: 100px;
 }

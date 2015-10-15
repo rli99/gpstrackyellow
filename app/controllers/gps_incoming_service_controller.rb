@@ -3,7 +3,7 @@ require 'json'
 class GpsIncomingServiceController < ApplicationController
 	def receive_data
 
-		render text: "#{params}"
+		render text: "Data succesfully received"
 
 		data = JSON.parse(request.body.read)
 

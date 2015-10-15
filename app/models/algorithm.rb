@@ -59,9 +59,9 @@ class Algorithm < ActiveRecord::Base
             pointsChecked += 1
             totalPointsChecked += 1
             newTransportation = ""
-            if point.speed.to_f < 1.6
+            if point.speed.to_f < 5
                 newTransportation = "walking"
-            elsif point.speed.to_f >= 1.6 && point.speed.to_f <= 10.0
+            elsif point.speed.to_f >= 5 && point.speed.to_f <= 10.0
                 newTransportation = "tram"
             elsif point.speed.to_f > 10.0
                 newTransportation = "car"
@@ -77,7 +77,12 @@ class Algorithm < ActiveRecord::Base
                 end
             else
                 if totalPointsChecked == gpsData.length
-                    createEvent(t, gpsData[(totalPointsChecked - pointsChecked - 1)..(totalPointsChecked - 1)], currentTransportation)
+                    if totalPointsChecked == pointsChecked
+                       createEvent(t, gpsData[(totalPointsChecked - pointsChecked)..(totalPointsChecked - 1)], currentTransportation)
+                   else
+                       createEvent(t, gpsData[(totalPointsChecked - pointsChecked - 1)..(totalPointsChecked - 1)], currentTransportation)    
+                    end
+                    
                 end
             end
 

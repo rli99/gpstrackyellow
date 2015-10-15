@@ -1,17 +1,29 @@
 <script src='//google-maps-utility-library-v3.googlecode.com/svn/tags/markerclustererplus/2.0.14/src/markerclusterer_packed.js' type='text/javascript'></script>
 
-
-
-<h1>This is a Google maps page</h1>
+<% trip = Trip.find(@tripId) %>
+<% date = trip.events[0].intermediatepoints[0].time %>
+<h1>Trip on <%= date.strftime('%d/%m/%Y') %></h1>
 </br>
-<div style='width: 800px;'>
-  <div id="map" style='width: 800px; height: 400px;'></div>
+<div class="col-md-9 map-class">
+  <div id="map" style='width: 850px; height: 400px;'></div>
+</div>
+
+<div class="col-md-3 legend">
+  <span class="pull-left">
+<img class="legend-icon" src='/assets/map_marker.png'>Transfer Zone<br /><br />
+<img class="default-marker legend-icon" src='/assets/default-marker.png'>Intermediate Point<br /><br />
+<img class="legend-icon" src='/assets/green.png'>Car<br /><br />
+<img class="legend-icon" src='/assets/red.png'>Tram<br /><br />
+<img class="legend-icon" src='/assets/blue.png'>Walking<br /><br />
+</span>
 </div>
 
 </br>
-
-<%= link_to 'Verify Trip', view_tripdata_path(tripId: @tripId), method: :post %>
-
+</br>
+<div class="col-xs-12 buttons">
+<%= link_to 'Verify Trip', view_tripdata_path(tripId: @tripId), method: :post, :class => 'btn btn-primary btn-left-align' %>
+<%= link_to 'Back', view_tripdata_path, :class => 'btn btn-primary' %>
+</div>
 <script type = 'text/javascript'>
 
   eventsData = <%=raw @hash_eventsData.to_json %>;
@@ -28,3 +40,29 @@
   map.fitBounds(bounds);
 
 </script>
+
+<style>
+  .map-class {
+    padding-right: 0px;
+    margin-right: 0px;
+  }
+
+  .buttons {
+    padding-top: 25px;
+    padding-bottom: 25px;
+  }
+  
+  .legend {
+    text-align: left;
+    vertical-align: middle;
+  }
+  
+  .default-marker {
+    margin-left: 3px;
+    margin-right: 3px;
+  }
+  
+  .legend-icon {
+    padding-right: 8px;
+  }
+</style>

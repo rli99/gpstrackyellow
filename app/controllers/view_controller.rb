@@ -1,5 +1,7 @@
 class ViewController < ApplicationController
 	
+	before_filter :authenticate_user!
+	
 	def tripdata
 	  if params[:date]
 	    @trips = []

@@ -6,16 +6,22 @@
       		<span class="icon-bar"></span>
       		<span class="icon-bar"></span>
     		</button>
-    
     		<%= link_to 'GPS Track', root_path, {:class=>"navbar-brand title-black"} %></div>
     
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
         
         <ul class="nav navbar-nav">
+            <% if current_user %>
             <li><%= link_to 'Trips', view_tripdata_path %></li>    
+            <% end %>
         </ul>
         
 		  <ul class="nav navbar-nav navbar-right">
+        <% if current_user %>
+          <% if current_user.role == 'admin' %>
+            <li><%= link_to 'Administration', users_path %></li>
+          <% end %>
+        <% end %>
         <% if current_user %>
           <li><%= link_to 'Profile', profile_path %></li>
           <li><%= link_to 'Edit Registration', edit_user_registration_path %></li><li><%= link_to "Logout", destroy_user_session_path, :method => :delete %></li>
