@@ -1,31 +1,38 @@
-<h1>Edit user</h1>
+<h1>Edit User Privileges</h1>
+</br>
+<div class="row">
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-3 col-sm-offset-3 col-lg-offset-3 col-md-offset-3">
 <%= form_for @user do |f| %>
 <p>
-    <%= f.label :email %><br />
-    <%= f.text_field :email %><br />
+    <%= f.label :email, 'Email' %>
+    <%= f.text_field :email, class: 'form-control' %><br />
 </p>
 <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %><br />
+    <%= f.label :name, 'First Name' %>
+    <%= f.text_field :name, class: 'form-control' %><br />
 </p>
 <p>
-    <%= f.label :surname %><br />
-    <%= f.text_field :surname %><br />
+    <%= f.label :surname, 'Last Name' %>
+    <%= f.text_field :surname, class: 'form-control' %><br />
 </p>
-
 <p>
-
-     <%= f.radio_button(:role, "user") %>
+    <%= f.radio_button(:role, "user") %>
     <%= f.label(:role_user, "User") %>
-     <%= f.radio_button(:role, "admin") %>
-     <%= f.label(:role_admin, "Admin") %>
-     <%= f.radio_button(:role, "researcher") %>
-     <%= f.label(:role_researcher, "Researcher") %>
- 
+    <%= f.radio_button(:role, "admin") %>
+    <%= f.label(:role_admin, "Admin") %>
+    <%= f.radio_button(:role, "researcher") %>
+    <%= f.label(:role_researcher, "Researcher") %>
+
  
 </p>
 <p>
-    <%= f.submit "Edit the user" %><br />
-    
+    <%= f.submit "Edit", :class => 'btn btn-primary' %><br />
 </p>
 <% end %>
+</div>
+</div>
+<style>
+    input[type="radio"] {
+        margin-left: 16px;
+    }
+</style>

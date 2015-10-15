@@ -48,3 +48,7 @@ table {
 .title-black.hover {
     color: black;
 }
+
+a.delete:link, a.delete:hover, a.delete:active, a.delete:visited {
+    color: red;
+}
