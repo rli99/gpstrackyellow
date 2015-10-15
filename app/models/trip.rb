@@ -47,7 +47,7 @@ class Trip < ActiveRecord::Base
         # ----- add trip  ------
 
         t = Trip.new
-        t.avgSpeed = "8km/h"
+        t.avgSpeed = "8 km/h"
         t.duration = "2h"
         t.distance = "16km"
         t.verified = false
@@ -74,6 +74,7 @@ class Trip < ActiveRecord::Base
         i1.latitude = "-37.79025"
         i1.longitude = "145.0415"
         i1.altitude = "333"
+        i1.speed = "12km/h "
         i1.event_id = e1.id
         i1.save
 
@@ -83,6 +84,7 @@ class Trip < ActiveRecord::Base
         i5.latitude = "-36.5648"
         i5.longitude = "147.3706"
         i5.altitude = "333"
+        i5.speed = "12km/h "
         i5.event_id = e1.id
         i5.save
 
@@ -92,6 +94,7 @@ class Trip < ActiveRecord::Base
         i2.latitude = "-35.3196"
         i2.longitude = "149.1943"
         i2.altitude = "333"
+        i2.speed = "12km/h "
         i2.event_id = e1.id
         i2.save
 
@@ -101,6 +104,7 @@ class Trip < ActiveRecord::Base
         i3.latitude = "-35.3196"
         i3.longitude = "149.1943"
         i3.altitude = "333"
+        i3.speed = "12km/h "
         i3.event_id = e2.id
         i3.save
 
@@ -110,6 +114,7 @@ class Trip < ActiveRecord::Base
         i6.latitude = "-34.6016"
         i6.longitude = "150.3369"
         i6.altitude = "333"
+        i6.speed = "16km/h "
         i6.event_id = e2.id
         i6.save
 
@@ -119,6 +124,7 @@ class Trip < ActiveRecord::Base
         i4.latitude = "-33.8650"
         i4.longitude = "151.2094"
         i4.altitude = "333"
+        i4.speed = "124km/h "
         i4.event_id = e2.id
         i4.save
 

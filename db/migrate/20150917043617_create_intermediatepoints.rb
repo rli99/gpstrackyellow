@@ -5,7 +5,7 @@ class CreateIntermediatepoints < ActiveRecord::Migration
       t.string :latitude
       t.string :longitude
       t.string :altitude
-
+      
       t.timestamps null: false
     end
   end
