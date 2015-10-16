@@ -52,7 +52,9 @@ function makeTransferZone(transferZoneData){
 
     var marker = new google.maps.Marker({
         position: transferZoneData,
-        draggable:true,
+        draggable: false,
+        zIndex: 100,
+        optimized: false,
         icon: image,
         scale: 0.75
       });
@@ -71,39 +73,108 @@ function makeTransferZone(transferZoneData){
         }      
       } 
 
-      var form = ""
+      var form = "";
 
       if(transferZoneData["event_ids"].length == 2){
-        form = "Please select a transportation before you delete this trasfer zone! <br/><br/>"
-              + "<form action='/view/delete_transfer_zone/" + transferZoneData["id"] + "' method='post'>"
-              + '<select name="transportation">'
+        marker.draggable = true;
+        form = "<h5>Please select a transportation before you delete this transfer zone! </h5>"
+              + "<form class='form-inline' action='/view/delete_transfer_zone/" + transferZoneData["id"] + "' method='post'>"
+              + '<div class="form-group">'
+              + '<select name="transportation" class="form-control">'
+              + '<option value="empty"></option>'
               + '<option value="walking">walking</option>'
               + '<option value="car">car</option>'
               + '<option value="tram">tram</option>'
               + '</select>'
-              + "<button type = 'submit'> delete this transfer zone </button>"
+              + '</div>'
+              + '<div class="form-group">'
+              + "<button type = 'submit' class = 'btn btn-danger'> Delete this transfer zone </button>"
+              + '</div>'
               + "</form>";
       }else if (transferZoneData["event_ids"].length == 1){
-        form = "This is the first/last transferzone, so it is not allowed to delete it."
+        form = "<h5>This is the first/last transferzone, so you are not allowed to delete it.</h5>";
       } else {
-        form = "error"
+        form = "error";
       }
 
-
-        
       var infowindow = new google.maps.InfoWindow({ 
-        content: "transfer_zone id: " + transferZoneData["id"] + "<br/><br/>" 
-               + "event_ids: " + event_ids_str + "<br/><br/>" + form 
+        content: //"transfer_zone id: " + transferZoneData["id"] + "<br/><br/>" 
+               //+ "event_ids: " + event_ids_str + "<br/><br/>" + 
+               form 
       });
 
       marker.addListener('click', function(e) {
         infowindow.open(map,marker);
-        console.log(transferZoneData);
+      });
+      
+      
+      marker.addListener('dragend', function(e) {
+        var r = confirm("Are you sure to change the transfer zone to the nearest intermediate point to the current position?");
+        if (r==true)
+          {
+          console.log("You pressed OK!");
+          // console.log(e.latLng);
+          // console.log(transferZoneData);
+          drag_transfer_zone_to_intermediatepoint(transferZoneData, e.latLng);
+          }
+        else
+          {
+          console.log("You pressed Cancel!");
+          window.location.reload();
+          }
       });
 
       marker.setMap(map);
 
+      // var snapToRoute = new SnapToRoute(map, marker, polylinePath);
+
   }
 
+}
+
+function drag_transfer_zone_to_intermediatepoint(transferZoneData, intpoint_latLng){
+    console.log(transferZoneData);
+    console.log(intpoint_latLng);
+ 
+    // var xmlhttp;
+    // if (window.XMLHttpRequest)
+    // {// code for IE7+, Firefox, Chrome, Opera, Safari
+    //     xmlhttp=new XMLHttpRequest();
+    // }
+    // else
+    // {// code for IE6, IE5
+    //     xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    // }
+    // var url = "";
+    // console.log(url);
+    // xmlhttp.open("POST",url,true);
+    // xmlhttp.send();
+
+    // xmlhttp.onreadystatechange=function()
+    // {
+    //     if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    //     {
+    //         console.log(xmlhttp.responseText);
+    //     }
+    // }
+          
+    post('drag_transfer_zone_to_intpoint/' + transferZoneData.id, {intpoint_latLng :intpoint_latLng});  
+}
+
+function post(URL, PARAMS) {        
+    var temp = document.createElement("form");        
+    temp.action = URL;        
+    temp.method = "post";        
+    temp.style.display = "none";        
+    for (var x in PARAMS) {        
+        var opt = document.createElement("textarea");        
+        opt.name = x;        
+        opt.value = PARAMS[x];        
+        // alert(opt.name)        
+        temp.appendChild(opt);        
+    }        
+    document.body.appendChild(temp);        
+    temp.submit();        
+    return temp;        
 }
 

@@ -13,8 +13,6 @@ function drawTripPolyline(eventsData) {
 function drawEventPolyline(intPointsData, color){
     // console.log(intPointsData);
 
-    var polylinePath;
-
     var polylineCoordinates = [];
     var sortedIntPointsData = intPointsData.sort(compareTime);
     for(var i=0;i<intPointsData.length;i++){
@@ -29,17 +27,24 @@ function drawEventPolyline(intPointsData, color){
       strokeWeight: 5
     });
 
-    var form = "<form action='/view/change_event_transportation/" + intPointsData[0]["event_id"] + "' method='post'>"
-            + '<select name="transportation">'
-            + '<option value="walking">walking</option>'
-            + '<option value="car">car</option>'
-            + '<option value="tram">tram</option>'
-            + '</select>'
-            + "<button type = 'submit'> Change the transportation </button>"
-            + "</form>";
+    var form = "<h5>Please select a transportation before changing! </h5>"
+              + "<form class='form-inline' action='/view/change_event_transportation/" + intPointsData[0]["event_id"] + "' method='post'>"
+              + '<div class="form-group">'
+              + '<select name="transportation" class="form-control">'
+              + '<option value="empty"></option>'
+              + '<option value="walking">walking</option>'
+              + '<option value="car">car</option>'
+              + '<option value="tram">tram</option>'
+              + '</select>'
+              + '</div>'
+              + '<div class="form-group">'
+              + "<button type = 'submit' class = 'btn btn-success'> Change the transportation </button>"
+              + '</div>'
+              + "</form>";
 
     var infowindow = new google.maps.InfoWindow({      
-      content: "event id: " + intPointsData[0]["event_id"] + "<br/><br/>" + "Transportation: " + intPointsData[0]["transportation"] + "<br/><br/>" + form
+      content: //"event id: " + intPointsData[0]["event_id"] + "<br/><br/>" + "Transportation: " + intPointsData[0]["transportation"] + "<br/><br/>" + 
+               form
     });
 
     polylinePath.addListener('click', function(e) {  

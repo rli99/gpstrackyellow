@@ -11,29 +11,21 @@ Rails.application.routes.draw do
   post 'view/change_event_transportation/:event_id' => 'view#change_event_transportation', as: :view_change_event_transportation
   post 'view/delete_transfer_zone/:transfer_zone_id' => 'view#delete_transfer_zone', as: :view_delete_transfer_zone
   post 'view/change_to_transfer_zone/:intpoint_id' => 'view#change_to_transfer_zone', as: :view_change_to_transfer_zone
+  post 'view/drag_transfer_zone_to_intpoint/:transfer_zone_id' => 'view#drag_transfer_zone_to_intpoint', as: :view_drag_transfer_zone_to_intpoint
   post 'datatransformation/transfrom_to_tripdata' => 'datatransformation#transform_to_tripdata', as: :data_transform
+  
   match '/gps-data' => 'gps_incoming_service#receive_data', via: :post
   match '/ios-login' => 'ios_login#receive_login_data', via: :post
   
   get '/profile' => 'view#profile'
   post '/profile' => 'view#update'
   post '/users/edit' => 'user#update'
-
-  
   
   resources :users
-  
   get 'report' => 'report#index'
-
   post '/view/tripdata/filter' => 'view#tripdata'
   delete '/view/tripdata' => 'trip#destroy'
-
-
-  
-  
   post '/report/show' => 'report#show'
-  
- 
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

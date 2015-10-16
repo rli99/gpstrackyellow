@@ -4,19 +4,63 @@
 <% date = trip.events[0].intermediatepoints[0].time %>
 <h1>Trip on <%= date.strftime('%d/%m/%Y') %></h1>
 </br>
-<div class="col-md-9 map-class">
-  <div id="map" style='width: 850px; height: 400px;'></div>
+
+<div class="container">
+  
+  <div class="row">
+    
+    <div class="col-md-9">
+      <div style='width: 800px;'>
+        <div id="map" style='width: 800px; height: 400px;'></div>
+      </div>
+    </div>
+    
+    <div class="col-md-3">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Legend</h3>
+        </div>
+        <div class="panel-body">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Symbol</th>
+                <th>Meaning</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><%= image_tag("transfer_zone.png", :class => "transferzone") %></td>
+                <td>Transfer Zone</td>
+              </tr>
+              <tr>
+                <td><%= image_tag("intpoint.png", :class => "intpoint") %></td>
+                <td>Intermediate Point</td>
+              </tr>
+              <tr>
+                <td><%= image_tag("walking.png") %></td>
+                <td>Walking</td>
+              </tr>
+              <tr>
+                <td><%= image_tag("car.png") %></td>
+                <td>Car</td>
+              </tr>
+              <tr>
+                <td><%= image_tag("tram.png") %></td>
+                <td>Tram</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+  
+
 </div>
 
-<div class="col-md-3 legend">
-  <span class="pull-left">
-<img class="legend-icon" src='/assets/map_marker.png'>Transfer Zone<br /><br />
-<img class="default-marker legend-icon" src='http://www.clker.com/cliparts/y/K/J/U/l/Z/black-dot-md.png'>Intermediate Point<br /><br />
-<img class="legend-icon" src='/assets/green.png'>Car<br /><br />
-<img class="legend-icon" src='/assets/red.png'>Tram<br /><br />
-<img class="legend-icon" src='/assets/blue.png'>Walking<br /><br />
-</span>
-</div>
 
 </br>
 </br>
@@ -31,13 +75,17 @@
   console.log(eventsData);
 
   var map;
+  var polylinePath;
   var bounds = new google.maps.LatLngBounds();
+  //google.maps.event.addDomListener(window, "load", initMap);
 
   initMap();
   drawTripIntermediatePoints(eventsData);
   drawTripPolyline(eventsData);
   drawTripTransferZone(eventsData);
   map.fitBounds(bounds);
+  // map.fitBounds(bounds);
+  // google.maps.event.addDomListener(window, "load", initMap);
 
 </script>
 
@@ -57,13 +105,15 @@
     vertical-align: middle;
   }
   
-  .default-marker {
-    margin-left: 10px;
-    margin-right: 7px;
+  .intpoint {
     width: 30px;
   }
   
   .legend-icon {
     padding-right: 8px;
+  }
+  
+  .transferzone {
+    margin-left: -5.5px;
   }
 </style>
