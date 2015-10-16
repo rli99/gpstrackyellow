@@ -13,33 +13,34 @@ function drawTripIntermediatePoints(eventsData) {
 function makeIntPoint(intPointData){
     var marker = new google.maps.Marker({
       position: intPointData,
-      draggable:true
+      draggable: false,
+      zIndex: 1
     });
 
     var form_change_transportation = "<form action='/view/change_event_transportation/" + intPointData["event_id"] + "' method='post'>"
-            + '<select name="transportation">'
+            + '<select name="transportation" class="form-control">'
             + '<option value="walking">walking</option>'
             + '<option value="car">car</option>'
             + '<option value="tram">tram</option>'
             + '</select>'
-            + "<button type = 'submit'> Change the transportation </button>"
+            + "<button type = 'submit' class='btn btn-primary'> Change the transportation </button>"
             + "</form>";
 
     var form_to_transferzone = "<form action='/view/change_to_transfer_zone/" + intPointData["id"] + "' method='post'>"
-            + "<button type = 'submit'> Change to a transferzone </button>"
+            + "<button type = 'submit' class='btn btn-primary'> Change to a transferzone </button>"
             + "</form>";
 
     var infowindow = new google.maps.InfoWindow({      
-      content: "event id: " + intPointData["event_id"] + "<br/><br/>" 
-             + "intpoint id: " + intPointData["id"] + "<br/><br/>" 
-             + "Transportation: " + intPointData["transportation"] + "<br/><br/>" 
-             + form_change_transportation + "<br/>" 
+      content: "<h5> Transportation: " + intPointData["transportation"] + "</h5>" 
+             //+ "event id: " + intPointData["event_id"] + "<br/><br/>" 
+             //+ "intpoint id: " + intPointData["id"] + "<br/><br/>" 
+             //+ form_change_transportation + "<br/>" 
              + form_to_transferzone
     });
 
     marker.addListener('click', function(e) {
-
       infowindow.open(map,marker);
+      console.log(marker.zIndex);
     });
 
     marker.setMap(map);

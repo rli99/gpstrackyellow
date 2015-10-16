@@ -53,25 +53,47 @@ class ViewController < ApplicationController
 		puts "------------------"
 		puts params
 
-		e = Event.find_by(id: params[:event_id])
-		e.transportation = params[:transportation]
-		e.save
-
+    if params[:transportation] == "empty"
+      flash[:alert] = "ERROR: You did not choose a transportation when changing a event!"
+    else
+      e = Event.find_by(id: params[:event_id])
+  		e.transportation = params[:transportation]
+  		e.save
+    end
+		
 		respond_to do |format|
 	      format.html {
 	        redirect_to(:back)
 	      }
 	      format.js
 	      format.json
-    	end
+    end
 	end
 
 	def delete_transfer_zone
   	  puts "--------delete transferzone----------"
   	  puts params
+      
+      if params[:transportation] == "empty"
+        flash[:alert] = "ERROR: You did not choose a transportation when deleting a transfer zone!"
+      else
+        real_delete_transfer_zone(params[:transfer_zone_id], params[:transportation])
+      end
 
+  		respond_to do |format|
+  	      format.html {
+  	        redirect_to(:back)
+  	      }
+  	      format.js
+  	      format.json
+      end
+	end
+  
+  def real_delete_transfer_zone(params_transfer_zone_id, params_transportation)
+    
       # --- get the transfer zone
-  		tf = TransferZone.find_by(id: params[:transfer_zone_id])
+  		#tf = TransferZone.find_by(id: params[:transfer_zone_id])
+  		tf = TransferZone.find_by(id: params_transfer_zone_id)
   
       # --- we only allow user to delete the transferzone that is not the start and the end,
       #     for this step, a transfer zone must have 2 events,
@@ -120,7 +142,7 @@ class ViewController < ApplicationController
 
         # --- generate a new events 
   		  e_new = Event.new	
-        e_new.transportation = params[:transportation]
+        e_new.transportation = params_transportation
         e_new.trip_id = e1.trip_id
         #e_new.transfer_zone_ids = arr_transfer_zone_id
         e_new.save
@@ -213,22 +235,28 @@ class ViewController < ApplicationController
     		e1.destroy
     		e2.destroy
 
-		respond_to do |format|
-	      format.html {
-	        redirect_to(:back)
-	      }
-	      format.js
-	      format.json
-    end
-    
-	end
-
+  end
+  
   def change_to_transfer_zone
     puts "--------change to transferzone----------"
     puts params
 
+    real_change_to_transfer_zone(params[:intpoint_id])
+
+    respond_to do |format|
+        format.html {
+          redirect_to(:back)
+        }
+        format.js
+        format.json
+    end
+    
+  end
+  
+  def real_change_to_transfer_zone(params_intpoint_id)
+    
     # --- get the intpoint and make a copy of it
-    i = Intermediatepoint.find_by(id: params[:intpoint_id])
+    i = Intermediatepoint.find_by(id: params_intpoint_id)
     i_clone = Intermediatepoint.new
     i_clone.time = i.time
     i_clone.latitude = i.latitude
@@ -331,16 +359,71 @@ class ViewController < ApplicationController
     tf_new.save
     tf1.save
     tf2.save
+    
+  end
+  
+  def drag_transfer_zone_to_intpoint
+    puts "--------drag_transfer_zone_to_intpoint----------"
+    puts params
+    
+    trip_id = TransferZone.find(params[:transfer_zone_id]).events[0].trip_id
+    nearest_intpoint = find_nearest_intpoint(trip_id, params[:intpoint_latLng])
 
-
-
+    if nearest_intpoint != nil
+      real_delete_transfer_zone(params[:transfer_zone_id], "walking")
+      real_change_to_transfer_zone(nearest_intpoint.id)
+    else
+      puts "--- ERROR: the nearest intpoint is a transfer zone!"
+      flash[:alert] = "ERROR: The nearest intpoint is a transfer zone!"
+    end
+    
     respond_to do |format|
-        format.html {
-          redirect_to(:back)
-        }
-        format.js
-        format.json
+      format.html {
+        redirect_to(:back)
+      }
+      format.js
+      format.json
+    end
+  end
+  
+  def find_nearest_intpoint(trip_id, intpoint_latLng) 
+    puts "--------find_nearest_intpoint----------"
+    #puts trip_id
+    #puts intpoint_latLng
+    
+    intpoint_latLng_hash = transfer_latLngString_to_hash(intpoint_latLng)
+    #p intpoint_latLng_hash
+    trip = Trip.find(trip_id)
+    start_intpoint =  trip.events[0].intermediatepoints[0]
+    the_intpoint = nil
+    min_distance = (start_intpoint.latitude.to_f - intpoint_latLng_hash[:lat].to_f) ** 2 + (start_intpoint.longitude.to_f - intpoint_latLng_hash[:lng].to_f) ** 2
+    
+    trip.events.each do |event|
+      event.intermediatepoints.each do |intpoint|
+        distance = (intpoint.latitude.to_f - intpoint_latLng_hash[:lat].to_f) ** 2 + (intpoint.longitude.to_f - intpoint_latLng_hash[:lng].to_f) ** 2
+        if distance < min_distance
+          min_distance = distance
+          the_intpoint = intpoint
+        end
       end
+    end
+
+    TransferZone.all.each do |tf|
+      if the_intpoint.latitude == tf.latitude && the_intpoint.longitude == tf.longitude
+        the_intpoint = nil
+        break
+      end
+    end
+    
+    return the_intpoint
+    
+  end
+  
+  def transfer_latLngString_to_hash(intpoint_latLng)
+    intpoint_latLng_hash = {}
+    intpoint_latLng_hash[:lat] = intpoint_latLng.split(",")[0].split("(")[1]
+    intpoint_latLng_hash[:lng] = intpoint_latLng.split(",")[1].split(")")[0]
+    return intpoint_latLng_hash
   end
 
   private
