@@ -72,8 +72,6 @@ class ViewController < ApplicationController
 	end
 
 	def change_event_transportation
-		puts "------------------"
-		puts params
 
     if params[:transportation] == "empty"
       flash[:alert] = "ERROR: You did not choose a transportation when changing a event!"
@@ -93,8 +91,6 @@ class ViewController < ApplicationController
 	end
 
 	def delete_transfer_zone
-  	  puts "--------delete transferzone----------"
-  	  puts params
       
       if params[:transportation] == "empty"
         flash[:alert] = "ERROR: You did not choose a transportation when deleting a transfer zone!"
@@ -137,10 +133,9 @@ class ViewController < ApplicationController
         end 
       end
       
-      #puts '+++++++++qkqkkqkqkqk+++++++++'
-      #p arr_transfer_zone_id
-      #puts '+++++++++qkqkkqkqkqk+++++++++'
-
+      # puts '+++++++++qkqkkqkqkqk+++++++++'
+      # p arr_transfer_zone_id
+      # puts '+++++++++qkqkkqkqkqk+++++++++'
 
 =begin
     	# puts '!!!!!!!!!!!!!------------'
@@ -260,8 +255,6 @@ class ViewController < ApplicationController
   end
   
   def change_to_transfer_zone
-    puts "--------change to transferzone----------"
-    puts params
 
     real_change_to_transfer_zone(params[:intpoint_id])
 
@@ -280,6 +273,7 @@ class ViewController < ApplicationController
     # --- get the intpoint and make a copy of it
     i = Intermediatepoint.find_by(id: params_intpoint_id)
     i_clone = Intermediatepoint.new
+    i_clone.speed = i.speed
     i_clone.time = i.time
     i_clone.latitude = i.latitude
     i_clone.longitude = i.longitude
@@ -385,15 +379,33 @@ class ViewController < ApplicationController
   end
   
   def drag_transfer_zone_to_intpoint
-    puts "--------drag_transfer_zone_to_intpoint----------"
-    puts params
     
     trip_id = TransferZone.find(params[:transfer_zone_id]).events[0].trip_id
     nearest_intpoint = find_nearest_intpoint(trip_id, params[:intpoint_latLng])
 
+    # Added to fix dragging point. Before it was just 'walking' passed to real_delete_transfer_zone
+    # This finds out what transportation we need to set for real_delete_transfer_zone below
+    oldTransportation = ''
     if nearest_intpoint != nil
-      real_delete_transfer_zone(params[:transfer_zone_id], "walking")
+      event_one = TransferZone.find(params[:transfer_zone_id]).events[0]
+      event_two = TransferZone.find(params[:transfer_zone_id]).events[1]
+      if event_one.intermediatepoints.include? nearest_intpoint
+        oldTransportation = event_two.transportation
+      elsif event_two.intermediatepoints.include? nearest_intpoint
+        oldTransportation = event_one.transportation
+      else
+        puts 'error in locating correct event for dragging transfer zone'
+      end
+    end
+
+    if nearest_intpoint != nil
+      # We have swapped the below two lines. 
+      # Both produce an error. In the current order, we get the correct transportation, but there are extra lines being drawn
+      # In the old order, the transportation is not correct.
+      # We believe this should be the correct order. The error is probably not here.
+      # It is very possible that there is an error in real_change_to_transfer_zone or real_delete_transfer_zone
       real_change_to_transfer_zone(nearest_intpoint.id)
+      real_delete_transfer_zone(params[:transfer_zone_id], oldTransportation)
     else
       puts "--- ERROR: the nearest intpoint is a transfer zone!"
       flash[:alert] = "ERROR: The nearest intpoint is a transfer zone!"
@@ -409,7 +421,7 @@ class ViewController < ApplicationController
   end
   
   def find_nearest_intpoint(trip_id, intpoint_latLng) 
-    puts "--------find_nearest_intpoint----------"
+    # puts "--------find_nearest_intpoint----------"
     #puts trip_id
     #puts intpoint_latLng
     
@@ -432,6 +444,7 @@ class ViewController < ApplicationController
 
     TransferZone.all.each do |tf|
       if the_intpoint.latitude == tf.latitude && the_intpoint.longitude == tf.longitude
+        puts the_intpoint.latitude, tf.latitude
         the_intpoint = nil
         break
       end
