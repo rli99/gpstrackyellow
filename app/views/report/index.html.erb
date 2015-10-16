@@ -1,0 +1,18 @@
+<h1>Page for researchers</h1>
+<h2>Please select time period to create a report:</h2>
+<br />
+<%= form_tag :controller => 'report', :action => 'show', :method => 'post' do %>
+ 
+ 
+  <p>From:
+   <%= datetime_select :fromtime, :fromtime1, :order => [:day, :month, :year] %>
+   </p>
+   <p>To:
+  <%= datetime_select :totime, :totime1, :order => [:day, :month, :year] %>
+   </p>
+  <br />
+   <p>
+  <%= submit_tag "Search", :class => 'btn btn-primary' %> 
+  </p>
+
+<% end %>

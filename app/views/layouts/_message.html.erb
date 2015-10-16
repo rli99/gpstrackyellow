@@ -4,11 +4,11 @@
 <% if alert %>
 	<p id="flash" class="alert alert-danger"><%= alert %></p>
 <% end %>
-  
+
 <script type="text/javascript">
     $(document).ready(function(){
         setTimeout(function(){
         $('#flash').remove();
-        }, 2000);
+        }, 5000);
     })
 </script>

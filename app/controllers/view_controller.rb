@@ -1,7 +1,29 @@
 class ViewController < ApplicationController
-
+	
+	before_filter :authenticate_user!
+	
 	def tripdata
-		@trips = Trip.all.order("id ASC")
+	  if params[:date]
+	    @trips = []
+	    @startdate = DateTime.new(params[:date]["startdate(1i)"].to_i, 
+                        params[:date]["startdate(2i)"].to_i,
+                        params[:date]["startdate(3i)"].to_i,
+                        params[:date]["startdate(4i)"].to_i,
+                        params[:date]["startdate(5i)"].to_i)
+	    @enddate = DateTime.new(params[:date]["enddate(1i)"].to_i, 
+                  params[:date]["enddate(2i)"].to_i,
+                  params[:date]["enddate(3i)"].to_i,
+                  params[:date]["enddate(4i)"].to_i,
+                  params[:date]["enddate(5i)"].to_i)
+	    Trip.all.each do |t|
+	      triptime = t.events[0].intermediatepoints[0].time
+	      if triptime < @enddate && triptime > @startdate
+	        @trips.push(t)
+	      end
+	    end
+	  else
+	    @trips = current_user.trips.order("id ASC")
+	  end
 	end
 	
 	def profile

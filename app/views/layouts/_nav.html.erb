@@ -12,8 +12,16 @@
     
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
         <ul class="nav navbar-nav">
+            <% if current_user %>
             <li><%= link_to 'Trips', view_tripdata_path %></li>    
+            <% end %>
+            <% if current_user %>
+              <% if current_user.role == 'admin' || current_user.role == 'researcher' %>
+                <li><%= link_to 'Report', report_path %></li>
+              <% end %>
+            <% end %>
         </ul>
+<<<<<<< HEAD
   		  <ul class="nav navbar-nav navbar-right">
           <% if current_user %>
             <li><%= link_to 'Profile', profile_path %></li>
@@ -24,5 +32,22 @@
         </ul>
     </div>
     
+=======
+        
+		  <ul class="nav navbar-nav navbar-right">
+        <% if current_user %>
+          <% if current_user.role == 'admin' %>
+            <li><%= link_to 'Administration', users_path %></li>
+          <% end %>
+        <% end %>
+        <% if current_user %>
+          <li><%= link_to 'Profile', profile_path %></li>
+          <li><%= link_to 'Edit Registration', edit_user_registration_path %></li><li><%= link_to "Logout", destroy_user_session_path, :method => :delete %></li>
+        <% else %>
+          <li><%= link_to 'Login', new_user_session_path %></li><li><%= link_to 'Register', new_user_registration_path %></li>
+        <% end %>
+      </ul>
+      </div>
+>>>>>>> 0b6215084f99ee82f8a2fbb418e41b78098a96b0
 	</div>
 </nav>

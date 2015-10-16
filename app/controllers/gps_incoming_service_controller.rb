@@ -3,14 +3,11 @@ require 'json'
 class GpsIncomingServiceController < ApplicationController
 	def receive_data
 
-		render text: "#{params}"
+		render text: "Data succesfully received"
 
 		data = JSON.parse(request.body.read)
 
 		dataLength = 0
-
-		user = data.shift
-		userId = user["USER"]
 
 		data.each do |gps|
 			dataLength += 1
@@ -19,7 +16,7 @@ class GpsIncomingServiceController < ApplicationController
 				longitude: gps["LONGITUDE (DEG)"],
 				speed: gps["SPEED (M/S)"],
 				time: gps["TIME"],
-				user_id: userId
+				user_id: gps["USER"]
 				)
 		end
 

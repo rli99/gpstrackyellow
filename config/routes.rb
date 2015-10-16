@@ -15,11 +15,27 @@ Rails.application.routes.draw do
   
   post 'datatransformation/transfrom_to_tripdata' => 'datatransformation#transform_to_tripdata', as: :data_transform
   match '/gps-data' => 'gps_incoming_service#receive_data', via: :post
+  match '/ios-login' => 'ios_login#receive_login_data', via: :post
   
   get '/profile' => 'view#profile'
   post '/profile' => 'view#update'
   post '/users/edit' => 'user#update'
 
+  
+  
+  resources :users
+  
+  get 'report' => 'report#index'
+
+  post '/view/tripdata/filter' => 'view#tripdata'
+  delete '/view/tripdata' => 'trip#destroy'
+
+
+  
+  
+  post '/report/show' => 'report#show'
+  
+ 
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
