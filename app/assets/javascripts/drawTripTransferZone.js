@@ -109,7 +109,9 @@ function makeTransferZone(transferZoneData){
       
       
       marker.addListener('dragend', function(e) {
+
         var r = confirm("Are you sure to change the transfer zone to the nearest intermediate point to the current position?");
+
         if (r==true)
           {
           console.log("You pressed OK!");
