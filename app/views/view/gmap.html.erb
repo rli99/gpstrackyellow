@@ -72,20 +72,20 @@
 
   eventsData = <%=raw @hash_eventsData.to_json %>;
 
-  console.log(eventsData);
+  //console.log(eventsData);
 
-  var map;
-  var polylinePath;
+  var map = null;
+  var polylinePath = null;
+  var my_projection = null;
   var bounds = new google.maps.LatLngBounds();
-  //google.maps.event.addDomListener(window, "load", initMap);
 
-  initMap();
-  drawTripIntermediatePoints(eventsData);
-  drawTripPolyline(eventsData);
-  drawTripTransferZone(eventsData);
-  map.fitBounds(bounds);
+  google.maps.event.addDomListener(window, "load", initMap);
+  
+  // initMap();
+  // drawTripIntermediatePoints(eventsData);
+  // drawTripPolyline(eventsData);
+  // drawTripTransferZone(eventsData);
   // map.fitBounds(bounds);
-  // google.maps.event.addDomListener(window, "load", initMap);
 
 </script>
 

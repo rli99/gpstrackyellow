@@ -1,11 +1,22 @@
  function initMap() {
-    // Create a map object and specify the DOM element for display.
-    map = new google.maps.Map(document.getElementById('map'), {
-      center: {lat: -34.397, lng: 150.644},
-      scrollwheel: true,
-      zoom: 6
-      // center: {lat: -37.7850713, lng: 145.12622},
-      // scrollwheel: false,
-      // zoom: 15
+    // map = new google.maps.Map(document.getElementById('map'), {
+    //     center: {lat: -37.810868914072984, lng: 144.96597290039062},
+    //     zoom: 10
+    // });
+    
+    map = new google.maps.Map(document.getElementById("map"), {
+        center: new google.maps.LatLng(-37.810868914072984, 144.96597290039062),
+        zoom: 10
     });
+
+    // map.addListener('click', function(e) {
+    //   console.log(e.latLng);
+    // });
+    
+    drawTripIntermediatePoints(eventsData);
+    drawTripPolyline(eventsData);
+    drawTripTransferZone(eventsData);
+    map.fitBounds(bounds);
+    
   }
+  

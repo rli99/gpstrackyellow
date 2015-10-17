@@ -1,31 +1,115 @@
-<script src='//google-maps-utility-library-v3.googlecode.com/svn/tags/markerclustererplus/2.0.14/src/markerclusterer_packed.js' type='text/javascript'></script>
+<style>
+  html, body, #map_canvas {
+      /*height: 100%;*/
+      /*width: 100%;*/
+      height: 800px;
+      width: 600px;
+      margin: 0px;
+      padding: 0px
+  }
+</style>
 
-
-
-<h1>This is a Google maps page</h1>
-</br>
-<div>
-  <div id="map"></div>
+<div class = "container">
+  
+  <h1>drag snap to polyline test</h1>
+  
+  <div id="map_canvas" style="border: 2px solid #3872ac;"></div>
+  
 </div>
 
-</br>
+<script>
 
-<%= link_to 'Verify Trip', view_tripdata_path(tripId: @tripId), method: :post %>
+//google.maps.event.addDomListener(window, "load", initialize);
 
-<script type = 'text/javascript'>
+var gmap;
 
-  eventsData = <%=raw @hash_eventsData.to_json %>;
+var  currentMarker = new google.maps.Marker({
+            position: new google.maps.LatLng(54.13512, -117.0114),
+            draggable: true
+        });
 
-  console.log(eventsData);
+// ---       
+var secondMarker = new google.maps.Marker({
+            position: new google.maps.LatLng(54.07185, -116.94527),
+            draggable: true
+        });
+// ===
+        
+//var snapToRoute = null;
 
-  var map;
-  var bounds = new google.maps.LatLngBounds();
+// ---
+//var snapToRoute_2 = null;
+// ===
 
-  initMap();
-  //drawTripTransferZone(eventsData);
-  drawTripIntermediatePoints(eventsData);
-  drawTripPolyline(eventsData);
-  drawTripTransferZone(eventsData);
-  map.fitBounds(bounds);
 
+var polypath = new Array(
+        new google.maps.LatLng(54.13512, -117.0114),
+        new google.maps.LatLng(54.13353, -117.01141),
+        new google.maps.LatLng(54.1332, -117.01159),
+        new google.maps.LatLng(54.13241, -117.01157),
+        new google.maps.LatLng(54.13217, -117.01142),
+        new google.maps.LatLng(54.12725, -117.01143),
+        new google.maps.LatLng(54.12185, -117.00125),
+        new google.maps.LatLng(54.1188, -116.9955),
+        new google.maps.LatLng(54.11603, -116.99473),
+        new google.maps.LatLng(54.11517, -116.99281),
+        new google.maps.LatLng(54.10235, -116.97771),
+        new google.maps.LatLng(54.10244, -116.96093),
+        new google.maps.LatLng(54.10197, -116.96067),
+        new google.maps.LatLng(54.10158, -116.96075),
+        new google.maps.LatLng(54.09808, -116.95913),
+        new google.maps.LatLng(54.09725, -116.95668),
+        new google.maps.LatLng(54.09669, -116.95598),
+        new google.maps.LatLng(54.08378, -116.9471),
+        new google.maps.LatLng(54.08218, -116.94696),
+        new google.maps.LatLng(54.07374, -116.93832),
+        new google.maps.LatLng(54.07319, -116.93571),
+        new google.maps.LatLng(54.07185, -116.93527));
+        
+var polyline = new google.maps.Polyline({
+	path: polypath,
+	strokeColor: "red",
+	strokeWeight: 2,
+	strokeOpacity: 1
+});
+
+function makeMarkers(){
+    
+    currentMarker.setMap(gmap);
+    
+    // --- 
+    secondMarker.setMap(gmap);
+    // ===
+    
+   var snapToRoute = new SnapToRoute(gmap, currentMarker, polyline);
+   
+   // ---
+   var snapToRoute_2 = new SnapToRoute(gmap, secondMarker, polyline);
+   // ===
+   
+}
+
+function initialize() {
+    gmap = new google.maps.Map(document.getElementById("map_canvas"), {
+        center: new google.maps.LatLng(54.10244, -116.96093),
+        zoom: 12
+    });
+    
+    console.log("---------------------");
+    console.log(gmap.getProjection());
+    console.log("---------------------");
+
+    polyline.setMap(gmap);
+    makeMarkers();
+}
+
+
+
+//initialize();
+
+google.maps.event.addDomListener(window, "load", initialize);
+
+
+  
 </script>
+

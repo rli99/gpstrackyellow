@@ -58,6 +58,11 @@ function makeTransferZone(transferZoneData){
         icon: image,
         scale: 0.75
       });
+    
+    // var marker = new google.maps.Marker({
+    //         position: new google.maps.LatLng(-37.787526, 145.12466),
+    //         draggable: true
+    //     });
 
     if (marker.getPosition() !== undefined) {
       bounds.extend(marker.getPosition());
@@ -108,8 +113,30 @@ function makeTransferZone(transferZoneData){
       });
       
       
-      marker.addListener('dragend', function(e) {
+      // marker.addListener('dragend', function(e) {
+      //   var r = confirm("Are you sure to change the transfer zone to the nearest intermediate point to the current position?");
 
+      //   if (r==true)
+      //     {
+      //     console.log("You pressed OK!");
+      //     // console.log(e.latLng);
+      //     // console.log(transferZoneData);
+      //     drag_transfer_zone_to_intermediatepoint(transferZoneData, e.latLng);
+      //     }
+      //   else
+      //     {
+      //     console.log("You pressed Cancel!");
+      //     window.location.reload();
+      //     }
+      // });
+
+      marker.setMap(map);
+      
+      google.maps.event.addListenerOnce(map,"projection_changed", function() {
+          var snapToRoute = new SnapToRoute(map, marker, polylinePath);
+      });
+      
+      marker.addListener('dragend', function(e) {
         var r = confirm("Are you sure to change the transfer zone to the nearest intermediate point to the current position?");
 
         if (r==true)
@@ -125,10 +152,6 @@ function makeTransferZone(transferZoneData){
           window.location.reload();
           }
       });
-
-      marker.setMap(map);
-
-      // var snapToRoute = new SnapToRoute(map, marker, polylinePath);
 
   }
 
