@@ -14,6 +14,7 @@ var mapIcon = new google.maps.MarkerImage(
     // "https://lh4.ggpht.com/Tr5sntMif9qOPrKV_UVl7K8A_V3xQDgA7Sw_qweLUFlg76d_vGFA7q1xIKZ6IcmeGqg=w300",
     // "http://www.clker.com/cliparts/D/K/l/x/c/2/map-marker-hi.png",
     "http://www.clker.com/cliparts/y/K/J/U/l/Z/black-dot-md.png",
+    //"images/intpoint.png",
     null, /* size is determined at runtime */
     null, /* origin is 0,0 */
     new google.maps.Point(4, 4), /* anchor is bottom center of the scaled image */

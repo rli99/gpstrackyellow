@@ -1,10 +1,11 @@
+// -------------------------- snap to route js -----------------------------------
 function SnapToRoute(map, marker, polyline) {
     this.routePixels_ = [];
     this.normalProj_ = map.getProjection();
     this.map_ = map;
     this.marker_ = marker;
     this.polyline_ = polyline;
-
+    
     this.init_();
 }
 
@@ -39,6 +40,9 @@ SnapToRoute.prototype.loadLineData_ = function () {
     var zoom = this.map_.getZoom();
     this.routePixels_ = [];
     var path = this.polyline_.getPath();
+    
+    console.log(this.normalProj_);
+    
     for (var i = 0; i < path.getLength(); i++) {
         var Px = this.normalProj_.fromLatLngToPoint(path.getAt(i));
         this.routePixels_.push(Px);
