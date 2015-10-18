@@ -1,12 +1,26 @@
-<h1>Welcome to GPS Track!</h1>
+<div class="jumbotron">
+  <h1>Welcome to GPS Track</h1>
+  <p>GPS Track allows users to see their trips on a map, while also allowing researchers to see
+  consolidated data from all trips. Learn how to use GPS Track from the buttons below.</p><br />
+  <p><%= link_to 'Get started as a normal user', welcome_user_instruction_path, :class => 'btn btn-primary btn-lg' %>
+  <%= link_to 'Get started as a researcher', welcome_researcher_instruction_path, 
+  :class => 'btn btn-primary btn-lg' %></p>
+</div>
 
 <style>
+    .jumbotron {
+        padding-bottom: 35px;
+        padding-top: 35px;
+        background: rgb(0, 0, 0); /* This is for ie8 and below */
+        background: rgba(0, 0, 0, 0); 
+    }
+
     h1 {
         color: black;
     }
     
     .footer {
-        padding-top: 275px;
+        padding-top: 40px;
         color: black;
         font-size: 16pt
     }
