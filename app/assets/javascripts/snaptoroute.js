@@ -41,7 +41,7 @@ SnapToRoute.prototype.loadLineData_ = function () {
     this.routePixels_ = [];
     var path = this.polyline_.getPath();
     
-    console.log(this.normalProj_);
+    //console.log(this.normalProj_);
     
     for (var i = 0; i < path.getLength(); i++) {
         var Px = this.normalProj_.fromLatLngToPoint(path.getAt(i));

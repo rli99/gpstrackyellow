@@ -72,6 +72,7 @@ class ViewController < ApplicationController
 	end
 
 	def change_event_transportation
+	  puts "--------change_event_transportation----------"
 
     if params[:transportation] == "empty"
       flash[:alert] = "ERROR: You did not choose a transportation when changing a event!"
@@ -91,23 +92,25 @@ class ViewController < ApplicationController
 	end
 
 	def delete_transfer_zone
+	  puts "-------- delete_transfer_zone ----------"
       
-      if params[:transportation] == "empty"
-        flash[:alert] = "ERROR: You did not choose a transportation when deleting a transfer zone!"
-      else
-        real_delete_transfer_zone(params[:transfer_zone_id], params[:transportation])
-      end
+    if params[:transportation] == "empty"
+      flash[:alert] = "ERROR: You did not choose a transportation when deleting a transfer zone!"
+    else
+      real_delete_transfer_zone(params[:transfer_zone_id], params[:transportation])
+    end
 
-  		respond_to do |format|
-  	      format.html {
-  	        redirect_to(:back)
-  	      }
-  	      format.js
-  	      format.json
-      end
+  	respond_to do |format|
+  	   format.html {
+  	     redirect_to(:back)
+  	   }
+  	   format.js
+  	   format.json
+    end
 	end
   
   def real_delete_transfer_zone(params_transfer_zone_id, params_transportation)
+      puts "-------- real_delete_transfer_zone ----------"
     
       # --- get the transfer zone
   		#tf = TransferZone.find_by(id: params[:transfer_zone_id])
@@ -160,7 +163,7 @@ class ViewController < ApplicationController
         # --- generate a new events 
   		  e_new = Event.new	
         e_new.transportation = params_transportation
-        e_new.trip_id = e1.trip_id
+        e_new.trip_id = e1.trip_id 
         #e_new.transfer_zone_ids = arr_transfer_zone_id
         e_new.save
         
@@ -218,7 +221,9 @@ class ViewController < ApplicationController
 		    tf2.save
       	# === finish the transfer zone part
 
-        # --- add intermediate points to the new event
+        # --- add intermediate points to the new event---------------------------------------------------------------------
+        puts "--- add intermediate points to the new event------------------------------------------------"
+        
       	arr_intpoint_id = []
 
         e1.intermediatepoint_ids.each do |intpoint_id|
@@ -227,10 +232,12 @@ class ViewController < ApplicationController
       	e2.intermediatepoint_ids.each do |intpoint_id|
           	arr_intpoint_id.push(intpoint_id)
       	end
-      	#p arr_intpoint_id
+      	
+      	p arr_intpoint_id
   
       	check_arr = []
       	uniq_intpoints = []
+      	
       	arr_intpoint_id.each do |point|
       		i = Intermediatepoint.find_by(id: point)
       		if !check_arr.include? i["time"]
@@ -246,7 +253,8 @@ class ViewController < ApplicationController
       		i.event_id = e_new.id
       		i.save
       	end
-      	# === finish the intermediate point part
+      
+      	# === finish the intermediate point part---------------------------------------------------------------------------
   
     		tf.destroy
     		e1.destroy
@@ -255,8 +263,29 @@ class ViewController < ApplicationController
   end
   
   def change_to_transfer_zone
+    puts "--------change_to_transfer_zone----------"
 
-    real_change_to_transfer_zone(params[:intpoint_id])
+    the_intpoint = Intermediatepoint.find_by(id: params[:intpoint_id])
+    trip = the_intpoint.event.trip
+
+    trip.events.each do |event|
+      event.transfer_zones.each do |tf|
+        # puts the_intpoint.latitude
+        # puts tf.latitude
+        if the_intpoint.latitude == tf.latitude && the_intpoint.longitude == tf.longitude
+          p tf
+          the_intpoint = nil
+          break
+        end
+      end
+    end
+    
+    if the_intpoint != nil
+      real_change_to_transfer_zone(params[:intpoint_id])
+    else
+      puts "--- ERROR: It is a transfer zone!"
+      flash[:alert] = "ERROR: It is a transfer zone!"
+    end
 
     respond_to do |format|
         format.html {
@@ -269,6 +298,7 @@ class ViewController < ApplicationController
   end
   
   def real_change_to_transfer_zone(params_intpoint_id)
+    puts "--------real_change_to_transfer_zone----------"
     
     # --- get the intpoint and make a copy of it
     i = Intermediatepoint.find_by(id: params_intpoint_id)
@@ -379,12 +409,14 @@ class ViewController < ApplicationController
   end
   
   def drag_transfer_zone_to_intpoint
+    puts "--------drag_transfer_zone_to_intpoint----------"
     
     trip_id = TransferZone.find(params[:transfer_zone_id]).events[0].trip_id
     nearest_intpoint = find_nearest_intpoint(trip_id, params[:intpoint_latLng])
 
     # Added to fix dragging point. Before it was just 'walking' passed to real_delete_transfer_zone
     # This finds out what transportation we need to set for real_delete_transfer_zone below
+    
     oldTransportation = ''
     if nearest_intpoint != nil
       event_one = TransferZone.find(params[:transfer_zone_id]).events[0]
@@ -397,6 +429,8 @@ class ViewController < ApplicationController
         puts 'error in locating correct event for dragging transfer zone'
       end
     end
+    
+    # puts "oldTransportation: " + oldTransportation
 
     if nearest_intpoint != nil
       # We have swapped the below two lines. 
@@ -404,8 +438,13 @@ class ViewController < ApplicationController
       # In the old order, the transportation is not correct.
       # We believe this should be the correct order. The error is probably not here.
       # It is very possible that there is an error in real_change_to_transfer_zone or real_delete_transfer_zone
+      
       real_change_to_transfer_zone(nearest_intpoint.id)
       real_delete_transfer_zone(params[:transfer_zone_id], oldTransportation)
+      
+      # real_delete_transfer_zone(params[:transfer_zone_id], "tram")
+      # real_change_to_transfer_zone(nearest_intpoint.id)
+      
     else
       puts "--- ERROR: the nearest intpoint is a transfer zone!"
       flash[:alert] = "ERROR: The nearest intpoint is a transfer zone!"
@@ -421,15 +460,16 @@ class ViewController < ApplicationController
   end
   
   def find_nearest_intpoint(trip_id, intpoint_latLng) 
-    # puts "--------find_nearest_intpoint----------"
-    #puts trip_id
-    #puts intpoint_latLng
+    puts "--------find_nearest_intpoint----------"
+    # puts trip_id
+    # puts intpoint_latLng
     
     intpoint_latLng_hash = transfer_latLngString_to_hash(intpoint_latLng)
-    #p intpoint_latLng_hash
+    # p intpoint_latLng_hash
+    
     trip = Trip.find(trip_id)
     start_intpoint =  trip.events[0].intermediatepoints[0]
-    the_intpoint = nil
+    the_intpoint = start_intpoint
     min_distance = (start_intpoint.latitude.to_f - intpoint_latLng_hash[:lat].to_f) ** 2 + (start_intpoint.longitude.to_f - intpoint_latLng_hash[:lng].to_f) ** 2
     
     trip.events.each do |event|
@@ -442,11 +482,15 @@ class ViewController < ApplicationController
       end
     end
 
-    TransferZone.all.each do |tf|
-      if the_intpoint.latitude == tf.latitude && the_intpoint.longitude == tf.longitude
-        puts the_intpoint.latitude, tf.latitude
-        the_intpoint = nil
-        break
+    trip.events.each do |event|
+      event.transfer_zones.each do |tf|
+        # puts the_intpoint.latitude
+        # puts tf.latitude
+        if the_intpoint.latitude == tf.latitude && the_intpoint.longitude == tf.longitude
+          # p tf
+          the_intpoint = nil
+          break
+        end
       end
     end
     

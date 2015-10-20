@@ -53,7 +53,7 @@ function makeTransferZone(transferZoneData){
     var marker = new google.maps.Marker({
         position: transferZoneData,
         draggable: false,
-        zIndex: 100,
+        zIndex: 2,
         optimized: false,
         icon: image,
         scale: 0.75
@@ -75,14 +75,15 @@ function makeTransferZone(transferZoneData){
           event_ids_str += transferZoneData["event_ids"][i];
         }else{
           event_ids_str += transferZoneData["event_ids"][i] + ", ";
-        }      
-      } 
+        }
+      }      
+    } 
 
-      var form = "";
+    var form = "";
 
-      if(transferZoneData["event_ids"].length == 2){
-        marker.draggable = true;
-        form = "<h5>Please select a transportation before you delete this transfer zone! </h5>"
+    if(transferZoneData["event_ids"].length == 2){
+      marker.draggable = true;
+      form = "<h5>Please select a transportation before you delete this transfer zone! </h5>"
               + "<form class='form-inline' action='/view/delete_transfer_zone/" + transferZoneData["id"] + "' method='post'>"
               + '<div class="form-group">'
               + '<select name="transportation" class="form-control">'
@@ -96,26 +97,23 @@ function makeTransferZone(transferZoneData){
               + "<button type = 'submit' class = 'btn btn-danger'> Delete this transfer zone </button>"
               + '</div>'
               + "</form>";
-      }else if (transferZoneData["event_ids"].length == 1){
-        form = "<h5>This is the first/last transferzone, so you are not allowed to delete it.</h5>";
-      } else {
-        form = "error";
-      }
+    }else if (transferZoneData["event_ids"].length == 1){
+      form = "<h5>This is the first/last transferzone, so you are not allowed to delete it.</h5>";
+    } else {
+      form = "error";
+    }
 
-      var infowindow = new google.maps.InfoWindow({ 
-        content: //"transfer_zone id: " + transferZoneData["id"] + "<br/><br/>" 
-               //+ "event_ids: " + event_ids_str + "<br/><br/>" + 
-               form 
-      });
+    var infowindow = new google.maps.InfoWindow({ 
+      content: " transferZone id: " +  transferZoneData["id"]
+              +form 
+    });
 
-      marker.addListener('click', function(e) {
-        infowindow.open(map,marker);
-      });
-      
+    marker.addListener('click', function(e) {
+      infowindow.open(map,marker);
+    });
       
       // marker.addListener('dragend', function(e) {
       //   var r = confirm("Are you sure to change the transfer zone to the nearest intermediate point to the current position?");
-
       //   if (r==true)
       //     {
       //     console.log("You pressed OK!");
@@ -130,30 +128,39 @@ function makeTransferZone(transferZoneData){
       //     }
       // });
 
-      marker.setMap(map);
+    marker.setMap(map);
       
-      google.maps.event.addListenerOnce(map,"projection_changed", function() {
-          var snapToRoute = new SnapToRoute(map, marker, polylinePath);
-      });
+    // console.log("----- polyline -----");
+    // var flightPlanCoordinates = [
+    //   {lat: 37.772, lng: -122.214},
+    //   {lat: 21.291, lng: -157.821},
+    //   {lat: -18.142, lng: 178.431},
+    //   {lat: -27.467, lng: 153.027}
+    // ];
+    // console.log(polylinePath.getPath());
+    // polylinePath.getPath().insertAt(polylinePath.getPath().getLength(), flightPlanCoordinates);
       
-      marker.addListener('dragend', function(e) {
-        var r = confirm("Are you sure to change the transfer zone to the nearest intermediate point to the current position?");
+    google.maps.event.addListenerOnce(map,"projection_changed", function() {
+        var snapToRoute = new SnapToRoute(map, marker, polylinePath_for_drag);
+    });
+      
+    // marker.addListener('dragend', function(e) {
+    //   var r = confirm("Are you sure to change the transfer zone to the nearest intermediate point to the current position?");
+    //   if (r==true)
+    //     {
+    //     console.log("You pressed OK!");
+    //     // console.log(e.latLng);
+    //     // console.log(transferZoneData);
+    //     drag_transfer_zone_to_intermediatepoint(transferZoneData, e.latLng);
+    //     }
+    //   else
+    //     {
+    //     console.log("You pressed Cancel!");
+    //     window.location.reload();
+    //     }
+    // });
 
-        if (r==true)
-          {
-          console.log("You pressed OK!");
-          // console.log(e.latLng);
-          // console.log(transferZoneData);
-          drag_transfer_zone_to_intermediatepoint(transferZoneData, e.latLng);
-          }
-        else
-          {
-          console.log("You pressed Cancel!");
-          window.location.reload();
-          }
-      });
 
-  }
 
 }
 
