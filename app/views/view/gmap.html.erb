@@ -1,4 +1,4 @@
-<script src='//google-maps-utility-library-v3.googlecode.com/svn/tags/markerclustererplus/2.0.14/src/markerclusterer_packed.js' type='text/javascript'></script>
+<!--<script src='//google-maps-utility-library-v3.googlecode.com/svn/tags/markerclustererplus/2.0.14/src/markerclusterer_packed.js' type='text/javascript'></script>-->
 
 <% trip = Trip.find(@tripId) %>
 <% date = trip.events[0].intermediatepoints[0].time %>
@@ -75,8 +75,18 @@
   //console.log(eventsData);
 
   var map = null;
-  var polylinePath = null;
-  var my_projection = null;
+  
+  // var polylinePath = null;
+  var polylinePath_for_drag = null;
+  
+  // var polylinePath = new google.maps.Polyline({
+  //     path: [],
+  //     geodesic: true,
+  //     strokeColor: '#000000',
+  //     strokeOpacity: 1.0,
+  //     strokeWeight: 5
+  //   });
+    
   var bounds = new google.maps.LatLngBounds();
 
   google.maps.event.addDomListener(window, "load", initMap);
