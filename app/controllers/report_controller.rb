@@ -1,9 +1,24 @@
 class ReportController < ApplicationController
    
     def index
+        if current_user
+            if current_user.role == 'user'
+                redirect_to root_path, alert: 'You are not allowed to visit this page.'    
+            end
+        else
+            redirect_to root_path, alert: 'You are not allowed to visit this page.'  
+        end
     end
     
     def show
+        
+        if current_user
+            if current_user.role == 'user'
+                redirect_to root_path, alert: 'You are not allowed to visit this page.'    
+            end
+        else
+            redirect_to root_path, alert: 'You are not allowed to visit this page.'  
+        end
 
         fromtime = params[:fromtime]
         @fromtime1 = DateTime.new( fromtime["fromtime1(1i)"].to_i, fromtime["fromtime1(2i)"].to_i, fromtime["fromtime1(3i)"].to_i,  

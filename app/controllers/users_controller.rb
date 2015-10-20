@@ -31,23 +31,20 @@ class UsersController < ApplicationController
         end
         @user = User.new
     end
-    def create
-        if current_user
-            if current_user.role != 'admin'
-                redirect_to root_path, alert: 'You are not allowed to visit this page.'
-            end
-        else
-            redirect_to root_path, alert: 'You are not allowed to visit this page.'
-        end
-        @user = User.new(user_params)
-        if @user.save
-            redirect_to "/users", :notice => "User has been created"
-        else
-            render "new"
-        end
-        
-    end
     
+    # def create
+    #     if current_user
+    #         if current_user.role != 'admin'
+    #             redirect_to root_path, alert: 'You are not allowed to visit this page.'
+    #         end
+    #     else
+    #         redirect_to root_path, alert: 'You are not allowed to visit this page.'
+    #     end
+    #     @user = User.new(user_params)
+    #     if @user.save
+    #         redirect_to "/users", :notice => "User has been created"
+    #     end
+    # end
     
     def edit
         if current_user
@@ -64,15 +61,14 @@ class UsersController < ApplicationController
         if current_user
             if current_user.role != 'admin'
                 redirect_to root_path, alert: 'You are not allowed to visit this page.'
+            else
+                @user = User.find(params[:id])
+                if @user.update_attributes(user_params)
+                    redirect_to users_path, :notice => "User has been updated."
+                end
             end
         else
             redirect_to root_path, alert: 'You are not allowed to visit this page.'
-        end
-        @user = User.find(params[:id])
-        if @user.update_attributes(user_params)
-            redirect_to users_path, :notice => "User has been updated."
-        else
-            render "edit"
         end
     end
     	
