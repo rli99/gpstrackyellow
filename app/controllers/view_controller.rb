@@ -121,9 +121,6 @@ class ViewController < ApplicationController
       #     get these 2 events
   		e1 = Event.find_by(id: tf.event_ids[0])
   		e2 = Event.find_by(id: tf.event_ids[1])
-  
-      puts e1.intermediatepoints.length
-      puts e2.intermediatepoints.length
 
       # --- get the transferzone ids of the 2 events and ignore the one we want to delete
       arr_transfer_zone_id = []
@@ -274,10 +271,12 @@ class ViewController < ApplicationController
       event.transfer_zones.each do |tf|
         # puts the_intpoint.latitude
         # puts tf.latitude
-        if the_intpoint.latitude == tf.latitude && the_intpoint.longitude == tf.longitude
-          p tf
-          the_intpoint = nil
-          break
+        if the_intpoint != nil
+          if the_intpoint.latitude == tf.latitude && the_intpoint.longitude == tf.longitude
+            p tf
+            the_intpoint = nil
+            break
+          end
         end
       end
     end
@@ -361,15 +360,12 @@ class ViewController < ApplicationController
       i_clone.event_id = e2.id
       i_clone.save 
     end
-    
-    puts tf1.id, tf1.event_ids
-    puts tf2.id, tf2.event_ids
 
     # --- change their event_ids
     if tf1.event_ids.length == 2
       i1 = e1.intermediatepoints[0]
       i2 = e1.intermediatepoints[-1]
-      if (tf1["time"] == i1["time"]) or (tf1["time"] == i2["time"])
+      if (tf1["latitude"] == i1["latitude"]) or (tf1["latitude"] == i2["latitude"])
         tf1.event_ids = [e1.id]
       else
         tf1.event_ids = [e2.id]
@@ -385,7 +381,7 @@ class ViewController < ApplicationController
       if another_event_id != nil
         i1 = e1.intermediatepoints[0]
         i2 = e1.intermediatepoints[-1]
-        if (tf1["time"] == i1["time"]) or (tf1["time"] == i2["time"])
+        if (tf1["latitude"] == i1["latitude"]) or (tf1["latitude"] == i2["latitude"])
           tf1.event_ids = [another_event_id, e1.id]
         else
           tf1.event_ids = [another_event_id, e2.id]
@@ -400,7 +396,7 @@ class ViewController < ApplicationController
     if tf2.event_ids.length == 2
       i3 = e1.intermediatepoints[0]
       i4 = e1.intermediatepoints[-1]
-      if (tf2["time"] == i3["time"]) or (tf2["time"] == i4["time"])
+      if (tf2["latitude"] == i3["latitude"]) or (tf2["latitude"] == i4["latitude"])
         tf2.event_ids = [e1.id]
       else
         tf2.event_ids = [e2.id]
@@ -415,7 +411,7 @@ class ViewController < ApplicationController
       if another_event_id != nil
         i3 = e1.intermediatepoints[0]
         i4 = e1.intermediatepoints[-1]
-        if (tf2["time"] == i3["time"]) or (tf2["time"] == i4["time"])
+        if (tf2["latitude"] == i3["latitude"]) or (tf2["latitude"] == i4["latitude"])
           tf2.event_ids = [another_event_id, e1.id]
         else
           tf2.event_ids = [another_event_id, e2.id]
