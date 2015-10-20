@@ -144,21 +144,21 @@ function makeTransferZone(transferZoneData){
         var snapToRoute = new SnapToRoute(map, marker, polylinePath_for_drag);
     });
       
-    // marker.addListener('dragend', function(e) {
-    //   var r = confirm("Are you sure to change the transfer zone to the nearest intermediate point to the current position?");
-    //   if (r==true)
-    //     {
-    //     console.log("You pressed OK!");
-    //     // console.log(e.latLng);
-    //     // console.log(transferZoneData);
-    //     drag_transfer_zone_to_intermediatepoint(transferZoneData, e.latLng);
-    //     }
-    //   else
-    //     {
-    //     console.log("You pressed Cancel!");
-    //     window.location.reload();
-    //     }
-    // });
+    marker.addListener('dragend', function(e) {
+      var r = confirm("Are you sure to change the transfer zone to the nearest intermediate point to the current position?");
+      if (r==true)
+        {
+        console.log("You pressed OK!");
+        // console.log(e.latLng);
+        // console.log(transferZoneData);
+        drag_transfer_zone_to_intermediatepoint(transferZoneData, e.latLng);
+        }
+      else
+        {
+        console.log("You pressed Cancel!");
+        window.location.reload();
+        }
+    });
 
 
 

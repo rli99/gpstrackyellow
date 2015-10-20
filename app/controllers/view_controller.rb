@@ -122,6 +122,8 @@ class ViewController < ApplicationController
   		e1 = Event.find_by(id: tf.event_ids[0])
   		e2 = Event.find_by(id: tf.event_ids[1])
   
+      puts e1.intermediatepoints.length
+      puts e2.intermediatepoints.length
 
       # --- get the transferzone ids of the 2 events and ignore the one we want to delete
       arr_transfer_zone_id = []
@@ -337,52 +339,15 @@ class ViewController < ApplicationController
     # --- add transferzones to the events
     e1.transfer_zone_ids = [e_old.transfer_zone_ids[0],tf_new.id]
     e2.transfer_zone_ids = [tf_new.id,e_old.transfer_zone_ids[1]]
-
-    # --- get the two transfer zones of the old event
-    tf1 = TransferZone.find_by(id: e_old.transfer_zone_ids[0])
-    tf2 = TransferZone.find_by(id: e_old.transfer_zone_ids[1])
-
-    # --- change their event_ids
-    if tf1.event_ids.length == 1
-      tf1.event_ids = [e1.id]
-    elsif tf1.event_ids.length == 2
-      another_event_id = nil
-      tf1.event_ids.each do |event_id|
-        if event_id != e_old.id
-            another_event_id = event_id
-        end 
-      end
-      if another_event_id != nil
-        tf1.event_ids = [another_event_id, e1.id]
-      else
-        put "ERROR 1"
-      end
-    else
-      puts "ERROR 2"
-    end
-
-    if tf2.event_ids.length == 1
-      tf2.event_ids = [e2.id]
-    elsif tf2.event_ids.length == 2
-      another_event_id = nil
-      tf2.event_ids.each do |event_id|
-        if event_id != e_old.id
-            another_event_id = event_id
-        end 
-      end
-      if another_event_id != nil
-        tf2.event_ids = [another_event_id, e2.id] #tf2.event_ids = [e2.id,another_event_id]
-      else
-        put "ERROR 1"
-      end
-    else
-      puts "ERROR 2"
-    end
-
+    
     # --- save these two new events before change intermediatepoints
     e1.save
     e2.save
 
+    # --- get the two transfer zones of the old event
+    tf1 = TransferZone.find_by(id: e_old.transfer_zone_ids[0])
+    tf2 = TransferZone.find_by(id: e_old.transfer_zone_ids[1])
+    
     # --- change the intermediatepoints of old event to the two new ones
     e_old.intermediatepoints.each do |intpoint|
       if intpoint.time < i.time
@@ -395,6 +360,71 @@ class ViewController < ApplicationController
       intpoint.save 
       i_clone.event_id = e2.id
       i_clone.save 
+    end
+    
+    puts tf1.id, tf1.event_ids
+    puts tf2.id, tf2.event_ids
+
+    # --- change their event_ids
+    if tf1.event_ids.length == 2
+      i1 = e1.intermediatepoints[0]
+      i2 = e1.intermediatepoints[-1]
+      if (tf1["time"] == i1["time"]) or (tf1["time"] == i2["time"])
+        tf1.event_ids = [e1.id]
+      else
+        tf1.event_ids = [e2.id]
+      end
+    elsif tf1.event_ids.length == 3
+      another_event_id = nil
+      tf1.event_ids.each do |event_id|
+        if event_id != e1.id and event_id != e2.id and event_id != e_old.id
+            another_event_id = event_id
+        end 
+      end
+      
+      if another_event_id != nil
+        i1 = e1.intermediatepoints[0]
+        i2 = e1.intermediatepoints[-1]
+        if (tf1["time"] == i1["time"]) or (tf1["time"] == i2["time"])
+          tf1.event_ids = [another_event_id, e1.id]
+        else
+          tf1.event_ids = [another_event_id, e2.id]
+        end
+      else
+        puts "ERROR 1"
+      end
+    else
+      puts "ERROR 2"
+    end
+
+    if tf2.event_ids.length == 2
+      i3 = e1.intermediatepoints[0]
+      i4 = e1.intermediatepoints[-1]
+      if (tf2["time"] == i3["time"]) or (tf2["time"] == i4["time"])
+        tf2.event_ids = [e1.id]
+      else
+        tf2.event_ids = [e2.id]
+      end
+    elsif tf2.event_ids.length == 3
+      another_event_id = nil
+      tf2.event_ids.each do |event_id|
+        if event_id != e1.id and event_id != e2.id and event_id != e_old.id
+            another_event_id = event_id
+        end
+      end
+      if another_event_id != nil
+        i3 = e1.intermediatepoints[0]
+        i4 = e1.intermediatepoints[-1]
+        if (tf2["time"] == i3["time"]) or (tf2["time"] == i4["time"])
+          tf2.event_ids = [another_event_id, e1.id]
+        else
+          tf2.event_ids = [another_event_id, e2.id]
+        end
+      else
+        puts "ERROR 1"
+      end
+    else
+      puts "ERROR 2"
     end
 
     # --- do all the save and destroy
@@ -466,10 +496,10 @@ class ViewController < ApplicationController
     
     intpoint_latLng_hash = transfer_latLngString_to_hash(intpoint_latLng)
     # p intpoint_latLng_hash
-    
     trip = Trip.find(trip_id)
     start_intpoint =  trip.events[0].intermediatepoints[0]
     the_intpoint = start_intpoint
+    
     min_distance = (start_intpoint.latitude.to_f - intpoint_latLng_hash[:lat].to_f) ** 2 + (start_intpoint.longitude.to_f - intpoint_latLng_hash[:lng].to_f) ** 2
     
     trip.events.each do |event|
@@ -486,10 +516,11 @@ class ViewController < ApplicationController
       event.transfer_zones.each do |tf|
         # puts the_intpoint.latitude
         # puts tf.latitude
-        if the_intpoint.latitude == tf.latitude && the_intpoint.longitude == tf.longitude
-          # p tf
-          the_intpoint = nil
-          break
+        if the_intpoint != nil
+          if the_intpoint.latitude == tf.latitude && the_intpoint.longitude == tf.longitude
+            # p tf
+            the_intpoint = nil
+          end
         end
       end
     end
