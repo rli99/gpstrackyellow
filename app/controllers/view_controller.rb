@@ -121,7 +121,7 @@ class ViewController < ApplicationController
       #     get these 2 events
   		e1 = Event.find_by(id: tf.event_ids[0])
   		e2 = Event.find_by(id: tf.event_ids[1])
-  		
+
   		puts e1.intermediatepoints.length
   	  puts e2.intermediatepoints.length
 
@@ -278,6 +278,12 @@ class ViewController < ApplicationController
           p tf
           the_intpoint = nil
           break
+        # if the_intpoint != nil
+        #   if the_intpoint.latitude == tf.latitude && the_intpoint.longitude == tf.longitude
+        #     p tf
+        #     the_intpoint = nil
+        #     break
+        #   end
         end
       end
     end
@@ -361,7 +367,7 @@ class ViewController < ApplicationController
       end
       intpoint.save
     end
-    
+
     puts "--- ex.intermediatepoint ids  ---"
     p e1.id, e1.intermediatepoint_ids
     p e2.id, e2.intermediatepoint_ids
