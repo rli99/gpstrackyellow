@@ -48,6 +48,7 @@ RSpec.describe User, :type => :model do
 	it {should respond_to(:surname)}
 	it {should respond_to(:bithday)}
 	it {should respond_to(:address)}
+	it {should respond_to(:role)}
 
 	#it { should validate_uniqueness_of(:email) }
 	

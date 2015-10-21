@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Algorithm do 
 	before do
-		@gpsData1=GpsDatum.create(time: "2015-09-03 15:11:46")
-		@gpsData2=GpsDatum.create(time: "2015-09-03 16:11:46")
+		@gpsData1=GpsDatum.new
+		@gpsData2=GpsDatum.new
 		@gpsData=[@gpsData1,@gpsData2]
 	end
 
