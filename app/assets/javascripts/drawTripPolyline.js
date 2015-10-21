@@ -120,14 +120,14 @@ function drawEventPolyline(polylineCoordinates, color){
     //   polylineCoordinates.push(intPointsData[i]);
     // }
     
-    console.log("polylineCoordinates: event_id :" + polylineCoordinates[0]["event_id"]);
-    console.log(polylineCoordinates);
+    // console.log("polylineCoordinates: event_id :" + polylineCoordinates[0]["event_id"]);
+    // console.log(polylineCoordinates);
     // console.log(color);
 
     var polylinePath = new google.maps.Polyline({
       path: polylineCoordinates,
-      draggable: true,
-      // draggable: false,
+      // draggable: true,
+      draggable: false,
       geodesic: true,
       strokeColor: color,
       strokeOpacity: 1.0,
@@ -159,7 +159,7 @@ function drawEventPolyline(polylineCoordinates, color){
               + "</form>";
 
     var infowindow = new google.maps.InfoWindow({      
-      content: "event id: " + polylineCoordinates[0]["event_id"] + "<br/><br/>" + "Transportation: " + polylineCoordinates[0]["transportation"] + "<br/><br/>" + 
+      content: //"event id: " + polylineCoordinates[0]["event_id"] + "<br/><br/>" + "Transportation: " + polylineCoordinates[0]["transportation"] + "<br/><br/>" + 
                form
     });
 

@@ -27,11 +27,11 @@ class ViewController < ApplicationController
 	end
 	
 	def profile
-	  @user = User.find(current_user.id)
+	  @user = User.find_by(id: current_user.id)
 	end
   
   def update
-    user = User.find(current_user.id)
+    user = User.find_by(id: current_user.id)
     user.update(user_params)
     if user.save
       redirect_to '/profile', notice: 'Your profile has been successfully updated.'
@@ -42,9 +42,9 @@ class ViewController < ApplicationController
   
 	def gmap
 		@tripId = params[:trip_id]
-		if Trip.find(params[:trip_id])
+		if Trip.find_by(id: params[:trip_id])
 
-			events = Trip.find(params[:trip_id]).events
+			events = Trip.find_by(id: params[:trip_id]).events
 
 			@hash_eventsData = []
 
@@ -121,9 +121,9 @@ class ViewController < ApplicationController
       #     get these 2 events
   		e1 = Event.find_by(id: tf.event_ids[0])
   		e2 = Event.find_by(id: tf.event_ids[1])
-  
-      puts e1.intermediatepoints.length
-      puts e2.intermediatepoints.length
+  		
+  		puts e1.intermediatepoints.length
+  	  puts e2.intermediatepoints.length
 
       # --- get the transferzone ids of the 2 events and ignore the one we want to delete
       arr_transfer_zone_id = []
@@ -274,7 +274,7 @@ class ViewController < ApplicationController
       event.transfer_zones.each do |tf|
         # puts the_intpoint.latitude
         # puts tf.latitude
-        if the_intpoint.latitude == tf.latitude && the_intpoint.longitude == tf.longitude
+        if the_intpoint != nil && the_intpoint.latitude == tf.latitude && the_intpoint.longitude == tf.longitude
           p tf
           the_intpoint = nil
           break
@@ -302,146 +302,171 @@ class ViewController < ApplicationController
   def real_change_to_transfer_zone(params_intpoint_id)
     puts "--------real_change_to_transfer_zone----------"
     
-    # --- get the intpoint and make a copy of it
-    i = Intermediatepoint.find_by(id: params_intpoint_id)
-    i_clone = Intermediatepoint.new
-    i_clone.speed = i.speed
-    i_clone.time = i.time
-    i_clone.latitude = i.latitude
-    i_clone.longitude = i.longitude
-    i_clone.altitude = i.altitude
-    #i_clone.event_id = nil
-    #i_clone.save
-
-    # --- generate 2 events before generate the transferzone
-    e_old = Event.find_by(id: i.event_id)
+    # --- find the intpoint and event ---
+    i_old = Intermediatepoint.find_by(id: params_intpoint_id)
+    e_old = i_old.event
+    
+    # --- make 2 new events --- *
     e1 = Event.new
     e2 = Event.new
-
-    e1.transportation = e_old.transportation
-    e1.trip_id = e_old.trip_id
-    e2.transportation = e_old.transportation
-    e2.trip_id = e_old.trip_id
-
-    # --- generate a transferzone here
+    e_arr = [e1,e2]
+    e_arr.each do |event|
+      event.transportation = e_old.transportation
+      event.trip_id = e_old.trip_id
+      event.save
+    end
+    
+    # --- make 2 copies of the intpoint --- *
+    i1 = Intermediatepoint.new
+    i2 = Intermediatepoint.new
+    i_arr = [i1,i2]
+    i_arr.each do |intpoint|
+      intpoint.time = i_old.time
+      intpoint.latitude = i_old.latitude
+      intpoint.longitude = i_old.longitude
+      intpoint.altitude = i_old.altitude
+      #intpoint.event_id = i_old.event_id
+      intpoint.speed = i_old.speed
+      intpoint.save
+    end
+    
+    # --- make a new transfer zone --- *
     tf_new = TransferZone.new
-    tf_new.time = i.time
-    tf_new.latitude = i.latitude
-    tf_new.longitude = i.longitude
-    tf_new.altitude = i.altitude
-
-    # --- add events to the new transferzone
+    tf_new.time = i_old.time
+    tf_new.latitude = i_old.latitude
+    tf_new.longitude = i_old.longitude
+    tf_new.altitude = i_old.altitude
+    # add event_ids, 
+    # after you do this, 
+    # the tf.id is automatically added to the e1 and e2' transfer_zone_ids
     tf_new.event_ids = [e1.id,e2.id]
-
-    # --- save the tf_new before use its id
     tf_new.save
-
-    # --- add transferzones to the events
-    e1.transfer_zone_ids = [e_old.transfer_zone_ids[0],tf_new.id]
-    e2.transfer_zone_ids = [tf_new.id,e_old.transfer_zone_ids[1]]
     
-    # --- save these two new events before change intermediatepoints
-    e1.save
-    e2.save
-
-    # --- get the two transfer zones of the old event
-    tf1 = TransferZone.find_by(id: e_old.transfer_zone_ids[0])
-    tf2 = TransferZone.find_by(id: e_old.transfer_zone_ids[1])
+    puts "--- ex.intermediatepoint ids  ---"
+    p e1.id, e1.intermediatepoint_ids
+    p e2.id, e2.intermediatepoint_ids
     
-    # --- change the intermediatepoints of old event to the two new ones
+    # --- add intermediate points to 2 events --- *
+    i1.event_id = e1.id
+    i1.save
+    i2.event_id = e2.id # after doing this, ix is automatically added to ex.intermediatepoints 
+    i2.save
     e_old.intermediatepoints.each do |intpoint|
-      if intpoint.time < i.time
+      if intpoint.time < i_old.time
         intpoint.event_id = e1.id
-      elsif intpoint.time > i.time
+      elsif intpoint.time > i_old.time
         intpoint.event_id = e2.id
-      elsif intpoint.time == i.time
-        intpoint.event_id = e1.id
+      else  
+          # do nothing
       end
-      intpoint.save 
-      i_clone.event_id = e2.id
-      i_clone.save 
+      intpoint.save
     end
     
-    puts tf1.id, tf1.event_ids
-    puts tf2.id, tf2.event_ids
-
-    # --- change their event_ids
-    if tf1.event_ids.length == 2
-      i1 = e1.intermediatepoints[0]
-      i2 = e1.intermediatepoints[-1]
-      if (tf1["time"] == i1["time"]) or (tf1["time"] == i2["time"])
-        tf1.event_ids = [e1.id]
-      else
-        tf1.event_ids = [e2.id]
-      end
-    elsif tf1.event_ids.length == 3
-      another_event_id = nil
-      tf1.event_ids.each do |event_id|
-        if event_id != e1.id and event_id != e2.id and event_id != e_old.id
-            another_event_id = event_id
-        end 
-      end
-      
-      if another_event_id != nil
-        i1 = e1.intermediatepoints[0]
-        i2 = e1.intermediatepoints[-1]
-        if (tf1["time"] == i1["time"]) or (tf1["time"] == i2["time"])
-          tf1.event_ids = [another_event_id, e1.id]
-        else
-          tf1.event_ids = [another_event_id, e2.id]
+    puts "--- ex.intermediatepoint ids  ---"
+    p e1.id, e1.intermediatepoint_ids
+    p e2.id, e2.intermediatepoint_ids
+    
+    puts "--- ex.intermediatepoint ids in data base ---"
+    p e1.id, Event.find(e1.id).intermediatepoint_ids
+    p e2.id, Event.find(e2.id).intermediatepoint_ids
+    
+    
+    # --- add transfer zones to 2 events ---
+    tf1 = TransferZone.find(e_old.transfer_zones[0].id)
+    tf2 = e_old.transfer_zones[1]
+    tf_arr = [tf1,tf2]
+    
+    puts "----  tfx event_ids  ----"
+    p tf1.id, tf1.event_ids
+    p tf2.id, tf2.event_ids
+    
+    puts "jian qu" 
+    puts e_old.id
+    
+    tf1.event_ids -= [e_old.id]
+    tf2.event_ids -= [e_old.id]
+    
+    puts "----  tfx event_ids after jian qu ----"
+    p tf1.id, tf1.event_ids
+    p tf2.id, tf2.event_ids
+    
+    tf_arr.each do |tf|
+      e_arr.each do |event|
+        event.intermediatepoints.each do |intpoint|
+          if tf.latitude == intpoint.latitude && tf.longitude == intpoint.longitude
+            event.transfer_zone_ids += [tf.id]
+            tf.event_ids += [event.id]
+          end
         end
-      else
-        puts "ERROR 1"
       end
-    else
-      puts "ERROR 2"
     end
+    
+    puts "----  tfx event_ids after jia shang  ----"
+    p tf1.id, tf1.event_ids
+    p tf2.id, tf2.event_ids
 
-    if tf2.event_ids.length == 2
-      i3 = e1.intermediatepoints[0]
-      i4 = e1.intermediatepoints[-1]
-      if (tf2["time"] == i3["time"]) or (tf2["time"] == i4["time"])
-        tf2.event_ids = [e1.id]
-      else
-        tf2.event_ids = [e2.id]
-      end
-    elsif tf2.event_ids.length == 3
-      another_event_id = nil
-      tf2.event_ids.each do |event_id|
-        if event_id != e1.id and event_id != e2.id and event_id != e_old.id
-            another_event_id = event_id
-        end
-      end
-      if another_event_id != nil
-        i3 = e1.intermediatepoints[0]
-        i4 = e1.intermediatepoints[-1]
-        if (tf2["time"] == i3["time"]) or (tf2["time"] == i4["time"])
-          tf2.event_ids = [another_event_id, e1.id]
-        else
-          tf2.event_ids = [another_event_id, e2.id]
-        end
-      else
-        puts "ERROR 1"
-      end
-    else
-      puts "ERROR 2"
-    end
-
-    # --- do all the save and destroy
-    #i.destroy
-    e_old.destroy
-    #e1.save
-    #e2.save
-    tf_new.save
+    puts "======== ex intermediatepoint ids ======="
+    p e1.id, e1.intermediatepoint_ids
+    p e2.id, e2.intermediatepoint_ids
+    
+    puts "======== ex transfer zone ids ========"
+    p e1.id, e1.transfer_zone_ids
+    p e2.id, e2.transfer_zone_ids
+    
+    puts "======== transfer zone event_ids ========"
+    p tf1.id, tf1.event_ids
+    p tf2.id, tf2.event_ids
+    p tf_new.id, tf_new.event_ids
+    
+    # --- save ---
     tf1.save
     tf2.save
+    tf_new.save
+    
+    # --- destroy the intpoint and old event ---
+    i_old.destroy
+    e_old.destroy
+    
+    # --- fix the tfx.event_ids bug ---
+    
+    # tfp = TransferZone.find(tf1.id)
+    # tfp.event_ids = []
+    # tfp.event_ids = tf1.event_ids
+    # tfp.save
+   
+    # temp_tf2_event_ids = tf2.event_ids
+    # tf2.event_ids = []
+    # tf2.event_ids = temp_tf2_event_ids
+    # tf2.save
+    
+    tf_arr.each do |tf|
+      temp_tf_event_ids = tf.event_ids
+      tf.event_ids = []
+      tf.event_ids = temp_tf_event_ids
+      tf.save
+    end
+    
+    
+    puts "======== transfer zone event_ids ========"
+    
+    p tf1.id, tf1.event_ids
+    
+    p tf1.id, TransferZone.find(tf1.id).event_ids
+    
+    p tf2.id, tf2.event_ids
+    
+    p tf2.id, TransferZone.find(tf2.id).event_ids
+    
+    p tf_new.id, tf_new.event_ids
+    
+    p tf_new.id, TransferZone.find(tf_new.id).event_ids
     
   end
   
   def drag_transfer_zone_to_intpoint
     puts "--------drag_transfer_zone_to_intpoint----------"
     
-    trip_id = TransferZone.find(params[:transfer_zone_id]).events[0].trip_id
+    trip_id = TransferZone.find_by(id: params[:transfer_zone_id]).events[0].trip_id
     nearest_intpoint = find_nearest_intpoint(trip_id, params[:intpoint_latLng])
 
     # Added to fix dragging point. Before it was just 'walking' passed to real_delete_transfer_zone
@@ -449,8 +474,8 @@ class ViewController < ApplicationController
     
     oldTransportation = ''
     if nearest_intpoint != nil
-      event_one = TransferZone.find(params[:transfer_zone_id]).events[0]
-      event_two = TransferZone.find(params[:transfer_zone_id]).events[1]
+      event_one = TransferZone.find_by(id: params[:transfer_zone_id]).events[0]
+      event_two = TransferZone.find_by(id: params[:transfer_zone_id]).events[1]
       if event_one.intermediatepoints.include? nearest_intpoint
         oldTransportation = event_two.transportation
       elsif event_two.intermediatepoints.include? nearest_intpoint
@@ -472,7 +497,7 @@ class ViewController < ApplicationController
       real_change_to_transfer_zone(nearest_intpoint.id)
       real_delete_transfer_zone(params[:transfer_zone_id], oldTransportation)
       
-      # real_delete_transfer_zone(params[:transfer_zone_id], "tram")
+      # real_delete_transfer_zone(params[:transfer_zone_id], "oldTransportation")
       # real_change_to_transfer_zone(nearest_intpoint.id)
       
     else
@@ -496,10 +521,10 @@ class ViewController < ApplicationController
     
     intpoint_latLng_hash = transfer_latLngString_to_hash(intpoint_latLng)
     # p intpoint_latLng_hash
-    trip = Trip.find(trip_id)
+    
+    trip = Trip.find_by(id: trip_id)
     start_intpoint =  trip.events[0].intermediatepoints[0]
     the_intpoint = start_intpoint
-    
     min_distance = (start_intpoint.latitude.to_f - intpoint_latLng_hash[:lat].to_f) ** 2 + (start_intpoint.longitude.to_f - intpoint_latLng_hash[:lng].to_f) ** 2
     
     trip.events.each do |event|
@@ -516,11 +541,10 @@ class ViewController < ApplicationController
       event.transfer_zones.each do |tf|
         # puts the_intpoint.latitude
         # puts tf.latitude
-        if the_intpoint != nil
-          if the_intpoint.latitude == tf.latitude && the_intpoint.longitude == tf.longitude
-            # p tf
-            the_intpoint = nil
-          end
+        if the_intpoint != nil && the_intpoint.latitude == tf.latitude && the_intpoint.longitude == tf.longitude
+          # p tf
+          the_intpoint = nil
+          break
         end
       end
     end

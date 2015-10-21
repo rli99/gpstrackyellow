@@ -7,9 +7,15 @@
 // }
 
 function drawTripTransferZone(eventsData){
+    console.log("eventsData: ");
+    console.log(eventsData);
+  
     var allTransferZones = [];
     
     for(var i = 0; i < eventsData.length; i++){
+      
+      // console.log(eventsData[i]["transferzones"]);
+      
       if(i == 0){
         allTransferZones.push(eventsData[i]["transferzones"][0]);
         allTransferZones.push(eventsData[i]["transferzones"][1]);
@@ -53,6 +59,7 @@ function makeTransferZone(transferZoneData){
     var marker = new google.maps.Marker({
         position: transferZoneData,
         draggable: false,
+        // draggable: true,
         zIndex: 2,
         optimized: false,
         icon: image,
@@ -104,29 +111,14 @@ function makeTransferZone(transferZoneData){
     }
 
     var infowindow = new google.maps.InfoWindow({ 
-      content: " transferZone id: " +  transferZoneData["id"]
-              +form 
+      content: //" transferZone id: " +  transferZoneData["id"] + 
+              form 
+
     });
 
     marker.addListener('click', function(e) {
       infowindow.open(map,marker);
     });
-      
-      // marker.addListener('dragend', function(e) {
-      //   var r = confirm("Are you sure to change the transfer zone to the nearest intermediate point to the current position?");
-      //   if (r==true)
-      //     {
-      //     console.log("You pressed OK!");
-      //     // console.log(e.latLng);
-      //     // console.log(transferZoneData);
-      //     drag_transfer_zone_to_intermediatepoint(transferZoneData, e.latLng);
-      //     }
-      //   else
-      //     {
-      //     console.log("You pressed Cancel!");
-      //     window.location.reload();
-      //     }
-      // });
 
     marker.setMap(map);
       
@@ -159,9 +151,7 @@ function makeTransferZone(transferZoneData){
         window.location.reload();
         }
     });
-
-
-
+    
 }
 
 function drag_transfer_zone_to_intermediatepoint(transferZoneData, intpoint_latLng){

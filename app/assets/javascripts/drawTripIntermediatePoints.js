@@ -26,8 +26,8 @@ function makeIntPoint(intPointData){
     var marker = new google.maps.Marker({
       position: intPointData,
       icon: mapIcon,
-      draggable: true,
-      // draggable: false,
+      // draggable: true,
+      draggable: false,
       zindex: 1,
       optimized: false
     });
@@ -46,10 +46,8 @@ function makeIntPoint(intPointData){
             + "</form>";
 
     var infowindow = new google.maps.InfoWindow({      
-      content: "<h5> Transportation: " + intPointData["transportation"] + "</h5>" 
-             + "event id: " + intPointData["event_id"] + "<br/><br/>" 
-             + "intpoint id: " + intPointData["id"] + "<br/><br/>" 
-             + form_to_transferzone
+      content: //"<h5> Transportation: " + intPointData["transportation"] + "</h5>" + "event id: " + intPointData["event_id"] + "<br/><br/>" + "intpoint id: " + intPointData["id"] + "<br/><br/>" + 
+             "<br/>" + form_to_transferzone
     });
 
     marker.addListener('click', function(e) {
