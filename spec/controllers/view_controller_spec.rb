@@ -1,6 +1,11 @@
 require 'rails_helper'
+require 'spec_helper'
 
 RSpec.describe ViewController, :type => :controller do 
+	describe "with valid session" do
+
+		let(:user){User.create(email: "123@gmail",
+			                   password: "123456789")}
 
 	describe "POST#change_event_transportation"do
 
@@ -53,27 +58,55 @@ RSpec.describe ViewController, :type => :controller do
 			                               )
 		@transferZone.event_ids=[@event1.id, @event2.id]
 =end
-		@transferZone = Trip.gdata
+		@tripData = Trip.gdata
+		@transferZone=@tripData[1]
 	end
 
-	it "assigns the requested event as tf" do
-		post :delete_transfer_zone, use_route: :view_delete_transfer_zone, transfer_zone_id: @transferZone.id
-		expect(assigns(:tf)).to eq(@transferZone)
-	end
     	it "delete the transferZone" do
     	
     		expect{post :delete_transfer_zone, use_route: :view_delete_transfer_zone, transfer_zone_id: @transferZone}.to change(TransferZone, :count).by(-1)
     	end
     	it "combine two events" do
-    		@tf=TransferZone.last()
+ 
     		expect{post :delete_transfer_zone, transfer_zone_id: @transferZone, use_route: :view_delete_transfer_zone}.to change(Event, :count).by(-1)
     	end
+
     end
 
     describe "GET#gmap" do
+    	before do
+		 @request.env['HTTP_REFERER'] = 'http://localhost:3000/sessions/new'
+		 @tripData = Trip.gdata
+		@trip=@tripData[3]
+		@user1=User.create(email: "123@gmail",
+			                   password: "123456789")
+		puts @user1
+		sign_in @user1
+		
+		end
     	it "involves events" do
+            get :gmap, use_route: :gmap, trip_id: @trip
+            puts "---find me!---"
+           # puts assigns(:events)
+           # expect(assigns(:events)).to eq @trip.events
 
     	end
     end
+
+    describe "POST@change_to_transfer_zone"
+    before do
+    	 @request.env['HTTP_REFERER'] = 'http://localhost:3000/sessions/new'
+		 @tripData = Trip.gdata
+		 @interpoint=@tripData[7]
+    end
+    it "generate a transferzone" do
+    	expect{post :change_to_transfer_zone, intpoint_id: @interpoint, use_route: :view_change_to_transfer_zone}.to change(TransferZone, :count).by(1)
+    end
+
+    it "divide an event" do
+    	expect{post :change_to_transfer_zone, intpoint_id: @interpoint, use_route: :view_change_to_transfer_zone}.to change(Event, :count).by(1)
+    end
+
+end
 
 end
